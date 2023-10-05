@@ -1,23 +1,20 @@
-# SSH Подключение
+# SSH
 
 
-SSH (Secure shell) - безопасный протокол прикладного уровня для подключения к удаленной машине. SSH является основным способом удаленного подключения к компьютерам c Unix-подобной ОС.
+SSH (Secure shell) is a secure application layer protocol for connecting to a remote machine. SSH is the main way to connect remotely to Unix-like computers.
 
 
-Для того чтобы подключиться к машине по SSH можно использоваться два подхода:
+In order to connect to a machine via SSH, you can use two approaches:
 
 
-1. прямое подключение через пароль
-2. подключение по приватному ключу
+1. Direct connection via password
+2. Private key connection
 
 
-Для того чтобы подключиться через пароль достаточно просто ввести команду `ssh <ip адрес удаленной машины>` далее в диалоговом режиме ввести пароль. Соединение установлено. При первой установке соединения подключающийся хост получит уникальный fingerprint для идентификации. После подключения пользователь получает доступ к shell-консоли на удаленной машине внутри своего терминала.
+To connect via password, simply enter the command `ssh <ip address of remote machine> ` then enter the password in the dialog box. The connection is established. When the connection is first established, the connecting host will receive a unique fingerprint for identification. Once connected, the user has access to the shell console on the remote machine inside his terminal.
 
 
-*Примечание: на виртуальных машинах может быть по умолчанию отключено подключение по паролю, для этого нужно проверить файл `/etc/ssh/sshd_config` на наличие строчки `PasswordAuthentication yes` и произвести `service sshd restart` при необходимости внесения правок в конфиг. Обычно пароль по умолчанию - vagrant.*
+*Note: Virtual machines may have the password connection disabled by default, so check the `/etc/ssh/sshd_config` file for the `PasswordAuthentication yes` line and `service sshd restart` if necessary to make changes to the config. The default password is usually vagrant.*
 
 
-Для подключения по ключу нужно сначала создать пару приватного и публичного ключа `ssh-keygen -C <комментарий>` с указанием пути к файлу с приватным ключом и возможным passphrase. Приватный ключ является секретом, а публичный (с добавленным расширением .pub) необходимо отправить на машину, к которой будет производиться подключение через команду `ssh-copy-id -i <путь до файла с публичным ключом> <ip адрес удаленного хоста>`. После этого система запросит пароль для подключения который необходимо ввести единожды и с этого момента приватный ключ будет использоваться при подключении по умолчанию через команду `ssh <ip адрес удаленной машины>`.
-
-
-
+To connect by key, you must first create a private and public key pair `ssh-keygen -C <comment>` with the path to the file with the private key and a possible passphrase. The private key is a secret, and the public key (with the added extension .pub) must be sent to the machine to which it will connect with the command `ssh-copy-id -i <path to the file with the public key> <ip address of the remote host>`. After this, the system will ask for a connection password which must be entered once and from that moment the private key will be used in the default connection via the command `ssh <ip address of the remote machine>`.

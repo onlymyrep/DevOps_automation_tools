@@ -1,68 +1,65 @@
 # Ansible
 
 
-**Ansible** - инструмент автоматизации удаленного конфигурирования узла. Его основным свойством является отсутствие какой-либо агент-серверной структуры. Вместо этого Ansible можно установить лишь на одну машину (которая не обязательно является каким-либо менеджером или крупным важным узлом в топологии сети), важно лишь иметь возможность установки соединения. **Ansible** подключается по **ssh** и выполняет обычные bash-команды. Помимо этого **Ansible** собирает обратную информацию или *факты* об удаленных машинах, которые позволяют **Ansible** не только изменять состояние конфигурации узла, но и хранить информацию об изменениях этого состояния и гарантировать неизменность этого состояние со стороны конфигуратора (так как сам узел естественно остается "незащищенным" для ручного конфигурирования).
+**Ansible** is a tool for automating remote node configuration. Its main feature is the absence of any agent-server structure. Instead, Ansible can be installed on only one machine (which is not necessarily any manager or major important node in the network topology), it is only important to be able to establish a connection. **Ansible** connects via **ssh** and executes the usual bash commands. In addition, **Ansible** collects back information or *facts* about remote machines that allow **Ansible** to not only change the configuration state of a node, but also to store information about changes in that state and ensure that that state remains unchanged by the configurator (since the node itself naturally remains "unprotected" for manual configuration).
 
 
-Чтобы начать работу с **Ansible** необходимо создать inventory-файл содержащий в себе адреса или доменные имена всех удаленных хостов требующих конфигурации. В случае с виртуальными машинами Vagrant это будут ip-адреса во внутренней сети Vagrant.
+To get started with **Ansible**, you will need to create an inventory file containing the addresses or domain names of all the remote hosts that require configuration. In the case of Vagrant virtual machines, these will be the ip addresses on the internal Vagrant network.
 
 
-Теперь чтобы запустить некоторое действие или модуль с помощью ansible на всех подключенных машинах нужно выполнить следующую команду:
+Now, to run some action or module using ansible on all connected machines, the following command must be executed:
 
 
-`ansible all --key-file <путь до ssh ключа> -i <путь до inventory-файла> -m <имя модуля>` .
+`ansible all --key-file <path to ssh key> -i <path to inventory file> -m <model name>` .
 
 
-Официальная документация содержит информацию о всех доступных модулях. Используйте `man ansible` для ознакомления с другими ключами, некоторые из которых могут, например, понадобиться для выполнения команд с привилегиями рута.
+The official documentation contains information about all available modules. Use `man ansible` to get familiar with the other keys, some of which you may need, for example, to run commands with root privileges.
 
 
-Множество команд для ansible можно объединять в один yml-файл - плейбук (playbook). Простейший плейбук имеет следующую структуру:
+Many commands for ansible can be combined into a single yml-file - a playbook. The simplest playbook has the following structure:
 
 
 ```yml
-- hosts: <группа>               # по умолчанию - all
- <ключ №1>: <значение №1>      # дополнительные ключи и аргументы по аналогии с ansible
- <ключ №2>: <значение №2>
- <ключ №2>: <значение №3>
- tasks:                        # список задач
-   - name: <имя задачи №1>     # имя задачи
-     <имя модуля>:             # модуль и его параметры
-       <параметр №1>: <значение №1>
-       <параметр №2>: <значение №2>
-       <параметр №3>: <значение №3>
-   - name: <имя задачи №2>     # имя задачи
-     <имя модуля>:             # модуль и его параметры
-       <параметр №1>: <значение №1>
-       <параметр №2>: <значение №2>
-       <параметр №3>: <значение №3>
+- hosts: <group>               # by default - all
+ <key №1>: <value №1>      # additional keys and arguments similar to ansible
+ <key №2>: <value №2>
+ <key №2>: <value №3>
+ tasks:                        # task list
+   - name: <task name №1>     # task name
+     <module name>:             # module and its parameters
+       <parameter №1>: <value №1>
+       <parameter №2>: <value №2>
+       <parameter №3>: <value №3>
+   - name: <task name №2>     # task name
+     <module name>:             # module and its parameters
+       <parameter №1>: <value №1>
+       <parameter №2>: <value №2>
+       <parameter №3>: <value №3>
    <...>
 ```
 
 
-Для запуска плейбука введите команду:
+To run the playbook, enter the command:
 
 
-`ansible-playbook <имя плейбука>`
+`ansible-playbook <playbook name>`
 
 
-Плейбуки **Ansible** поддерживают создание ролей. Роли позволяют логически выделять команды в отдельные файлы, расположенные в специфичной древовидной структуре директорий:
+Playbooks **Ansible** support the creation of roles. Roles allow you to logically allocate commands to individual files located in a specific directory tree structure:
 
 
 ```
 ./roles/
 ----role1/
 --------tasks/
-------------main.yml            //задачи первой роли
+------------main.yml            //tasks of the first role
 ----role2/
 --------tasks/
-------------main.yml            //задачи второй роли
+------------main.yml            //tasks of the second role
 ----role3/
 --------tasks/
-------------main.yml            //задачи третьей роли
+------------main.yml            //tasks of the third role
 ```
 
 
-Помимо задач в ролях можно устанавливать свои шаблоны (templates), переменные (vars) и другие полезные вещи.
-
-
-
+In addition to tasks, you can set your templates, variables (vars), and other useful things in the roles.

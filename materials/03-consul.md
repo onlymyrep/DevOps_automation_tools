@@ -1,46 +1,46 @@
 # Consul
 
 
-Изначально, приложения имели монолитную структуру - то есть состояли из одного большого сервиса. Такой подход стал терять популярность для многих веб-решений в силу нарастания актуальности следующих проблем:
+Initially, applications had a monolithic structure - i.e., they consisted of one large service. This approach began to lose popularity for many web solutions because of the increasing relevance of the following problems:
 
 
-1. Такие сервисы сложно масштабировать. Даже если требуется масштабировать всего один модуль, на практике это означает перемасштабирование всего приложения.
-2. Малая гибкость. Стек технологий для каждого отдельного модуля сильно завязан и на технологиях, используемых в других модулях монолита.
-3. Сложность разработки. Обычно, чем больше становится монолит тем сложнее в него вносить изменения, так как зачастую между модулями проекта нет четких протоколов взаимодействия, что часто приводит к потребности в изменении большого числа модулей для внесения дополнительного функционала лишь в один.
+1. Such services are difficult to scale. Even if only one module needs to be scaled, in practice it means rescaling the entire application.
+2. Little flexibility. The technology stack for each individual module is also strongly tied to the technologies used in other modules of the monolith.
+3. Development complexity. Usually, the larger a monolith becomes, the harder it is to make changes to it, because often there are no clear protocols for interaction between the modules of the project, which often leads to the need to change a large number of modules to introduce additional functionality in just one.
 
 
-В ответ этим проблемам возникла новая идея - изменить архитектуру монолитную на микросервисную. Теперь каждая отдельная сущность управляется отдельным сервисом и взаимодействует с остальными модулями по четко установленному протоколу. К тому же микросервисы теперь могут свободно располагаться в кластере, используя совершенно независимые стеки. Но, как это обычно и бывает, это привело к другим не менее серьезным проблемам:
+In response to these problems, a new idea emerged - to change the architecture from monolithic to microservices. Now each individual entity is managed by a separate service and communicates with the rest of the modules using a clearly defined protocol. In addition, microservices are now free to locate in a cluster, using completely independent stacks. But, as is usually the case, this led to other equally serious problems:
 
 
-1. Обнаружение сервисов. Сервисы должны четко знать где конкретно расположены другие сервисы, а это означает сложную конфигурацию модулей, сильно зависящую от топологии сети.
-2. Безопасность. Микросерисы передают данные друг другу по открытой сети, а значит - эти данные могут быть перехвачены. Появляется новая уязвимость.
+1. Service Discovery. Services need to know exactly where other services are located, which means a complex configuration of modules, highly dependent on the network topology.
+2. Safety. Microservers send data to each other over an open network, which means that this data can be intercepted. A new vulnerability is emerging.
 
 
-Consul - это инструмент для осуществления паттерна Service Discovery, призванного в первую очередь избавить приложения с микросервисной архитектурой от ручного конфигурирования каналов связи. Теперь, вместо прямого общения между сервисами, они, перед тем как быть развернутыми в качестве части микросервисного приложения, регистрируются в отдельном *registry*. Каждый же отдельный микросервис обращается лишь к прокси-серверу *envoy*, расположенному локально для этого микросервиса (то есть "ходит" на свой localhost). Прокси-сервер резолвит запросы микросевриса автоматически, исходя из того, какие зарегистрированные в системе ip-адреса с необходимыми данному микросервису сервисами, возвращает *registry*.
+Consul is a tool for implementing the Service Discovery pattern, designed primarily to rid microservice architecture applications of manual configuration of communication channels. Now, instead of direct communication between services, they are registered in a separate *registry* before being deployed as part of a microservice application. Each individual microservice accesses only the proxy server *envoy* situated locally for that microservice (that is, it "goes" to its localhost). The proxy server resolves requests of the microservice automatically, based on which registered in the system ip addresses with the services necessary for this microservice, returns *registry*.
 
 
-Таким образом все сервисы объединяются в одну логическую единицу - Service Mesh, обладающий своим датацентром, одним или несколькими consul-серверами и множеством зарегистрированных в данном Service Mesh сервисах. К тому же Service Mesh обеспечивает авторизацию и шифрование соединений между сервисами с использованием протокола защиты транспортного уровня (TLS), а "голый" трафик сервисов никогда не покидает конкретный узел.
+Thus, all services are combined into one logical unit - Service Mesh, which has its own data center, one or more consul-servers and many registered in this Service Mesh services. In addition, Service Mesh provides authorization and encryption of connections between services using transport layer security protocol (TLS), and "naked" traffic of services never leaves a particular node.
 
 
 <img src="misc/images/consul_diagram.png"  width="400">
 
 
-Consul имеет клиент-серверную архитектуру. На некоторой машине в сети устанавливается сервер consul, который и будет осуществлять Service Discovery в комбинации с легковесными клиентами-агентами, расположенными на зарегистрированных машинах с сервисами и осуществляющими проксирование.
+Consul has a client-server architecture. A consul server is installed on some machine within the network, which will perform Service Discovery in combination with lightweight agent clients located on the registered machines with services and performing proxying.
 
 
-Работа Consul определяется конфигурационным файлом, указываемым при запуске consul. Конфигурационный файл перед запуском можно провалидировать командой `consul validate <имя конфигурационного файла>`.
+The performance of Consul is determined by the configuration file specified when you run Consul. The configuration file can be validated before running with the command `consul validate <config file name>`.
 
 
-Основные поля конфигурационного файла consul:
+Main fields of the configuration file:
 
 
-`server` - флаг, отвечающий за тип агента (клиент/сервер - true/false)
+`server` - the flag that controls the type of agent (client/server - true/false)
 
 
-`advertise_addr` - ip-адрес, используемый для объявления другим узлам в кластере
+`advertise_addr` - ip address used to announce to other nodes in the cluster
 
 
-`bind` - ip-адрес/интерфейс, который агент использует на локальной для него машине
+`bind` - ip address/interface that the agent uses on its local machine
 
 
-`ports` - порты для работы агентов consul (например grpc)
+`ports` - ports for consul agents (e.g. grpc)
