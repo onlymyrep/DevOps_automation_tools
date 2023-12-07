@@ -99,4 +99,4 @@ Now let's move on to Service Discovery. In this chapter, you will simulate two r
 
 5) Place the files created in this part in the `src\ansible02` and `src\consul01` folders in your personal repository.
 
-💡 [Click here](https://forms.yandex.ru/cloud/6475b9e02530c22269917318/), **to share feedback on this project with us**. It's anonymous and will help the Pedago team make your learning better.
+💡 [Click here](https://forms.yandex.ru/cloud/6475b9e02530c22269917318/), **to share feedback on this project with us**. It's anonymous and will help the Product team make your learning better.
