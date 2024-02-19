@@ -36,17 +36,17 @@ In this chapter you will perform a remote node configuration to deploy a multise
 - Use the ping module to check the connection via Ansible. 
 - Place the result of the module in a report.
 
-4) Write the first playbook for Ansible that performs apt update, installs docker, docker-compose, copies the compose file from the manager and deploys the microservice application. 
+3) Write the first playbook for Ansible that performs apt update, installs docker, docker-compose, copies the compose file from the manager and deploys the microservice application. 
 
-5) Run the prepared tests through postman and make sure that they are all successful. Show the test results in the report.
+4) Run the prepared tests through postman and make sure that they are all successful. Show the test results in the report.
 
-6) Form three roles: 
+5) Form three roles: 
  - the application role performs the deployment of a microservice application using docker-compose,
- - appache installs and runs the standard appache server
+ - apache installs and runs the standard apache server
  - postgres installs and runs postgres, creates a database with an arbitrary table and adds three arbitrary records to it. 
  - Assign the first role to node01 and the second two roles to node02, check the functionality of the microservices application with postman tests, make sure that postgres and the apache server are available. 
 
-7) Place the files created in this part in the `src\ansible01` folder in your personal repository.
+6) Place the files created in this part in the `src\ansible01` folder in your personal repository.
 
 ## Part 2. Service Discovery
 
@@ -66,7 +66,7 @@ Now let's move on to Service Discovery. In this chapter, you will simulate two r
 2) Create three machines using Vagrant - consul_server, api и db. 
 - Forward port 8082 from the api to the local machine to access the still undeployed api
 - Forward port 8500 with the manager to access the ui consul. 
-- Move the pre-built jar file from the source code in `src/microservices/hotels_service` folder and the prepared configurations for consul to consul_server.
+- Move the pre-built jar file from the source code in `src/services/hotels_service` folder and the prepared configurations for consul to consul_server.
 
 3) Write a playbook for ansible and four roles: 
 - install_consul_server, which:
