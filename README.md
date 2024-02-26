@@ -76,8 +76,8 @@ Now let's move on to Service Discovery. In this chapter, you will simulate two r
    - runs consul service
 - install_consul_client, which:
    - works with api and db;
-   - copies consul_server.hcl;
-   - installs consul, envy all necessary dependencies for consul; 
+   - copies consul_client.hcl;
+   - installs consul, envoy all necessary dependencies for consul; 
    - runs consul and consul-envoy services;
 - install_db, which:
    - works with db;

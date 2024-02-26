@@ -76,8 +76,8 @@
    - запускает сервис consul
 - install_consul_client, которая:
    - работает с api и db;
-   - копирует consul_server.hcl;
-   - устанавливает consul, envy и необходимые для consul зависимости; 
+   - копирует consul_client.hcl;
+   - устанавливает consul, envoy и необходимые для consul зависимости; 
    - запускает сервис consul и consul-envoy;
 - install_db, которая:
    - работает с db;
