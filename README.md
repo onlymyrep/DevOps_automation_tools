@@ -2,6 +2,8 @@
 
 Automation tools for node provisioning.
 
+💡 [Tap here](https://new.oprosso.net/p/4cb31ec3f47a4596bc758ea1861fb624) **to leave your feedback on the project**. It's anonymous and will help our team make your educational experience better. We recommend completing the survey immediately after the project.
+
 ## Contents
 
 1. [Chapter I](#chapter-i) 
@@ -97,5 +99,3 @@ Now let's move on to Service Discovery. In this chapter, you will simulate two r
 4) Check the functionality of CRUD operations on hotel service. Show the test results in the report.
 
 5) Place the files created in this part in the `src\ansible02` and `src\consul01` folders in your personal repository.
-
-💡 [Click here](https://forms.yandex.ru/cloud/6475b9e02530c22269917318/), **to share feedback on this project with us**. It's anonymous and will help the Product team make your learning better.
