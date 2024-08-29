@@ -65,7 +65,7 @@ Now let's move on to Service Discovery. In this chapter, you will simulate two r
    - specify the interface directed to the internal Vagrant network in advertise_addr 
 
 
-2) Create three machines using Vagrant - consul_server, api и db. 
+2) Create three machines using Vagrant - consul_server, api, manager and db. 
 - Forward port 8082 from the api to the local machine to access the still undeployed api
 - Forward port 8500 with the manager to access the ui consul. 
 
