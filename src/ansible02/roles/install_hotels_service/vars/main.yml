@@ -1,0 +1,12 @@
+---
+postgres_host: "192.168.56.30"
+postgres_port: "5432"
+postgres_db: "hotels_db"
+postgres_user: "postgres"
+postgres_password: "hotel_password"
+db_host: "192.168.56.30"
+db_name: hotels_db
+db_user: postgres
+db_password: hotel_password
+jar_file: hotel-service-0.0.1-SNAPSHOT.jar
+consul_server_ip: "{{ hostvars['consul_server']['ansible_default_ipv4']['address'] }}"

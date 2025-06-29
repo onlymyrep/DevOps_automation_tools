@@ -1,0 +1,79 @@
+---
+- name: Deploy microservices
+  hosts: node01
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker GPG key (robust method)
+      block:
+        - name: Add Docker GPG key via curl
+          command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+          args:
+            warn: false
+          retries: 3
+          delay: 5
+          register: docker_key_result
+          ignore_errors: yes
+
+        - name: Fallback to keyserver method
+          apt_key:
+            keyserver: keyserver.ubuntu.com
+            id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+            state: present
+          when: docker_key_result is failed
+          retries: 3
+          delay: 5
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+
+    - name: Install Docker Compose Plugin
+      apt:
+        name: docker-compose-plugin
+        state: present
+
+    - name: Create project directory
+      file:
+        path: /opt/microservices
+        state: directory
+        mode: 0755
+
+    - name: Copy project files
+      copy:
+        src: "{{ playbook_dir }}/files/"
+        dest: /opt/microservices
+        mode: 0644
+
+    - name: Start services
+      command: docker compose up -d
+      args:
+        chdir: /opt/microservices
+      environment:
+        COMPOSE_HTTP_TIMEOUT: 300
+      register: compose_result
+      until: compose_result.rc == 0
+      retries: 5
+      delay: 10

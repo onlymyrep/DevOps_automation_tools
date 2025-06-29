@@ -1,0 +1,1 @@
+{"virtualbox":{"/vagrant":{"disabled":false,"guestpath":"/vagrant","hostpath":"/Users/bartonjo/second_try/DevOps_8.ID_1220167-2/src/ansible01","__vagrantfile":true},"/home/vagrant/services":{"guestpath":"/home/vagrant/services","hostpath":"/Users/bartonjo/second_try/DevOps_8.ID_1220167-2/src/services","disabled":false,"__vagrantfile":true}}}

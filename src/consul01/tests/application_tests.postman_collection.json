@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "hotels-service-crud-tests",
+		"name": "Hotels Service CRUD Tests",
+		"description": "Коллекция тестов для проверки CRUD операций сервиса отелей и доступности Consul UI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AUTHORIZE - Получение JWT токена",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код 200 - OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Получен JWT токен\", function () {",
+							"    var token = pm.response.headers.get('Authorization');",
+							"    pm.expect(token).to.include('Bearer');",
+							"    pm.globals.set('jwt_token', token.replace('Bearer ', ''));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic {{base64_service_uuid}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/hotels/authorize",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"hotels",
+						"authorize"
+					]
+				}
+			}
+		},
+		{
+			"name": "READ - Получение списка отелей",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код 200 - OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Ответ содержит массив отелей\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"    pm.expect(jsonData.length).to.be.greaterThan(0);",
+							"});",
+							"",
+							"pm.test(\"Каждый отель имеет необходимые поля\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    if (jsonData.length > 0) {",
+							"        pm.expect(jsonData[0]).to.have.property('hotelUid');",
+							"        pm.expect(jsonData[0]).to.have.property('name');",
+							"        pm.expect(jsonData[0]).to.have.property('location');",
+							"        pm.globals.set('hotel_uid', jsonData[0].hotelUid);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/hotels",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"hotels"
+					]
+				}
+			}
+		},
+		{
+			"name": "READ - Получение отеля по ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код 200 - OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Ответ содержит данные отеля\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('hotelUid');",
+							"    pm.expect(jsonData).to.have.property('name');",
+							"    pm.expect(jsonData).to.have.property('location');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/hotels/{{hotel_uid}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"hotels",
+						"{{hotel_uid}}"
+					]
+				}
+			}
+		},
+		{
+			"name": "READ - Получение вместимости отеля",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код 200 - OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Ответ содержит данные о вместимости\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('rooms');",
+							"    pm.expect(jsonData.rooms).to.be.a('number');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/hotels/{{hotel_uid}}/rooms",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"hotels",
+						"{{hotel_uid}}",
+						"rooms"
+					]
+				}
+			}
+		},
+		{
+			"name": "CHECK - Проверка Consul UI",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус код 200 - OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Consul UI доступен\", function () {",
+							"    pm.expect(pm.response.text()).to.include('Consul');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{consul_port}}/ui/",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{consul_port}}",
+					"path": [
+						"ui",
+						""
+					]
+				}
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Установка глобальных таймаутов",
+					"pm.globals.set('timeout', 5000);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Общие проверки для всех тестов",
+					"pm.test('Response time is less than 5000ms', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "91.219.189.29",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "8082",
+			"type": "string"
+		},
+		{
+			"key": "consul_port",
+			"value": "8500",
+			"type": "string"
+		},
+		{
+			"key": "base64_service_uuid",
+			"value": "YjUxY2VkYTItYmZhNS0xMWViLTg1MjktMDI0MmFjMTMwMDAz",
+			"type": "string",
+			"description": "Base64 кодировка gateway-service.uuid"
+		}
+	]
+}

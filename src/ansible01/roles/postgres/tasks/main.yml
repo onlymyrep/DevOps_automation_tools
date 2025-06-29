@@ -1,0 +1,67 @@
+---
+- name: Install PostgreSQL
+  apt:
+    name: postgresql
+    state: present
+
+- name: Configure PostgreSQL to listen on all interfaces
+  lineinfile:
+    path: /etc/postgresql/12/main/postgresql.conf
+    regexp: '^listen_addresses\s*='
+    line: "listen_addresses = '*'"
+    state: present
+  notify: restart postgresql
+
+- name: Configure client authentication
+  lineinfile:
+    path: /etc/postgresql/12/main/pg_hba.conf
+    line: "host    all             all             0.0.0.0/0               md5"
+    state: present
+  notify: restart postgresql
+
+- name: Create database
+  postgresql_db:
+    name: devops_db
+    state: present
+
+- name: Create user
+  postgresql_user:
+    name: devops_user
+    password: securepassword
+    state: present
+
+- name: Create table
+  postgresql_query:
+    db: devops_db
+    query: |
+      CREATE TABLE IF NOT EXISTS test_data (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        description TEXT
+      )
+
+- name: Insert sample data
+  postgresql_query:
+    db: devops_db
+    query: |
+      INSERT INTO test_data (name, description) VALUES
+      ('Item 1', 'First test item'),
+      ('Item 2', 'Second test item'),
+      ('Item 3', 'Third test item')
+    on_conflict: 
+      constraint: test_data_pkey
+      update_columns: [name, description]
+
+- name: Grant privileges
+  postgresql_privs:
+    database: devops_db
+    roles: devops_user
+    privs: ALL
+    type: table
+    objs: test_data
+
+- name: Restart PostgreSQL
+  service:
+    name: postgresql
+    state: restarted
+    enabled: yes

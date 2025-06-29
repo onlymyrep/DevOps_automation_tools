@@ -1,0 +1,10 @@
+---
+- name: restart postgresql
+  systemd:
+    name: postgresql
+    state: restarted
+
+- name: reload consul
+  systemd:
+    name: consul
+    state: reloaded

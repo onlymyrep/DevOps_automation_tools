@@ -1,0 +1,73 @@
+---
+- name: Установка PostgreSQL
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+    state: present
+    update_cache: yes
+
+- name: Настройка PostgreSQL для удаленных подключений
+  lineinfile:
+    path: /etc/postgresql/12/main/postgresql.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backup: yes
+  loop:
+    - { regexp: "^#?listen_addresses", line: "listen_addresses = '*'" }
+    - { regexp: "^#?port", line: "port = 5432" }
+  notify: restart postgresql
+
+- name: Настройка аутентификации PostgreSQL
+  lineinfile:
+    path: /etc/postgresql/12/main/pg_hba.conf
+    line: "host    all             all             0.0.0.0/0               md5"
+    backup: yes
+  notify: restart postgresql
+
+- name: Запуск и включение PostgreSQL
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Копирование скрипта инициализации БД
+  copy:
+    src: "{{ playbook_dir }}/../ansible/files/src/services/database/init.sql"
+    dest: /tmp/init.sql
+    mode: '0644'
+
+- name: Выполнение скрипта инициализации БД
+  shell: |
+    sudo -u postgres psql -f /tmp/init.sql
+  register: init_db_result
+
+- name: Установка пароля для пользователя postgres
+  shell: |
+    sudo -u postgres psql -c "ALTER USER postgres PASSWORD '{{ db_password }}';"
+  register: set_password_result
+
+- name: Регистрация PostgreSQL в Consul
+  uri:
+    url: "http://localhost:8500/v1/agent/service/register"
+    method: PUT
+    body_format: json
+    body:
+      ID: "postgres-{{ inventory_hostname }}"
+      Name: "postgres"
+      Tags:
+        - "database"
+        - "postgresql"
+      Address: "{{ ansible_default_ipv4.address }}"
+      Port: 5432
+      Check:
+        TCP: "{{ ansible_default_ipv4.address }}:5432"
+        Interval: "10s"
+        Timeout: "3s"
+  register: consul_register_result
+  ignore_errors: yes
+
+- name: Отладка - результат регистрации в Consul
+  debug:
+    var: consul_register_result

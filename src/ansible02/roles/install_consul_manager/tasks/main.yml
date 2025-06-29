@@ -1,0 +1,94 @@
+---
+- name: Создание пользователя consul
+  user:
+    name: consul
+    system: yes
+    shell: /bin/false
+    home: /opt/consul
+
+- name: Создание директорий для consul
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: consul
+    group: consul
+    mode: '0755'
+  loop:
+    - /opt/consul
+    - /etc/consul.d
+
+- name: Загрузка бинарного файла consul
+  get_url:
+    url: https://ed843466-7e84-4cb5-b2dc-83c48c730cd2.selstorage.ru/lothostr/distro/consul/consul_1.15.3_linux_amd64.zip
+    dest: /tmp/consul.zip
+    mode: '0644'
+
+- name: Установка unzip
+  apt:
+    name: unzip
+    state: present
+    update_cache: yes
+
+- name: Распаковка бинарного файла consul
+  unarchive:
+    src: /tmp/consul.zip
+    dest: /usr/local/bin
+    remote_src: yes
+    owner: consul
+    group: consul
+    mode: '0755'
+
+- name: Копирование конфигурации клиента consul
+  copy:
+    src: "{{ playbook_dir }}/../consul01/consul_client.hcl"
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: '0640'
+
+- name: Обновление конфигурации для manager
+  lineinfile:
+    path: /etc/consul.d/consul.hcl
+    regexp: '^advertise_addr'
+    line: 'advertise_addr = "192.168.56.11"'
+
+- name: Добавление UI конфигурации для manager
+  blockinfile:
+    path: /etc/consul.d/consul.hcl
+    block: |
+      ui_config {
+        enabled = true
+      }
+    marker: "# {mark} UI CONFIG"
+
+- name: Создание systemd сервиса для consul
+  copy:
+    dest: /etc/systemd/system/consul.service
+    content: |
+      [Unit]
+      Description=Consul
+      Documentation=https://www.consul.io/
+      Requires=network-online.target
+      After=network-online.target
+      ConditionFileNotEmpty=/etc/consul.d/consul.hcl
+
+      [Service]
+      Type=notify
+      User=consul
+      Group=consul
+      ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/ -client=0.0.0.0
+      ExecReload=/bin/kill -HUP $MAINPID
+      KillMode=process
+      Restart=on-failure
+      LimitNOFILE=65536
+      TimeoutStartSec=60s
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Запуск и включение сервиса consul
+  systemd:
+    name: consul
+    daemon_reload: yes
+    state: started
+    enabled: yes

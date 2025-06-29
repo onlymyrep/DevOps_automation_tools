@@ -1,0 +1,5 @@
+---
+db_name: hotels_db
+db_user: postgres
+db_password: hotel_password
+consul_server_ip: "{{ hostvars['consul_server']['ansible_default_ipv4']['address'] }}"

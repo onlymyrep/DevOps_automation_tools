@@ -1,0 +1,54 @@
+Vagrant.configure("2") do |config|
+  ENV['VAGRANT_SERVER_URL'] = 'https://vagrant.elab.pro'
+  config.vm.box = "ubuntu/focal64"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Manager машина
+  config.vm.define "manager" do |manager|
+    manager.vm.hostname = "manager"
+    manager.vm.network "private_network", ip: "192.168.56.10"
+    manager.vm.synced_folder "../services", "/home/vagrant/services"
+    manager.vm.synced_folder ".", "/vagrant"
+
+    manager.vm.provider "virtualbox" do |vb|
+      vb.memory = "3072"
+      vb.cpus = 2
+      vb.gui = false
+    end
+  end
+
+  # Node01 машина - для микросервисного приложения
+  config.vm.define "node01" do |node01|
+    node01.vm.hostname = "node01"
+    node01.vm.network "private_network", ip: "192.168.56.11"
+    
+    # Проброс всех необходимых портов
+    node01.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "0.0.0.0"
+    node01.vm.network "forwarded_port", guest: 8081, host: 8081, host_ip: "0.0.0.0"
+    node01.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "0.0.0.0"
+    node01.vm.network "forwarded_port", guest: 8082, host: 8082, host_ip: "0.0.0.0"
+    node01.vm.network "forwarded_port", guest: 8500, host: 8500, host_ip: "0.0.0.0"
+    
+    node01.vm.provider "virtualbox" do |vb|
+      vb.memory = "3072"
+      vb.cpus = 2
+      vb.gui = false
+    end
+  end
+
+  # Node02 машина - для Apache и PostgreSQL
+  config.vm.define "node02" do |node02|
+    node02.vm.hostname = "node02"
+    node02.vm.network "private_network", ip: "192.168.56.12"
+    
+    # Проброс портов
+    node02.vm.network "forwarded_port", guest: 80, host: 8090, host_ip: "0.0.0.0"
+    node02.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "0.0.0.0"
+    
+    node02.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+      vb.gui = false
+    end
+  end
+end
