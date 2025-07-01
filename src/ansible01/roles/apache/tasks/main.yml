@@ -1,40 +1,15 @@
----
-- name: Обновление пакетов
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-
-- name: Установка Apache2
+- name: Install Apache
   apt:
     name: apache2
     state: present
 
-- name: Запуск и включение Apache2
-  systemd:
+- name: Ensure Apache is running
+  service:
     name: apache2
     state: started
     enabled: yes
 
-- name: Создание пользовательской веб-страницы
-  template:
-    src: index.html
+- name: Create test page
+  copy:
+    content: "<html><body><h1>Apache configuring by bartonjo 25_04_kzn working on {{ ansible_hostname }}</h1></body></html>"
     dest: /var/www/html/index.html
-    owner: www-data
-    group: www-data
-    mode: '0644'
-
-- name: Проверка статуса Apache
-  systemd:
-    name: apache2
-  register: apache_status
-
-- name: Вывод статуса Apache
-  debug:
-    msg: "Apache статус: {{ apache_status.status.ActiveState }}"
-
-- name: Открытие порта 80 в UFW
-  ufw:
-    rule: allow
-    port: '80'
-    proto: tcp
-  ignore_errors: yes

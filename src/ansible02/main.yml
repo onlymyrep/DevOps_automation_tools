@@ -1,0 +1,38 @@
+---
+- name: Configure Consul cluster
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create consul group
+      group:
+        name: consul
+        state: present
+        
+    - name: Create consul user
+      user:
+        name: consul
+        group: consul
+        system: yes
+        shell: /bin/false
+        home: /nonexistent
+        comment: "Consul Service Discovery"
+        
+    - name: Install common dependencies
+      apt:
+        name:
+          - unzip
+          - curl
+        state: present
+        update_cache: yes
+
+- name: Setup Consul server
+  hosts: consul_server
+  become: yes
+  roles:
+    - install_consul_server
+
+- name: Setup Consul clients
+  hosts: consul_clients
+  become: yes
+  roles:
+    - install_consul_client

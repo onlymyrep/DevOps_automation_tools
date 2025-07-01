@@ -1,132 +1,63 @@
----
-- name: Обновление пакетов
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
+- name: Install Docker and dependencies
+  block:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
 
-- name: Установка необходимых пакетов
-  apt:
-    name:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg
-      - lsb-release
-    state: present
+    - name: Install required packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
 
-- name: Добавление GPG ключа Docker
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+- name: Configure Docker
+  block:
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
 
-- name: Добавление репозитория Docker
-  apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-    state: present
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+        update_cache: yes
 
-- name: Установка Docker
-  apt:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-    state: present
-    update_cache: yes
+    - name: Add user to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
 
-- name: Запуск Docker
-  systemd:
-    name: docker
-    state: started
-    enabled: yes
+    - name: Reset ssh connection
+      meta: reset_connection
 
-- name: Добавление пользователя vagrant в группу docker
-  user:
-    name: vagrant
-    groups: docker
-    append: yes
-
-- name: Перезапуск Docker сервиса
-  systemd:
-    name: docker
-    state: restarted
-
-- name: Перезапуск SSH сессии для применения группы docker
-  meta: reset_connection
-
-- name: Пауза для применения изменений групп
-  pause:
-    seconds: 10
-
-- name: Загрузка Docker Compose
-  get_url:
-    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
-    dest: /usr/local/bin/docker-compose
-    mode: '0755'
-    timeout: 30
-  retries: 3
-  delay: 10
-
-- name: Создание символической ссылки для docker-compose
+- name: Setup project directory
   file:
-    src: /usr/local/bin/docker-compose
-    dest: /usr/bin/docker-compose
-    state: link
-
-- name: Создание директории для приложения
-  file:
-    path: /home/vagrant/app
+    path: /opt/microservices
     state: directory
-    owner: vagrant
-    group: vagrant
-    mode: '0755'
+    mode: 0755
 
-- name: Копирование nginx конфигурации
+- name: Deploy application files
   copy:
-    src: /home/vagrant/ansible/files/nginx/nginx.conf
-    dest: /tmp/nginx.conf
-    owner: vagrant
-    group: vagrant
-    mode: '0644'
+    src: "{{ item }}"
+    dest: /opt/microservices/
+    mode: "{{ '0755' if 'init-db.sh' in item else '0644' }}"
+  loop:
+    - docker-compose.yml
+    - init-db.sh
 
-- name: Копирование docker-compose.yml
-  copy:
-    src: /home/vagrant/ansible/files/docker-compose.yml
-    dest: /home/vagrant/app/docker-compose.yml
-    owner: vagrant
-    group: vagrant
-    mode: '0644'
-
-- name: Запуск микросервисного приложения
-  shell: docker-compose up -d
-  args:
-    chdir: /home/vagrant/app
-  become: no
-  become_user: vagrant
-
-- name: Ожидание запуска сервисов
-  pause:
-    seconds: 120
-
-- name: Проверка готовности nginx health endpoint
-  uri:
-    url: http://localhost:80/health
-    method: GET
-    status_code: 200
-  register: health_check
-  retries: 10
-  delay: 15
-  failed_when: false
-
-- name: Вывод результата проверки health
-  debug:
-    msg: "Health check status: {{ health_check.status | default('FAILED') }}"
-
-- name: Проверка запущенных контейнеров
-  shell: docker ps
-  become: no
-  become_user: vagrant
-  register: containers_status
-
-- name: Вывод статуса контейнеров
-  debug:
-    var: containers_status.stdout_lines
+- name: Start services
+  community.docker.docker_compose_v2:
+    project_src: /opt/microservices
+    build: always
+    pull: if_not_present
+    state: present

@@ -1,0 +1,16 @@
+datacenter = "dc1"
+data_dir = "/opt/consul"
+retry_join = ["192.168.60.10"]  # IP consul_server
+server = false
+bind_addr = "{{ ansible_default_ipv4.address }}"
+advertise_addr = "{{ ansible_default_ipv4.address }}"
+client_addr = "0.0.0.0"
+ui = true
+
+connect {
+  enabled = true
+}
+
+ports {
+  grpc = 8502
+}

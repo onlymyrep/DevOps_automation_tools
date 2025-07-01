@@ -1,88 +1,33 @@
 ---
-- name: Создание пользователя consul
-  user:
-    name: consul
-    system: yes
-    shell: /bin/false
-    home: /opt/consul
-
-- name: Создание директорий для consul
+- name: Create directories for Consul
   file:
     path: "{{ item }}"
     state: directory
     owner: consul
     group: consul
-    mode: '0755'
+    mode: 0755
   loop:
-    - /opt/consul
     - /etc/consul.d
+    - /opt/consul
 
-- name: Загрузка бинарного файла consul
-  get_url:
-    url: https://ed843466-7e84-4cb5-b2dc-83c48c730cd2.selstorage.ru/lothostr/distro/consul/consul_1.15.3_linux_amd64.zip
-    dest: /tmp/consul.zip
-    mode: '0644'
-
-- name: Установка unzip
-  apt:
-    name: unzip
-    state: present
-    update_cache: yes
-
-- name: Распаковка бинарного файла consul
+- name: Download Consul
   unarchive:
-    src: /tmp/consul.zip
+    src: https://releases.hashicorp.com/consul/1.15.3/consul_1.15.3_linux_amd64.zip
     dest: /usr/local/bin
+    mode: 0755
     remote_src: yes
-    owner: consul
-    group: consul
-    mode: '0755'
 
-- name: Копирование конфигурации сервера consul
-  copy:
-    src: "{{ playbook_dir }}/../consul01/consul_server.hcl"
+- name: Copy server config
+  template:
+    src: consul_server.hcl.j2
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
-    mode: '0640'
+    mode: 0640
 
-- name: Создание systemd сервиса для consul
-  copy:
-    dest: /etc/systemd/system/consul.service
-    content: |
-      [Unit]
-      Description=Consul
-      Documentation=https://www.consul.io/
-      Requires=network-online.target
-      After=network-online.target
-      ConditionFileNotEmpty=/etc/consul.d/consul.hcl
-
-      [Service]
-      Type=notify
-      User=consul
-      Group=consul
-      ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
-      ExecReload=/bin/kill -HUP $MAINPID
-      KillMode=process
-      Restart=on-failure
-      LimitNOFILE=65536
-      TimeoutStartSec=180s
-
-      [Install]
-      WantedBy=multi-user.target
-
-- name: Перезагрузка systemd
-  systemd:
-    daemon_reload: yes
-
-- name: Запуск и включение сервиса consul
+- name: Start and enable Consul service
   systemd:
     name: consul
     state: started
     enabled: yes
-
-- name: Ожидание готовности Consul API
-  wait_for:
-    host: 192.168.56.10
-    port: 8500
-    timeout: 120
+    daemon_reload: yes

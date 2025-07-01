@@ -1,155 +1,54 @@
 ---
-- name: Установка OpenJDK 8
+- name: Install OpenJDK 8
   apt:
     name: openjdk-8-jdk
     state: present
     update_cache: yes
+  become: yes
 
-- name: Установка Maven и PostgreSQL клиента
-  apt:
-    name: 
-      - maven
-      - postgresql-client
-      - postgresql-client-common
-      - rsync
-    state: present
-
-- name: Создание пользователя для приложения
-  user:
-    name: hotel-app
-    shell: /bin/bash
-    create_home: yes
-
-- name: Создание директории приложения
+- name: Create application directory
   file:
     path: /opt/hotel-service
     state: directory
-    owner: hotel-app
-    group: hotel-app
-    mode: '0755'
+    mode: 0755
+  become: yes
 
-- name: Создание архива исходников на manager
-  archive:
-    path: /home/vagrant/ansible/files/src/services/hotel-service/*
-    dest: /tmp/hotel-service.tar.gz
-    format: gz
-  delegate_to: manager
-
-- name: Копирование архива с manager на localhost
-  fetch:
-    src: /tmp/hotel-service.tar.gz
-    dest: /tmp/hotel-service.tar.gz
-    flat: yes
-  delegate_to: manager
-
-- name: Копирование архива с localhost на api
+- name: Copy application JAR
   copy:
-    src: /tmp/hotel-service.tar.gz
-    dest: /tmp/hotel-service.tar.gz
+    src: "{{ lookup('env', 'PWD') }}/files/hotel-service.jar"
+    dest: /opt/hotel-service/hotel-service.jar
+    mode: 0644
+  become: yes
 
-- name: Распаковка архива исходников
-  unarchive:
-    src: /tmp/hotel-service.tar.gz
-    dest: /opt/hotel-service/
-    owner: hotel-app
-    group: hotel-app
-    remote_src: yes
-
-- name: Проверка наличия pom.xml
-  stat:
-    path: /opt/hotel-service/pom.xml
-  register: pom_check
-
-- name: Отладка - результат проверки pom.xml
-  debug:
-    msg: "pom.xml найден: {{ pom_check.stat.exists }}"
-
-- name: Сборка приложения Maven
-  shell: |
-    cd /opt/hotel-service
-    mvn clean package -DskipTests
-    chown -R hotel-app:hotel-app /opt/hotel-service
-  environment:
-    JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
-  when: pom_check.stat.exists
-
-- name: Получение имени JAR файла
-  shell: ls /opt/hotel-service/target/*.jar | grep -v sources | head -1 | xargs basename
-  register: jar_filename
-  when: pom_check.stat.exists
-
-- name: Отладка - найденный JAR файл
-  debug:
-    var: jar_filename.stdout
-  when: pom_check.stat.exists
-
-- name: Копирование скрипта ожидания Consul
-  template:
-    src: wait-for-consul.sh
-    dest: /opt/hotel-service/wait-for-consul.sh
-    mode: '0755'
-    owner: hotel-app
-    group: hotel-app
-
-- name: Установка jq для обработки JSON
-  apt:
-    name: jq
-    state: present
-
-- name: Создание systemd сервиса для hotel-service
-  template:
-    src: hotel-service.service
+- name: Create systemd service
+  copy:
+    content: |
+      [Unit]
+      Description=Hotels Service
+      After=network.target consul.service
+      
+      [Service]
+      User=root
+      Group=root
+      EnvironmentFile=/etc/environment
+      ExecStart=/usr/bin/java -jar /opt/hotel-service/hotel-service.jar
+      Restart=always
+      RestartSec=5
+      
+      [Install]
+      WantedBy=multi-user.target
     dest: /etc/systemd/system/hotel-service.service
-    owner: root
-    group: root
-    mode: '0644'
-  notify: restart hotel-service
-  when: pom_check.stat.exists
+    mode: 0644
+  become: yes
 
-- name: Перезагрузка systemd
+- name: Reload systemd
   systemd:
     daemon_reload: yes
+  become: yes
 
-- name: Регистрация hotel-service в Consul
-  uri:
-    url: "http://localhost:8500/v1/agent/service/register"
-    method: PUT
-    body_format: json
-    body:
-      ID: "hotel-service-{{ inventory_hostname }}"
-      Name: "hotel-service"
-      Tags:
-        - "api"
-        - "hotels"
-      Address: "{{ ansible_default_ipv4.address }}"
-      Port: 8082
-      Check:
-        HTTP: "http://{{ ansible_default_ipv4.address }}:8082/api/v1/hotels"
-        Interval: "10s"
-        Timeout: "3s"
-  register: consul_register_result
-  ignore_errors: yes
-  when: pom_check.stat.exists
-
-- name: Отладка - результат регистрации hotel-service в Consul
-  debug:
-    var: consul_register_result
-  when: pom_check.stat.exists
-
-- name: Запуск и включение hotel-service
-  service:
+- name: Start and enable service
+  systemd:
     name: hotel-service
     state: started
     enabled: yes
-  when: pom_check.stat.exists
-
-- name: Очистка временных файлов на manager
-  file:
-    path: /tmp/hotel-service.tar.gz
-    state: absent
-  delegate_to: manager
-
-- name: Очистка временных файлов на api
-  file:
-    path: /tmp/hotel-service.tar.gz
-    state: absent
+  become: yes

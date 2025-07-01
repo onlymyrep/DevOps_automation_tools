@@ -1,117 +1,55 @@
 ---
-- name: Создание пользователя consul
-  user:
-    name: consul
-    system: yes
-    shell: /bin/false
-    home: /opt/consul
+- name: Install envoy
+  apt:
+    name: envoy
+    state: present
 
-- name: Создание директорий для consul
+- name: Create directories for Consul
   file:
     path: "{{ item }}"
     state: directory
     owner: consul
     group: consul
-    mode: '0755'
+    mode: 0755
   loop:
-    - /opt/consul
     - /etc/consul.d
+    - /opt/consul
 
-- name: Загрузка бинарного файла consul
-  get_url:
-    url: https://ed843466-7e84-4cb5-b2dc-83c48c730cd2.selstorage.ru/lothostr/distro/consul/consul_1.15.3_linux_amd64.zip
-    dest: /tmp/consul.zip
-    mode: '0644'
-
-- name: Установка unzip
-  apt:
-    name: unzip
-    state: present
-    update_cache: yes
-
-- name: Распаковка бинарного файла consul
+- name: Download Consul
   unarchive:
-    src: /tmp/consul.zip
+    src: https://releases.hashicorp.com/consul/1.15.3/consul_1.15.3_linux_amd64.zip
     dest: /usr/local/bin
+    mode: 0755
     remote_src: yes
-    owner: consul
-    group: consul
-    mode: '0755'
 
-- name: Загрузка бинарного файла envoy
-  get_url:
-    url: https://github.com/envoyproxy/envoy/releases/download/v1.24.1/envoy-1.24.1-linux-x86_64
-    dest: /usr/local/bin/envoy
-    mode: '0755'
-
-- name: Копирование конфигурации клиента consul
-  copy:
-    src: "{{ playbook_dir }}/../consul01/consul_client.hcl"
+- name: Copy client config
+  template:
+    src: consul_client.hcl.j2
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
-    mode: '0640'
+    mode: 0640
 
-- name: Обновление конфигурации клиента consul с правильным advertise_addr
-  lineinfile:
-    path: /etc/consul.d/consul.hcl
-    regexp: '^advertise_addr'
-    line: 'advertise_addr = "{{ ansible_default_ipv4.address }}"'
+- name: Copy service definitions
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/consul.d/{{ item }}.json"
+    owner: consul
+    group: consul
+    mode: 0640
+  loop:
+    - hotels-service
+    - postgres-service
 
-- name: Создание systemd сервиса для consul
-  copy:
-    dest: /etc/systemd/system/consul.service
-    content: |
-      [Unit]
-      Description=Consul
-      Documentation=https://www.consul.io/
-      Requires=network-online.target
-      After=network-online.target
-      ConditionFileNotEmpty=/etc/consul.d/consul.hcl
-
-      [Service]
-      Type=notify
-      User=consul
-      Group=consul
-      ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
-      ExecReload=/bin/kill -HUP $MAINPID
-      KillMode=process
-      Restart=on-failure
-      LimitNOFILE=65536
-
-      [Install]
-      WantedBy=multi-user.target
-
-- name: Создание systemd сервиса для consul-envoy
-  copy:
-    dest: /etc/systemd/system/consul-envoy.service
-    content: |
-      [Unit]
-      Description=Consul Envoy
-      Documentation=https://www.consul.io/
-      Requires=consul.service
-      After=consul.service
-
-      [Service]
-      Type=simple
-      User=consul
-      Group=consul
-      ExecStart=/usr/local/bin/consul connect envoy
-      Restart=on-failure
-
-      [Install]
-      WantedBy=multi-user.target
-
-- name: Запуск и включение сервиса consul
+- name: Start and enable Consul service
   systemd:
     name: consul
-    daemon_reload: yes
     state: started
     enabled: yes
+    daemon_reload: yes
 
-- name: Запуск и включение сервиса consul-envoy
+- name: Start and enable Consul Envoy
   systemd:
     name: consul-envoy
-    daemon_reload: yes
     state: started
     enabled: yes
