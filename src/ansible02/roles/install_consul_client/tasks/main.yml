@@ -1,31 +1,21 @@
 ---
 - name: Install dependencies
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - curl
-    - gnupg
-    - software-properties-common
-    - jq
-    - net-tools
-  tags: packages
-
-- name: Add HashiCorp repository
-  apt_repository:
-    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    name: 
+      - curl
+      - gnupg
+      - software-properties-common
+      - jq
+      - net-tools
+      - python3-pip
     state: present
     update_cache: yes
-    cache_valid_time: 3600
-  tags: repo
 
-- name: Install Consul
-  apt:
-    name: consul
-    state: present
-    allow_unauthenticated: yes
-    install_recommends: no
-  tags: consul
+- name: Upgrade pip
+  pip:
+    name: pip
+    state: latest
+    extra_args: --root-user-action=ignore
 
 - name: Create directories
   file:
@@ -37,16 +27,24 @@
     - /etc/consul.d
     - /opt/consul
     - /var/log/consul
-  tags: dirs
 
-- name: Copy Consul config
-  copy:
-    src: /tmp/consul_client.hcl
+- name: Copy Consul config for API nodes
+  template:
+    src: "{{ playbook_dir }}/../consul01/consul_client_api.hcl"
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
+  when: "'api' in group_names"
   notify: restart consul
-  tags: config
+
+- name: Copy Consul config for DB nodes
+  template:
+    src: "{{ playbook_dir }}/../consul01/consul_client_db.hcl"
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+  when: "'db' in group_names"
+  notify: restart consul
 
 - name: Create systemd service
   copy:
@@ -69,7 +67,6 @@
     dest: /etc/systemd/system/consul.service
     mode: 0644
   notify: restart consul
-  tags: service
 
 - name: Start and enable Consul
   systemd:
@@ -77,16 +74,11 @@
     state: started
     enabled: yes
     daemon_reload: yes
-  tags: start
 
-- name: Download Envoy
-  get_url:
-    url: https://github.com/envoyproxy/envoy/releases/download/v1.25.10/envoy-1.25.10-linux-x86_64
-    dest: /usr/local/bin/envoy
-    mode: '0755'
-    timeout: 30
-    validate_certs: no
-  tags: envoy
+- name: Install Envoy
+  apt:
+    name: envoy
+    state: present
 
 - name: Create envoy user
   user:
@@ -95,21 +87,8 @@
     group: envoy
     shell: /bin/false
     home: /nonexistent
-  tags: user
 
-- name: Register services
-  template:
-    src: "{{ item }}.j2"
-    dest: /etc/consul.d/{{ item }}.json
-    owner: consul
-    group: consul
-  with_items:
-    - "postgres-service"
-    - "hotels-service"
-  notify: restart consul
-  tags: services
-
-- name: Optimize system limits
+- name: Optimize system limits for Envoy
   pam_limits:
     domain: envoy
     limit_type: "{{ item.type }}"
@@ -120,4 +99,3 @@
     - { type: 'hard', item: 'nofile', value: 65536 }
     - { type: 'soft', item: 'memlock', value: 'unlimited' }
     - { type: 'hard', item: 'memlock', value: 'unlimited' }
-  tags: limits

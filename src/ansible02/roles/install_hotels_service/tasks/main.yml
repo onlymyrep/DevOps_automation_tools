@@ -1,67 +1,63 @@
+---
 - name: Install OpenJDK
   apt:
-    name: openjdk-11-jdk-headless
+    name: openjdk-8-jdk
     state: present
     update_cache: yes
-    cache_valid_time: 3600
-    install_recommends: no
-  tags: java
 
 - name: Create service user
   user:
-    name: hoteluser
+    name: hotels
     system: yes
-    group: hoteluser
-    home: /opt/hotel
-  tags: user
+    group: hotels
+    home: /opt/hotels-service
 
 - name: Copy application
   copy:
-    src: "../files/hotel-service.jar"
-    dest: "/opt/hotel/hotel-service.jar"
-    owner: hoteluser
-    group: hoteluser
+    src: "hotel-service.jar"
+    dest: "/opt/hotels-service/hotel-service.jar"
+    owner: hotels
+    group: hotels
     mode: '0644'
-  tags: app
 
-- name: Create environment file
-  copy:
-    content: |
-      JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+ParallelRefProcEnabled"
-      POSTGRES_HOST="127.0.0.1"
-      POSTGRES_PORT="5432"
-      POSTGRES_DB="hotels_db"
-      POSTGRES_USER="hotel_user"
-      POSTGRES_PASSWORD="securepassword"
-      CONSUL_HOST="consul-server"
-      CONSUL_PORT="8500"
-      SERVER_PORT=8080
-    dest: /etc/hotel-service.env
-  tags: env
+- name: Configure environment
+  template:
+    src: "hotels-service.env.j2"
+    dest: /etc/default/hotels-service
+    owner: hotels
+    group: hotels
 
 - name: Create systemd service
-  template:
-    src: hotel-service.service.j2
-    dest: /etc/systemd/system/hotel-service.service
+  copy:
+    content: |
+      [Unit]
+      Description=Hotels Service
+      After=network.target consul.service
+      
+      [Service]
+      EnvironmentFile=/etc/default/hotels-service
+      ExecStart=/usr/bin/java -jar /opt/hotels-service/hotel-service.jar
+      User=hotels
+      Group=hotels
+      Restart=always
+      RestartSec=10
+      
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/hotels-service.service
     mode: 0644
-  tags: service
+  notify: restart hotel-service
 
-- name: Reload systemd
+- name: Start and enable service
   systemd:
-    daemon_reload: yes
-  tags: reload
-
-- name: Start hotel service
-  systemd:
-    name: hotel-service
+    name: hotels-service
     state: started
     enabled: yes
-  tags: start
+    daemon_reload: yes
 
-- name: Enable JVM monitoring
-  template:
-    src: jmx_exporter.conf.j2
-    dest: /opt/hotel/jmx_exporter.conf
-    owner: hoteluser
-    group: hoteluser
-  tags: monitoring
+handlers:
+  - name: restart hotel-service
+    systemd:
+      name: hotels-service
+      state: restarted
+      daemon_reload: yes

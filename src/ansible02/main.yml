@@ -1,41 +1,31 @@
 ---
-- name: Setup SSH access
-  hosts: manager
-  tasks:
-    - name: Generate SSH key on manager
-      delegate_to: localhost
-      run_once: yes
-      become: no
-      community.crypto.openssh_keypair:
-        path: /home/vagrant/.ssh/id_rsa
-        type: rsa
-        size: 2048
-        state: present
-
-    - name: Set key permissions
-      file:
-        path: /home/vagrant/.ssh/id_rsa
-        mode: 0600
-
-    - name: Copy public key to all nodes
-      ansible.posix.authorized_key:
-        user: vagrant
-        key: "{{ lookup('file', '/home/vagrant/.ssh/id_rsa.pub') }}"
-        state: present
-      delegate_to: "{{ item }}"
-      loop: "{{ groups['all'] | difference([inventory_hostname]) }}"
-
-- name: Precache setup
+- name: Precache setup and common configuration
   hosts: all
   gather_facts: yes
-  tasks:
-    - name: Cache facts
-      setup:
-
-- name: Configure common setup
-  hosts: all
   become: yes
   tasks:
+    - name: Install common dependencies
+      apt:
+        name:
+          - python3-venv
+          - unzip
+          - curl
+          - python3-apt
+          - distro-info-data
+          - htop
+          - iotop
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+        autoclean: yes
+
+    - name: Upgrade pip safely
+      pip:
+        name: pip
+        state: latest
+        extra_args: --root-user-action=ignore
+      when: ansible_python is defined
+
     - name: Create consul group and user
       group:
         name: consul
@@ -48,36 +38,16 @@
         system: yes
         shell: /bin/false
         home: /nonexistent
-      
-    - name: Install common dependencies
-      apt:
-        name:
-          - unzip
-          - curl
-          - python3-apt
-          - htop
-          - iotop
-        state: present
-        update_cache: yes
-        cache_valid_time: 3600
 
 - name: Setup Consul server
   hosts: consul_server
   become: yes
-  vars:
-    consul_version: "1.21.2"
-    
   tasks:
-    - name: Copy Consul from local
+    - name: Copy Consul binary
       copy:
-        src: "consul_{{ consul_version }}_linux_amd64.zip"
+        src: "consul_1.21.2_linux_amd64.zip"
         dest: /tmp/consul.zip
         mode: 0644
-
-    - name: Install unzip
-      apt:
-        name: unzip
-        state: present
 
     - name: Install Consul
       unarchive:
@@ -94,12 +64,13 @@
         owner: consul
         group: consul
 
-    - name: Copy server config
-      copy:
-        src: consul_server.hcl
+    - name: Configure Consul server
+      template:
+        src: "{{ playbook_dir }}/../consul01/consul_server.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
+      notify: Restart Consul
 
     - name: Create systemd service
       copy:
@@ -121,6 +92,7 @@
           
           [Install]
           WantedBy=multi-user.target
+      notify: Restart Consul
 
     - name: Start Consul service
       systemd:
@@ -132,20 +104,12 @@
 - name: Setup Consul clients
   hosts: api, db
   become: yes
-  vars:
-    consul_version: "1.21.2"
-    
   tasks:
-    - name: Copy Consul from local
+    - name: Copy Consul binary
       copy:
-        src: "consul_{{ consul_version }}_linux_amd64.zip"
+        src: "consul_1.21.2_linux_amd64.zip"
         dest: /tmp/consul.zip
         mode: 0644
-
-    - name: Install unzip
-      apt:
-        name: unzip
-        state: present
 
     - name: Install Consul
       unarchive:
@@ -167,12 +131,23 @@
         owner: consul
         group: consul
 
-    - name: Copy client config
-      copy:
-        src: consul_client.hcl
+    - name: Configure Consul client for API nodes
+      template:
+        src: "{{ playbook_dir }}/../consul01/consul_client_api.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
+      when: "'api' in group_names"
+      notify: Reload Consul
+
+    - name: Configure Consul client for DB nodes
+      template:
+        src: "{{ playbook_dir }}/../consul01/consul_client_db.hcl"
+        dest: /etc/consul.d/consul.hcl
+        owner: consul
+        group: consul
+      when: "'db' in group_names"
+      notify: Reload Consul
 
     - name: Create systemd service
       copy:
@@ -194,6 +169,7 @@
           
           [Install]
           WantedBy=multi-user.target
+      notify: Restart Consul
 
     - name: Start Consul service
       systemd:
@@ -210,6 +186,7 @@
       apt:
         name: postgresql
         state: present
+        update_cache: yes
 
     - name: Create database
       postgresql_db:
@@ -231,38 +208,42 @@
               }
             }
           }
-
-    - name: Reload Consul
-      systemd:
-        name: consul
-        state: reloaded
+      notify: Reload Consul
 
 - name: Setup hotels service
   hosts: api
   become: yes
+  vars:
+    postgres_user: "hotel_user"
+    postgres_password: "securepassword"
+    
   tasks:
     - name: Install Java
       apt:
         name: openjdk-8-jdk
         state: present
 
-    - name: Copy application
-      copy:
-        src: "{{ item }}"
-        dest: /opt/hotels-service/
-      with_fileglob:
-        - "*.jar"
-        - "*.properties"
+    - name: Create application directory
+      file:
+        path: /opt/hotels-service
+        state: directory
+        owner: hotels
+        group: hotels
 
-    - name: Create environment file
+    - name: Copy application JAR
       copy:
+        src: "hotel-service.jar"
+        dest: /opt/hotels-service/hotel-service.jar
+        owner: hotels
+        group: hotels
+        mode: 0644
+
+    - name: Configure environment
+      template:
+        src: "{{ playbook_dir }}/roles/install_hotels_service/templates/hotels-service.env.j2"
         dest: /etc/default/hotels-service
-        content: |
-          POSTGRES_HOST=127.0.0.1
-          POSTGRES_PORT=5432
-          POSTGRES_DB=hotels_db
-          POSTGRES_USER=postgres
-          POSTGRES_PASSWORD=password
+        owner: hotels
+        group: hotels
 
     - name: Create systemd service
       copy:
@@ -281,6 +262,7 @@
           
           [Install]
           WantedBy=multi-user.target
+      notify: Restart Hotels Service
 
     - name: Create service user
       user:
@@ -310,11 +292,7 @@
               }
             }
           }
-
-    - name: Reload Consul
-      systemd:
-        name: consul
-        state: reloaded
+      notify: Reload Consul
 
     - name: Start hotels service
       systemd:
@@ -329,13 +307,13 @@
   tasks:
     - name: Start Envoy for hotels-service
       command: /usr/local/bin/consul connect envoy -sidecar-for hotels-service -admin-bind 127.0.0.1:19001
-      when: inventory_hostname in groups['api']
+      when: "'api' in group_names"
       async: 600
       poll: 0
 
     - name: Start Envoy for postgres
       command: /usr/local/bin/consul connect envoy -sidecar-for postgres -admin-bind 127.0.0.1:19002
-      when: inventory_hostname in groups['db']
+      when: "'db' in group_names"
       async: 600
       poll: 0
 
@@ -351,7 +329,7 @@
       
     - name: Show Consul status
       debug:
-        var: consul_status.stdout_lines
+        msg: "{{ consul_status.stdout_lines }}"
         
     - name: Check system resources
       shell: |
@@ -381,7 +359,27 @@
         status_code: 201
       register: create_result
       ignore_errors: yes
+      retries: 3
+      delay: 10
 
     - name: Show creation result
       debug:
         var: create_result
+
+handlers:
+  - name: Restart Consul
+    systemd:
+      name: consul
+      state: restarted
+      daemon_reload: yes
+      
+  - name: Reload Consul
+    systemd:
+      name: consul
+      state: reloaded
+      
+  - name: Restart Hotels Service
+    systemd:
+      name: hotels-service
+      state: restarted
+      daemon_reload: yes

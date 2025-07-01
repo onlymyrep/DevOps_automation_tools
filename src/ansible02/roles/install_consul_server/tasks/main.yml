@@ -1,44 +1,41 @@
 ---
 - name: Install dependencies
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - curl
-    - gnupg
-    - software-properties-common
-
-- name: Add HashiCorp GPG key
-  apt_key:
-    url: https://apt.releases.hashicorp.com/gpg
-    state: present
-
-- name: Add HashiCorp repository
-  apt_repository:
-    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    name: 
+      - curl
+      - gnupg
+      - software-properties-common
+      - jq
+      - python3-pip
     state: present
     update_cache: yes
 
-- name: Install Consul
-  apt:
-    name: consul
-    state: present
+- name: Upgrade pip
+  pip:
+    name: pip
+    state: latest
+    extra_args: --root-user-action=ignore
 
-- name: Create directories for Consul
+- name: Create directories
   file:
-    path: /etc/consul.d
+    path: "{{ item }}"
     state: directory
     owner: consul
     group: consul
+  with_items:
+    - /etc/consul.d
+    - /opt/consul
+    - /var/log/consul
 
 - name: Copy Consul config
-  copy:
-    src: /tmp/consul_server.hcl
+  template:
+    src: "{{ playbook_dir }}/../consul01/consul_server.hcl"
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
+  notify: restart consul
 
-- name: Create systemd service for Consul
+- name: Create systemd service
   copy:
     content: |
       [Unit]
@@ -52,11 +49,13 @@
       ExecStart=/usr/bin/consul agent -config-dir=/etc/consul.d/
       Restart=always
       RestartSec=5
+      LimitNOFILE=65536
       
       [Install]
       WantedBy=multi-user.target
     dest: /etc/systemd/system/consul.service
     mode: 0644
+  notify: restart consul
 
 - name: Start and enable Consul
   systemd:
