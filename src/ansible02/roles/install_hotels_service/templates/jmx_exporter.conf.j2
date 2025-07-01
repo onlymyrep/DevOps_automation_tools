@@ -1,0 +1,13 @@
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+whitelistObjectNames: ["java.lang:type=Memory", "java.lang:type=Threading", "java.lang:type=OperatingSystem"]
+rules:
+  - pattern: 'java.lang<type=OperatingSystem><>(FreePhysicalMemorySize|TotalPhysicalMemorySize|FreeSwapSpaceSize|TotalSwapSpaceSize|SystemCpuLoad|ProcessCpuLoad|SystemLoadAverage|AvailableProcessors|OpenFileDescriptorCount|MaxFileDescriptorCount):'
+    name: os_$1
+    type: GAUGE
+  - pattern: 'java.lang<type=Memory><>(HeapMemoryUsage|NonHeapMemoryUsage)>(committed|init|max|used):'
+    name: memory_$1_$2
+    type: GAUGE
+  - pattern: 'java.lang<type=Threading><>(TotalStartedThreadCount|ThreadCount|DaemonThreadCount|PeakThreadCount):'
+    name: threads_$1
+    type: GAUGE

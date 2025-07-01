@@ -1,17 +1,13 @@
 [Unit]
 Description=Hotel Service
-After=network.target
+After=network.target consul.service
 
 [Service]
-User=hotel-svc
-Group=hotel-svc
-Environment="POSTGRES_HOST=db.service.consul"
-Environment="POSTGRES_PORT=5432"
-Environment="POSTGRES_DB=hotels_db"
-Environment="POSTGRES_USER=hotel_user"
-Environment="POSTGRES_PASSWORD=hotel_password"
-ExecStart=/usr/bin/java -jar /opt/hotel-service/hotel-service.jar
+EnvironmentFile=/etc/hotel-service.env
+ExecStart=/usr/bin/java -jar /opt/hotel-service.jar
+User=hoteluser
 Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target

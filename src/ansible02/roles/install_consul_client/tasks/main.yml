@@ -7,29 +7,37 @@
     - curl
     - gnupg
     - software-properties-common
-
-- name: Add HashiCorp GPG key
-  apt_key:
-    url: https://apt.releases.hashicorp.com/gpg
-    state: present
+    - jq
+    - net-tools
+  tags: packages
 
 - name: Add HashiCorp repository
   apt_repository:
     repo: "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
     state: present
     update_cache: yes
+    cache_valid_time: 3600
+  tags: repo
 
 - name: Install Consul
   apt:
     name: consul
     state: present
+    allow_unauthenticated: yes
+    install_recommends: no
+  tags: consul
 
-- name: Create directories for Consul
+- name: Create directories
   file:
-    path: /etc/consul.d
+    path: "{{ item }}"
     state: directory
     owner: consul
     group: consul
+  with_items:
+    - /etc/consul.d
+    - /opt/consul
+    - /var/log/consul
+  tags: dirs
 
 - name: Copy Consul config
   copy:
@@ -37,8 +45,10 @@
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
+  notify: restart consul
+  tags: config
 
-- name: Create systemd service for Consul
+- name: Create systemd service
   copy:
     content: |
       [Unit]
@@ -52,11 +62,14 @@
       ExecStart=/usr/bin/consul agent -config-dir=/etc/consul.d/
       Restart=always
       RestartSec=5
+      LimitNOFILE=65536
       
       [Install]
       WantedBy=multi-user.target
     dest: /etc/systemd/system/consul.service
     mode: 0644
+  notify: restart consul
+  tags: service
 
 - name: Start and enable Consul
   systemd:
@@ -64,12 +77,16 @@
     state: started
     enabled: yes
     daemon_reload: yes
+  tags: start
 
 - name: Download Envoy
   get_url:
     url: https://github.com/envoyproxy/envoy/releases/download/v1.25.10/envoy-1.25.10-linux-x86_64
     dest: /usr/local/bin/envoy
     mode: '0755'
+    timeout: 30
+    validate_certs: no
+  tags: envoy
 
 - name: Create envoy user
   user:
@@ -78,60 +95,29 @@
     group: envoy
     shell: /bin/false
     home: /nonexistent
-    create_home: no
+  tags: user
 
-- name: Create Envoy bootstrap config
-  copy:
-    content: |
-      admin:
-        access_log_path: /tmp/admin_access.log
-        address:
-          socket_address:
-            address: 127.0.0.1
-            port_value: 19000
-      static_resources:
-        clusters:
-        - name: dummy_cluster
-          connect_timeout: 0.25s
-          type: STATIC
-          lb_policy: ROUND_ROBIN
-          load_assignment:
-            cluster_name: dummy_cluster
-            endpoints:
-            - lb_endpoints:
-              - endpoint:
-                  address:
-                    socket_address:
-                      address: 127.0.0.1
-                      port_value: 9999
-    dest: /etc/consul.d/envoy-bootstrap.yaml
-    owner: envoy
-    group: envoy
-    mode: 0644
+- name: Register services
+  template:
+    src: "{{ item }}.j2"
+    dest: /etc/consul.d/{{ item }}.json
+    owner: consul
+    group: consul
+  with_items:
+    - "postgres-service"
+    - "hotels-service"
+  notify: restart consul
+  tags: services
 
-- name: Create consul-envoy service
-  copy:
-    content: |
-      [Unit]
-      Description=Consul Envoy Proxy
-      After=network-online.target consul.service
-      Requires=network-online.target consul.service
-
-      [Service]
-      ExecStart=/usr/local/bin/envoy -c /etc/consul.d/envoy-bootstrap.yaml
-      Restart=always
-      RestartSec=5
-      User=envoy
-      Group=envoy
-
-      [Install]
-      WantedBy=multi-user.target
-    dest: /etc/systemd/system/consul-envoy.service
-    mode: 0644
-
-- name: Start consul-envoy service
-  systemd:
-    name: consul-envoy
-    state: started
-    enabled: yes
-    daemon_reload: yes
+- name: Optimize system limits
+  pam_limits:
+    domain: envoy
+    limit_type: "{{ item.type }}"
+    limit_item: "{{ item.item }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { type: 'soft', item: 'nofile', value: 65536 }
+    - { type: 'hard', item: 'nofile', value: 65536 }
+    - { type: 'soft', item: 'memlock', value: 'unlimited' }
+    - { type: 'hard', item: 'memlock', value: 'unlimited' }
+  tags: limits

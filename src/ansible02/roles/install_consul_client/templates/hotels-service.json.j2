@@ -1,16 +1,19 @@
 {
   "service": {
-    "id": "hotels-service",
-    "name": "api",
-    "tags": ["api"],
+    "name": "hotels-service",
+    "id": "hotels-service-api",
     "port": 8080,
-    "address": "{{ ansible_default_ipv4.address }}",
-    "check": {
-      "id": "hotels-check",
-      "name": "HTTP API health check",
-      "http": "http://{{ ansible_default_ipv4.address }}:8080/health",
-      "interval": "10s",
-      "timeout": "1s"
+    "connect": {
+      "sidecar_service": {
+        "proxy": {
+          "upstreams": [
+            {
+              "destination_name": "postgres",
+              "local_bind_port": 5432
+            }
+          ]
+        }
+      }
     }
   }
 }

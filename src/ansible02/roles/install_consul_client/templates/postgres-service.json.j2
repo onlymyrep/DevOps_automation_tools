@@ -1,16 +1,10 @@
 {
   "service": {
-    "id": "postgres",
-    "name": "db",
-    "tags": ["database"],
+    "name": "postgres",
+    "id": "postgres-db",
     "port": 5432,
-    "address": "{{ ansible_default_ipv4.address }}",
-    "check": {
-      "id": "postgres-check",
-      "name": "PostgreSQL health check",
-      "tcp": "{{ ansible_default_ipv4.address }}:5432",
-      "interval": "10s",
-      "timeout": "1s"
+    "connect": {
+      "sidecar_service": {}
     }
   }
 }

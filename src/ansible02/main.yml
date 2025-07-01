@@ -1,13 +1,46 @@
 ---
-- name: Configure Consul cluster
+- name: Setup SSH access
+  hosts: manager
+  tasks:
+    - name: Generate SSH key on manager
+      delegate_to: localhost
+      run_once: yes
+      become: no
+      community.crypto.openssh_keypair:
+        path: /home/vagrant/.ssh/id_rsa
+        type: rsa
+        size: 2048
+        state: present
+
+    - name: Set key permissions
+      file:
+        path: /home/vagrant/.ssh/id_rsa
+        mode: 0600
+
+    - name: Copy public key to all nodes
+      ansible.posix.authorized_key:
+        user: vagrant
+        key: "{{ lookup('file', '/home/vagrant/.ssh/id_rsa.pub') }}"
+        state: present
+      delegate_to: "{{ item }}"
+      loop: "{{ groups['all'] | difference([inventory_hostname]) }}"
+
+- name: Precache setup
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Cache facts
+      setup:
+
+- name: Configure common setup
   hosts: all
   become: yes
   tasks:
-    - name: Create consul group
+    - name: Create consul group and user
       group:
         name: consul
         state: present
-        
+      
     - name: Create consul user
       user:
         name: consul
@@ -15,37 +48,340 @@
         system: yes
         shell: /bin/false
         home: /nonexistent
-        comment: "Consul Service Discovery"
-        
+      
     - name: Install common dependencies
       apt:
         name:
           - unzip
           - curl
           - python3-apt
+          - htop
+          - iotop
         state: present
         update_cache: yes
+        cache_valid_time: 3600
 
 - name: Setup Consul server
   hosts: consul_server
   become: yes
-  roles:
-    - install_consul_server
+  vars:
+    consul_version: "1.21.2"
+    
+  tasks:
+    - name: Copy Consul from local
+      copy:
+        src: "consul_{{ consul_version }}_linux_amd64.zip"
+        dest: /tmp/consul.zip
+        mode: 0644
+
+    - name: Install unzip
+      apt:
+        name: unzip
+        state: present
+
+    - name: Install Consul
+      unarchive:
+        src: /tmp/consul.zip
+        dest: /usr/local/bin
+        remote_src: yes
+        mode: 0755
+        creates: /usr/local/bin/consul
+
+    - name: Create config directory
+      file:
+        path: /etc/consul.d
+        state: directory
+        owner: consul
+        group: consul
+
+    - name: Copy server config
+      copy:
+        src: consul_server.hcl
+        dest: /etc/consul.d/consul.hcl
+        owner: consul
+        group: consul
+
+    - name: Create systemd service
+      copy:
+        dest: /etc/systemd/system/consul.service
+        content: |
+          [Unit]
+          Description=Consul Service Discovery Agent
+          Documentation=https://www.consul.io/
+          Requires=network-online.target
+          After=network-online.target
+          
+          [Service]
+          User=consul
+          Group=consul
+          ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
+          ExecReload=/bin/kill -HUP $MAINPID
+          KillSignal=SIGTERM
+          Restart=on-failure
+          
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Start Consul service
+      systemd:
+        name: consul
+        state: started
+        enabled: yes
+        daemon_reload: yes
 
 - name: Setup Consul clients
-  hosts: consul_clients
+  hosts: api, db
   become: yes
-  roles:
-    - install_consul_client
+  vars:
+    consul_version: "1.21.2"
+    
+  tasks:
+    - name: Copy Consul from local
+      copy:
+        src: "consul_{{ consul_version }}_linux_amd64.zip"
+        dest: /tmp/consul.zip
+        mode: 0644
+
+    - name: Install unzip
+      apt:
+        name: unzip
+        state: present
+
+    - name: Install Consul
+      unarchive:
+        src: /tmp/consul.zip
+        dest: /usr/local/bin
+        remote_src: yes
+        mode: 0755
+        creates: /usr/local/bin/consul
+
+    - name: Install Envoy
+      apt:
+        name: envoy
+        state: present
+
+    - name: Create config directory
+      file:
+        path: /etc/consul.d
+        state: directory
+        owner: consul
+        group: consul
+
+    - name: Copy client config
+      copy:
+        src: consul_client.hcl
+        dest: /etc/consul.d/consul.hcl
+        owner: consul
+        group: consul
+
+    - name: Create systemd service
+      copy:
+        dest: /etc/systemd/system/consul.service
+        content: |
+          [Unit]
+          Description=Consul Service Discovery Agent
+          Documentation=https://www.consul.io/
+          Requires=network-online.target
+          After=network-online.target
+          
+          [Service]
+          User=consul
+          Group=consul
+          ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
+          ExecReload=/bin/kill -HUP $MAINPID
+          KillSignal=SIGTERM
+          Restart=on-failure
+          
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Start Consul service
+      systemd:
+        name: consul
+        state: started
+        enabled: yes
+        daemon_reload: yes
 
 - name: Setup database
   hosts: db
   become: yes
-  roles:
-    - install_db
+  tasks:
+    - name: Install PostgreSQL
+      apt:
+        name: postgresql
+        state: present
+
+    - name: Create database
+      postgresql_db:
+        name: hotels_db
+        encoding: UTF-8
+        lc_collate: en_US.UTF-8
+        lc_ctype: en_US.UTF-8
+
+    - name: Create service definition
+      copy:
+        dest: /etc/consul.d/postgres.json
+        content: |
+          {
+            "service": {
+              "name": "postgres",
+              "port": 5432,
+              "connect": {
+                "sidecar_service": {}
+              }
+            }
+          }
+
+    - name: Reload Consul
+      systemd:
+        name: consul
+        state: reloaded
 
 - name: Setup hotels service
   hosts: api
   become: yes
-  roles:
-    - install_hotels_service
+  tasks:
+    - name: Install Java
+      apt:
+        name: openjdk-8-jdk
+        state: present
+
+    - name: Copy application
+      copy:
+        src: "{{ item }}"
+        dest: /opt/hotels-service/
+      with_fileglob:
+        - "*.jar"
+        - "*.properties"
+
+    - name: Create environment file
+      copy:
+        dest: /etc/default/hotels-service
+        content: |
+          POSTGRES_HOST=127.0.0.1
+          POSTGRES_PORT=5432
+          POSTGRES_DB=hotels_db
+          POSTGRES_USER=postgres
+          POSTGRES_PASSWORD=password
+
+    - name: Create systemd service
+      copy:
+        dest: /etc/systemd/system/hotels-service.service
+        content: |
+          [Unit]
+          Description=Hotels Service
+          After=network.target
+          
+          [Service]
+          EnvironmentFile=/etc/default/hotels-service
+          ExecStart=/usr/bin/java -jar /opt/hotels-service/hotel-service.jar
+          User=hotels
+          Group=hotels
+          Restart=always
+          
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Create service user
+      user:
+        name: hotels
+        system: yes
+        shell: /bin/false
+
+    - name: Create service definition
+      copy:
+        dest: /etc/consul.d/hotels.json
+        content: |
+          {
+            "service": {
+              "name": "hotels-service",
+              "port": 8082,
+              "connect": {
+                "sidecar_service": {
+                  "proxy": {
+                    "upstreams": [
+                      {
+                        "destination_name": "postgres",
+                        "local_bind_port": 5432
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+
+    - name: Reload Consul
+      systemd:
+        name: consul
+        state: reloaded
+
+    - name: Start hotels service
+      systemd:
+        name: hotels-service
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+- name: Start Envoy sidecars
+  hosts: api, db
+  become: yes
+  tasks:
+    - name: Start Envoy for hotels-service
+      command: /usr/local/bin/consul connect envoy -sidecar-for hotels-service -admin-bind 127.0.0.1:19001
+      when: inventory_hostname in groups['api']
+      async: 600
+      poll: 0
+
+    - name: Start Envoy for postgres
+      command: /usr/local/bin/consul connect envoy -sidecar-for postgres -admin-bind 127.0.0.1:19002
+      when: inventory_hostname in groups['db']
+      async: 600
+      poll: 0
+
+- name: Health checks
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check Consul status
+      command: /usr/local/bin/consul members
+      register: consul_status
+      changed_when: false
+      ignore_errors: yes
+      
+    - name: Show Consul status
+      debug:
+        var: consul_status.stdout_lines
+        
+    - name: Check system resources
+      shell: |
+        echo "CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage "%"}')"
+        echo "Memory: $(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2}')"
+        echo "Disk: $(df -h / | awk 'NR==2{print $5}')"
+      register: sys_info
+      changed_when: false
+      
+    - name: Show system info
+      debug:
+        var: sys_info.stdout_lines
+
+- name: Test CRUD operations
+  hosts: api
+  become: no
+  tasks:
+    - name: Create hotel
+      uri:
+        url: "http://localhost:8082/hotels"
+        method: POST
+        body_format: json
+        body:
+          name: "Test Hotel"
+          address: "Test Address"
+          rating: 4
+        status_code: 201
+      register: create_result
+      ignore_errors: yes
+
+    - name: Show creation result
+      debug:
+        var: create_result

@@ -90,15 +90,14 @@
 ### 5. Создание и применение ролей Ansible
 
 - Сформировать три роли:
-- application (развертывание приложения)
-- apache (установка Apache)
-- postgres (установка PostgreSQL)
-![roles](misc/images/roles.png)
+  - application (развертывание приложения)
+  - apache (установка Apache)
+  - postgres (установка PostgreSQL)
 
 - Плейбук для ролей
 ![playbook_for_roles](misc/images/playbook_for_roles.png)
 
-**Проверка доступности сервисов:**
+- Проверка доступности сервисов:
 
 - Apache доступен на порту 8090:   
 http://localhost:8090
@@ -107,10 +106,6 @@ http://localhost:8090
 - Проверка PostgreSQL:
 vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u postgres psql -d testdb -c 'SELECT * FROM sample_data;'" -b`
 ![postgresql](misc/images/postgresql.png)
-
-- Тестирование микросервисов:
-   ![Тесты Newman](misc/images/01-17.png)
-
 
 ## Part 2. Service Discovery с использованием Consul
 
@@ -123,7 +118,7 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
 
 - Создать четыре машины - consul_server, api, manager и db
 
-bartonjo@pr-i3 ansible02 % `vagrant up`
+   bartonjo@pr-i3 ansible02 % `vagrant up`
 ![4_machines](misc/images/4_machines.png)
 ![beautiful_4](misc/images/beautiful_4.png)
 
@@ -146,11 +141,6 @@ bartonjo@pr-i3 ansible02 % `vagrant up`
 ```bash
 newman run ./tests/application_tests.postman_collection.json
 ```
-
-
-![Тесты Newman](misc/images/02-01.png)
-![Тесты Postman](misc/images/02-02.png)
-
 
 1. **Consul Server** (192.168.60.10): 
    - Установлен и настроен Consul в режиме сервера

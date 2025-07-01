@@ -1,0 +1,103 @@
+{
+	"info": {
+	  "name": "Hotels Service CRUD Essentials",
+	  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+	  {
+		"name": "CREATE - Создание отеля",
+		"request": {
+		  "method": "POST",
+		  "header": [{"key": "Content-Type", "value": "application/json"}],
+		  "body": {
+			"raw": "{\"name\": \"Test Hotel\", \"location\": \"Test City\"}"
+		  },
+		  "url": "http://localhost:8082/api/v1/hotels"
+		},
+		"event": [{
+		  "listen": "test",
+		  "script": {
+			"exec": [
+			  "pm.test(\"Status 201 Created\", () => pm.response.to.have.status(201));",
+			  "const jsonData = pm.response.json();",
+			  "pm.test(\"Has hotel ID\", () => pm.expect(jsonData).to.have.property('hotelUid'));",
+			  "pm.collectionVariables.set('hotel_uid', jsonData.hotelUid);"
+			]
+		  }
+		}]
+	  },
+	  {
+		"name": "READ - Получение списка отелей",
+		"request": {
+		  "method": "GET",
+		  "url": "http://localhost:8082/api/v1/hotels"
+		},
+		"event": [{
+		  "listen": "test",
+		  "script": {
+			"exec": [
+			  "pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+			  "const hotels = pm.response.json();",
+			  "pm.test(\"Contains created hotel\", () => {",
+			  "  const uids = hotels.map(h => h.hotelUid);",
+			  "  pm.expect(uids).to.include(pm.collectionVariables.get('hotel_uid'));",
+			  "});"
+			]
+		  }
+		}]
+	  },
+	  {
+		"name": "READ - Получение конкретного отеля",
+		"request": {
+		  "method": "GET",
+		  "url": "http://localhost:8082/api/v1/hotels/{{hotel_uid}}"
+		},
+		"event": [{
+		  "listen": "test",
+		  "script": {
+			"exec": [
+			  "pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+			  "const hotel = pm.response.json();",
+			  "pm.test(\"Hotel data matches\", () => {",
+			  "  pm.expect(hotel.name).to.eql('Test Hotel');",
+			  "  pm.expect(hotel.location).to.eql('Test City');",
+			  "});"
+			]
+		  }
+		}]
+	  },
+	  {
+		"name": "DELETE - Удаление отеля",
+		"request": {
+		  "method": "DELETE",
+		  "url": "http://localhost:8082/api/v1/hotels/{{hotel_uid}}"
+		},
+		"event": [{
+		  "listen": "test",
+		  "script": {
+			"exec": [
+			  "pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));"
+			]
+		  }
+		}]
+	  },
+	  {
+		"name": "CHECK - Consul UI",
+		"request": {
+		  "method": "GET",
+		  "url": "http://localhost:8500/ui/"
+		},
+		"event": [{
+		  "listen": "test",
+		  "script": {
+			"exec": [
+			  "pm.test(\"Status 200 OK\", () => pm.response.to.have.status(200));",
+			  "pm.test(\"Contains Consul title\", () => {",
+			  "  pm.expect(pm.response.text()).to.include('<title>Consul</title>');",
+			  "});"
+			]
+		  }
+		}]
+	  }
+	]
+  }
