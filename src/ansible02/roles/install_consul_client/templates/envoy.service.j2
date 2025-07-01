@@ -1,0 +1,11 @@
+[Unit]
+Description=Consul Envoy
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/envoy -c /etc/consul.d/envoy.yaml
+Restart=always
+User=consul
+
+[Install]
+WantedBy=multi-user.target

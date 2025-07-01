@@ -1,54 +1,43 @@
----
 - name: Install OpenJDK 8
   apt:
     name: openjdk-8-jdk
     state: present
-    update_cache: yes
-  become: yes
 
-- name: Create application directory
-  file:
-    path: /opt/hotel-service
-    state: directory
-    mode: 0755
-  become: yes
-
-- name: Copy application JAR
+- name: Copy application
   copy:
-    src: "{{ lookup('env', 'PWD') }}/files/hotel-service.jar"
-    dest: /opt/hotel-service/hotel-service.jar
-    mode: 0644
-  become: yes
+    src: /path/to/hotel-service.jar
+    dest: /opt/hotel-service.jar
+
+- name: Create environment file
+  copy:
+    content: |
+      POSTGRES_HOST="127.0.0.1"
+      POSTGRES_PORT="5432"
+      POSTGRES_DB="hotels_db"
+      POSTGRES_USER="hotel_user"
+      POSTGRES_PASSWORD="securepassword"
+    dest: /etc/hotel-service.env
 
 - name: Create systemd service
   copy:
     content: |
       [Unit]
-      Description=Hotels Service
-      After=network.target consul.service
+      Description=Hotel Service
+      After=network.target
       
       [Service]
-      User=root
-      Group=root
-      EnvironmentFile=/etc/environment
-      ExecStart=/usr/bin/java -jar /opt/hotel-service/hotel-service.jar
+      EnvironmentFile=/etc/hotel-service.env
+      ExecStart=/usr/bin/java -jar /opt/hotel-service.jar
+      User=hoteluser
       Restart=always
-      RestartSec=5
       
       [Install]
       WantedBy=multi-user.target
     dest: /etc/systemd/system/hotel-service.service
-    mode: 0644
-  become: yes
 
-- name: Reload systemd
-  systemd:
-    daemon_reload: yes
-  become: yes
-
-- name: Start and enable service
+- name: Start hotel service
   systemd:
     name: hotel-service
     state: started
     enabled: yes
-  become: yes
+    daemon_reload: yes

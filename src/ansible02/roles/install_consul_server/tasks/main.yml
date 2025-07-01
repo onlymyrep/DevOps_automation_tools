@@ -1,31 +1,64 @@
 ---
+- name: Install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - curl
+    - gnupg
+    - software-properties-common
+
+- name: Add HashiCorp GPG key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Add HashiCorp repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    state: present
+    update_cache: yes
+
+- name: Install Consul
+  apt:
+    name: consul
+    state: present
+
 - name: Create directories for Consul
   file:
-    path: "{{ item }}"
+    path: /etc/consul.d
     state: directory
     owner: consul
     group: consul
-    mode: 0755
-  loop:
-    - /etc/consul.d
-    - /opt/consul
 
-- name: Download Consul
-  unarchive:
-    src: https://releases.hashicorp.com/consul/1.15.3/consul_1.15.3_linux_amd64.zip
-    dest: /usr/local/bin
-    mode: 0755
-    remote_src: yes
-
-- name: Copy server config
-  template:
-    src: consul_server.hcl.j2
+- name: Copy Consul config
+  copy:
+    src: /tmp/consul_server.hcl
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
-    mode: 0640
 
-- name: Start and enable Consul service
+- name: Create systemd service for Consul
+  copy:
+    content: |
+      [Unit]
+      Description=Consul agent
+      After=network-online.target
+      Wants=network-online.target
+      
+      [Service]
+      User=consul
+      Group=consul
+      ExecStart=/usr/bin/consul agent -config-dir=/etc/consul.d/
+      Restart=always
+      RestartSec=5
+      
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/consul.service
+    mode: 0644
+
+- name: Start and enable Consul
   systemd:
     name: consul
     state: started

@@ -125,6 +125,7 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
 
 bartonjo@pr-i3 ansible02 % `vagrant up`
 ![4_machines](misc/images/4_machines.png)
+![beautiful_4](misc/images/beautiful_4.png)
 
 ### 3. Написание плейбука Ansible и ролей
 
@@ -137,18 +138,6 @@ bartonjo@pr-i3 ansible02 % `vagrant up`
 
 ![4_roles](misc/images/4_roles.png)
 
-**Выполнение:**
-```bash
-vagrant ssh manager -c "cd ~/ansible02 && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory ansible-playbook.yml -v"
-```
-
-**Результат:**
-- Consul сервер и клиенты успешно установлены
-- PostgreSQL развернут на машине db
-- Сервис отелей запущен на машине api
-
----
-
 ### 4. Проверка работоспособности
 
 **Задание:** Проверить CRUD-операции над сервисом отелей.
@@ -158,13 +147,27 @@ vagrant ssh manager -c "cd ~/ansible02 && ANSIBLE_HOST_KEY_CHECKING=False ansibl
 newman run ./tests/application_tests.postman_collection.json
 ```
 
-**Результат:**
-- Все тесты успешно пройдены
-- Сервис отелей функционирует корректно
-- Consul UI доступен по адресу http://localhost:8500
 
 ![Тесты Newman](misc/images/02-01.png)
 ![Тесты Postman](misc/images/02-02.png)
-![Consul UI](misc/images/02-03.png)
 
----
+
+1. **Consul Server** (192.168.60.10): 
+   - Установлен и настроен Consul в режиме сервера
+   - Запущен сервис Consul
+
+2. **API** (192.168.60.11):
+   - Установлен Consul в режиме клиента
+   - Зарегистрирован сервис hotels-service
+   - Установлен Java и сервис отелей
+   - Сервис доступен на http://localhost:8082
+
+3. **DB** (192.168.60.13):
+   - Установлен Consul в режиме клиента
+   - Зарегистрирован сервис postgres
+   - Установлена PostgreSQL с тестовой базой
+   - Создана таблица hotels с тестовыми данными
+
+4. **Manager** (192.168.60.12):
+   - UI Consul доступен на http://localhost:8500
+   - Ansible управляет всей инфраструктурой

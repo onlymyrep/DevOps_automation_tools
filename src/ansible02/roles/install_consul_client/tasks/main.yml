@@ -1,55 +1,137 @@
 ---
-- name: Install envoy
+- name: Install dependencies
   apt:
-    name: envoy
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - curl
+    - gnupg
+    - software-properties-common
+
+- name: Add HashiCorp GPG key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Add HashiCorp repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    state: present
+    update_cache: yes
+
+- name: Install Consul
+  apt:
+    name: consul
     state: present
 
 - name: Create directories for Consul
   file:
-    path: "{{ item }}"
+    path: /etc/consul.d
     state: directory
     owner: consul
     group: consul
-    mode: 0755
-  loop:
-    - /etc/consul.d
-    - /opt/consul
 
-- name: Download Consul
-  unarchive:
-    src: https://releases.hashicorp.com/consul/1.15.3/consul_1.15.3_linux_amd64.zip
-    dest: /usr/local/bin
-    mode: 0755
-    remote_src: yes
-
-- name: Copy client config
-  template:
-    src: consul_client.hcl.j2
+- name: Copy Consul config
+  copy:
+    src: /tmp/consul_client.hcl
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
-    mode: 0640
 
-- name: Copy service definitions
-  template:
-    src: "{{ item }}.j2"
-    dest: "/etc/consul.d/{{ item }}.json"
-    owner: consul
-    group: consul
-    mode: 0640
-  loop:
-    - hotels-service
-    - postgres-service
+- name: Create systemd service for Consul
+  copy:
+    content: |
+      [Unit]
+      Description=Consul agent
+      After=network-online.target
+      Wants=network-online.target
+      
+      [Service]
+      User=consul
+      Group=consul
+      ExecStart=/usr/bin/consul agent -config-dir=/etc/consul.d/
+      Restart=always
+      RestartSec=5
+      
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/consul.service
+    mode: 0644
 
-- name: Start and enable Consul service
+- name: Start and enable Consul
   systemd:
     name: consul
     state: started
     enabled: yes
     daemon_reload: yes
 
-- name: Start and enable Consul Envoy
+- name: Download Envoy
+  get_url:
+    url: https://github.com/envoyproxy/envoy/releases/download/v1.25.10/envoy-1.25.10-linux-x86_64
+    dest: /usr/local/bin/envoy
+    mode: '0755'
+
+- name: Create envoy user
+  user:
+    name: envoy
+    system: yes
+    group: envoy
+    shell: /bin/false
+    home: /nonexistent
+    create_home: no
+
+- name: Create Envoy bootstrap config
+  copy:
+    content: |
+      admin:
+        access_log_path: /tmp/admin_access.log
+        address:
+          socket_address:
+            address: 127.0.0.1
+            port_value: 19000
+      static_resources:
+        clusters:
+        - name: dummy_cluster
+          connect_timeout: 0.25s
+          type: STATIC
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: dummy_cluster
+            endpoints:
+            - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: 127.0.0.1
+                      port_value: 9999
+    dest: /etc/consul.d/envoy-bootstrap.yaml
+    owner: envoy
+    group: envoy
+    mode: 0644
+
+- name: Create consul-envoy service
+  copy:
+    content: |
+      [Unit]
+      Description=Consul Envoy Proxy
+      After=network-online.target consul.service
+      Requires=network-online.target consul.service
+
+      [Service]
+      ExecStart=/usr/local/bin/envoy -c /etc/consul.d/envoy-bootstrap.yaml
+      Restart=always
+      RestartSec=5
+      User=envoy
+      Group=envoy
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/consul-envoy.service
+    mode: 0644
+
+- name: Start consul-envoy service
   systemd:
     name: consul-envoy
     state: started
     enabled: yes
+    daemon_reload: yes

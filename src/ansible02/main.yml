@@ -22,6 +22,7 @@
         name:
           - unzip
           - curl
+          - python3-apt
         state: present
         update_cache: yes
 
@@ -36,3 +37,15 @@
   become: yes
   roles:
     - install_consul_client
+
+- name: Setup database
+  hosts: db
+  become: yes
+  roles:
+    - install_db
+
+- name: Setup hotels service
+  hosts: api
+  become: yes
+  roles:
+    - install_hotels_service

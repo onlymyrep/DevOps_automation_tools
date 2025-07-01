@@ -1,64 +1,39 @@
----
 - name: Install PostgreSQL
   apt:
     name: postgresql
     state: present
-    update_cache: yes
-  become: yes
 
 - name: Ensure PostgreSQL is running
   service:
     name: postgresql
     state: started
     enabled: yes
-  become: yes
 
-- name: Create application user
-  become_user: postgres
-  postgresql_user:
-    name: hotel_user
-    password: hotel_password
-    role_attr_flags: "CREATEDB,LOGIN"
-  become: yes
-
-- name: Create application database
+- name: Create database
   become_user: postgres
   postgresql_db:
     name: hotels_db
-    owner: hotel_user
-    encoding: UTF8
-    lc_ctype: en_US.UTF-8
-    lc_collate: en_US.UTF-8
-  become: yes
+    state: present
 
-- name: Find PostgreSQL config directory
-  find:
-    paths: /etc/postgresql
-    patterns: "main"
-    file_type: directory
-  register: postgres_config_dirs
-  become: yes
+- name: Create user
+  become_user: postgres
+  postgresql_user:
+    name: hotel_user
+    password: "securepassword"
+    state: present
 
-- name: Configure remote access
-  lineinfile:
-    path: "{{ item.path }}/postgresql.conf"
-    regexp: "^listen_addresses"
-    line: "listen_addresses = '*'"
-  loop: "{{ postgres_config_dirs.files }}"
-  become: yes
-  notify: restart postgresql
-
-- name: Configure client authentication
-  lineinfile:
-    path: "{{ item.path }}/pg_hba.conf"
-    line: "host all all 0.0.0.0/0 md5"
-  loop: "{{ postgres_config_dirs.files }}"
-  become: yes
-  notify: restart postgresql
-
-- name: Restart PostgreSQL
-  service:
-    name: postgresql
-    state: restarted
-  become: yes
-  when: false  # Handled by notify
+- name: Create table and insert data
+  become_user: postgres
+  postgresql_query:
+    db: hotels_db
+    query: |
+      CREATE TABLE IF NOT EXISTS hotels (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100),
+        location VARCHAR(100)
+      );
+      INSERT INTO hotels (name, location) 
+      VALUES 
+        ('Hotel California', 'California'), 
+        ('Grand Budapest Hotel', 'Budapest'), 
+        ('The Plaza', 'New York');
