@@ -124,12 +124,10 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
 
 ### 3. Написание плейбука Ansible и ролей
 
-- Написать плейбук с четырьмя ролями.
-
-1. `install_consul_server` - установка Consul на сервер
-2. `install_consul_client` - установка Consul на клиенты
-3. `install_db` - установка PostgreSQL
-4. `install_hotels_service` - установка сервиса отелей
+- `install_consul_server` - установка Consul на сервер
+- `install_consul_client` - установка Consul на клиенты
+- `install_db` - установка PostgreSQL
+- `install_hotels_service` - установка сервиса отелей
 
 ![4_roles](misc/images/4_roles.png)
 
@@ -142,22 +140,22 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
 newman run ./tests/application_tests.postman_collection.json
 ```
 
-1. **Consul Server** (192.168.60.10): 
+- **Consul Server** (192.168.60.10): 
    - Установлен и настроен Consul в режиме сервера
    - Запущен сервис Consul
 
-2. **API** (192.168.60.11):
+- **API** (192.168.60.11):
    - Установлен Consul в режиме клиента
    - Зарегистрирован сервис hotels-service
    - Установлен Java и сервис отелей
    - Сервис доступен на http://localhost:8082
 
-3. **DB** (192.168.60.13):
+- **DB** (192.168.60.13):
    - Установлен Consul в режиме клиента
    - Зарегистрирован сервис postgres
    - Установлена PostgreSQL с тестовой базой
    - Создана таблица hotels с тестовыми данными
 
-4. **Manager** (192.168.60.12):
+- **Manager** (192.168.60.12):
    - UI Consul доступен на http://localhost:8500
    - Ansible управляет всей инфраструктурой
