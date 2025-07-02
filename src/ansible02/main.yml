@@ -1,8 +1,8 @@
 ---
 - name: Precache setup and common configuration
   hosts: all
-  gather_facts: yes
-  become: yes
+  gather_facts: true
+  become: true
   tasks:
     - name: Install common dependencies
       apt:
@@ -15,9 +15,9 @@
           - htop
           - iotop
         state: present
-        update_cache: yes
+        update_cache: true
         cache_valid_time: 3600
-        autoclean: yes
+        autoclean: true
 
     - name: Upgrade pip safely
       pip:
@@ -30,18 +30,18 @@
       group:
         name: consul
         state: present
-      
+
     - name: Create consul user
       user:
         name: consul
         group: consul
-        system: yes
+        system: true
         shell: /bin/false
         home: /nonexistent
 
 - name: Setup Consul server
   hosts: consul_server
-  become: yes
+  become: true
   tasks:
     - name: Copy Consul binary
       copy:
@@ -53,7 +53,7 @@
       unarchive:
         src: /tmp/consul.zip
         dest: /usr/local/bin
-        remote_src: yes
+        remote_src: true
         mode: 0755
         creates: /usr/local/bin/consul
 
@@ -66,7 +66,7 @@
 
     - name: Configure Consul server
       template:
-        src: "/vagrant/src/consul01/consul_server.hcl"
+        src: "/home/vagrant/consul/consul_server.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
@@ -82,7 +82,7 @@
           Documentation=https://www.consul.io/
           Requires=network-online.target
           After=network-online.target
-          
+
           [Service]
           User=consul
           Group=consul
@@ -90,7 +90,7 @@
           ExecReload=/bin/kill -HUP $MAINPID
           KillSignal=SIGTERM
           Restart=on-failure
-          
+
           [Install]
           WantedBy=multi-user.target
       notify: Restart Consul
@@ -99,12 +99,12 @@
       systemd:
         name: consul
         state: started
-        enabled: yes
-        daemon_reload: yes
+        enabled: true
+        daemon_reload: true
 
 - name: Setup Consul clients
   hosts: api, db
-  become: yes
+  become: true
   tasks:
     - name: Copy Consul binary
       copy:
@@ -116,7 +116,7 @@
       unarchive:
         src: /tmp/consul.zip
         dest: /usr/local/bin
-        remote_src: yes
+        remote_src: true
         mode: 0755
         creates: /usr/local/bin/consul
 
@@ -128,11 +128,16 @@
             dest: /usr/local/bin/envoy
             mode: '0755'
             timeout: 60
-            
+
+        - name: Create envoy group
+          group:
+            name: envoy
+            system: yes
+
         - name: Create envoy user
           user:
             name: envoy
-            system: yes
+            system: true
             group: envoy
             shell: /bin/false
             home: /nonexistent
@@ -147,7 +152,7 @@
 
     - name: Configure Consul client for API nodes
       template:
-        src: "/vagrant/src/consul01/consul_client_api.hcl"
+        src: "/home/vagrant/consul/consul_client_api.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
@@ -156,7 +161,7 @@
 
     - name: Configure Consul client for DB nodes
       template:
-        src: "/vagrant/src/consul01/consul_client_db.hcl"
+        src: "/home/vagrant/consul/consul_client_db.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
@@ -172,7 +177,7 @@
           Documentation=https://www.consul.io/
           Requires=network-online.target
           After=network-online.target
-          
+
           [Service]
           User=consul
           Group=consul
@@ -180,7 +185,7 @@
           ExecReload=/bin/kill -HUP $MAINPID
           KillSignal=SIGTERM
           Restart=on-failure
-          
+
           [Install]
           WantedBy=multi-user.target
       notify: Restart Consul
@@ -189,8 +194,8 @@
       systemd:
         name: consul
         state: started
-        enabled: yes
-        daemon_reload: yes
+        enabled: true
+        daemon_reload: true
 
     - name: Create Envoy service for hotels
       copy:
@@ -199,13 +204,13 @@
           [Unit]
           Description=Envoy Proxy for Hotels Service
           After=consul.service
-          
+
           [Service]
           ExecStart=/usr/local/bin/consul connect envoy -sidecar-for hotels-service -admin-bind 127.0.0.1:19001
           Restart=always
           User=envoy
           Group=envoy
-          
+
           [Install]
           WantedBy=multi-user.target
       when: "'api' in group_names"
@@ -218,13 +223,13 @@
           [Unit]
           Description=Envoy Proxy for PostgreSQL
           After=consul.service
-          
+
           [Service]
           ExecStart=/usr/local/bin/consul connect envoy -sidecar-for postgres -admin-bind 127.0.0.1:19002
           Restart=always
           User=envoy
           Group=envoy
-          
+
           [Install]
           WantedBy=multi-user.target
       when: "'db' in group_names"
@@ -232,13 +237,31 @@
 
 - name: Setup database
   hosts: db
-  become: yes
+  become: true
   tasks:
     - name: Install PostgreSQL
       apt:
         name: postgresql
         state: present
-        update_cache: yes
+        update_cache: true
+
+
+    - name: Install PostgreSQL Python library
+      apt:
+        name: python3-psycopg2
+        state: present
+
+    - name: Configure PostgreSQL authentication
+      template:
+        src: pg_hba.conf.j2
+        dest: /etc/postgresql/*/main/pg_hba.conf
+      notify: Reload PostgreSQL
+      
+    - name: Set postgres password
+      become_user: postgres
+      postgresql_user:
+        name: postgres
+        password: "secure_password"
 
     - name: Create database
       postgresql_db:
@@ -264,16 +287,16 @@
 
 - name: Setup hotels service
   hosts: api
-  become: yes
+  become: true
   vars:
     postgres_user: "hotel_user"
     postgres_password: "securepassword"
-    
+
   tasks:
     - name: Create service user
       user:
         name: hotels
-        system: yes
+        system: true
         shell: /bin/false
         home: /nonexistent
 
@@ -312,7 +335,7 @@
           Description=Hotels Service
           After=network.target
           Requires=envoy-hotels.service
-          
+
           [Service]
           EnvironmentFile=/etc/default/hotels-service
           ExecStart=/usr/bin/java -jar /opt/hotels-service/hotel-service.jar
@@ -320,7 +343,7 @@
           Group=hotels
           Restart=always
           RestartSec=10
-          
+
           [Install]
           WantedBy=multi-user.target
       notify: Restart Hotels Service
@@ -353,43 +376,43 @@
       systemd:
         name: hotels-service
         state: started
-        enabled: yes
-        daemon_reload: yes
+        enabled: true
+        daemon_reload: true
 
 - name: Start Envoy services
   hosts: api, db
-  become: yes
+  become: true
   tasks:
     - name: Start and enable Envoy for hotels
       systemd:
         name: envoy-hotels.service
         state: started
-        enabled: yes
-        daemon_reload: yes
+        enabled: true
+        daemon_reload: true
       when: "'api' in group_names"
 
     - name: Start and enable Envoy for postgres
       systemd:
         name: envoy-postgres.service
         state: started
-        enabled: yes
-        daemon_reload: yes
+        enabled: true
+        daemon_reload: true
       when: "'db' in group_names"
 
 - name: Health checks
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Check Consul status
       command: /usr/local/bin/consul members
       register: consul_status
       changed_when: false
-      ignore_errors: yes
-      
+      ignore_errors: true
+
     - name: Show Consul status
       debug:
         msg: "{{ consul_status.stdout_lines }}"
-        
+
     - name: Check system resources
       shell: |
         echo "CPU: $(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage "%"}')"
@@ -397,14 +420,14 @@
         echo "Disk: $(df -h / | awk 'NR==2{print $5}')"
       register: sys_info
       changed_when: false
-      
+
     - name: Show system info
       debug:
         var: sys_info.stdout_lines
 
 - name: Test CRUD operations
   hosts: api
-  become: no
+  become: false
   tasks:
     - name: Create hotel
       uri:
@@ -417,7 +440,7 @@
           rating: 4
         status_code: 201
       register: create_result
-      ignore_errors: yes
+      ignore_errors: true
       retries: 3
       delay: 10
       until: create_result.status == 201
@@ -427,32 +450,32 @@
       debug:
         var: create_result
 
-- handlers:
-  - name: Restart Consul
-    systemd:
-      name: consul
-      state: restarted
-      daemon_reload: yes
-      
-  - name: Reload Consul
-    systemd:
-      name: consul
-      state: reloaded
-      
-  - name: Restart Hotels Service
-    systemd:
-      name: hotels-service
-      state: restarted
-      daemon_reload: yes
+  handlers:
+    - name: Restart Consul
+      systemd:
+        name: consul
+        state: restarted
+        daemon_reload: true
 
-  - name: Restart Envoy Hotels
-    systemd:
-      name: envoy-hotels.service
-      state: restarted
-      daemon_reload: yes
-      
-  - name: Restart Envoy Postgres
-    systemd:
-      name: envoy-postgres.service
-      state: restarted
-      daemon_reload: yes
+    - name: Reload Consul
+      systemd:
+        name: consul
+        state: reloaded
+
+    - name: Restart Hotels Service
+      systemd:
+        name: hotels-service
+        state: restarted
+        daemon_reload: true
+
+    - name: Restart Envoy Hotels
+      systemd:
+        name: envoy-hotels.service
+        state: restarted
+        daemon_reload: true
+
+    - name: Restart Envoy Postgres
+      systemd:
+        name: envoy-postgres.service
+        state: restarted
+        daemon_reload: true

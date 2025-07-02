@@ -1,257 +1,44 @@
-2025-07-02 01:45:10,644 p=10252 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
-JSON: Expecting value: line 1 column 1 (char 0)
+2025-07-02 03:28:10,618 p=45788 u=vagrant n=ansible | ERROR! 'meta' is not a valid attribute for a Play
 
-Syntax Error while loading YAML.
-  did not find expected '-' indicator
-
-The error appears to be in '/home/vagrant/ansible/main.yml': line 419, column 1, but may
+The error appears to be in '/home/vagrant/ansible/main.yml': line 2, column 3, but may
 be elsewhere in the file depending on the exact syntax problem.
 
 The offending line appears to be:
 
-# Обработчики должны быть в конце
-handlers:
-^ here
-
-2025-07-02 01:45:39,844 p=10297 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
-2025-07-02 01:45:39,871 p=10297 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
-2025-07-02 01:45:50,087 p=10297 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-02 01:45:50,527 p=10297 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 01:45:50,808 p=10297 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 01:45:51,507 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 01:45:51,515 p=10297 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
-2025-07-02 01:45:53,120 p=10297 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:45:53,159 p=10297 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:45:53,215 p=10297 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:45:53,261 p=10297 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:45:53,269 p=10297 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
-2025-07-02 01:45:53,607 p=10297 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 01:45:53,615 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 01:45:53,616 p=10297 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 01:45:53,624 p=10297 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-02 01:45:53,655 p=10297 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
-2025-07-02 01:45:54,023 p=10297 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 01:45:54,034 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 01:45:54,035 p=10297 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 01:45:54,046 p=10297 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-02 01:45:54,066 p=10297 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
-2025-07-02 01:45:54,082 p=10297 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
-2025-07-02 01:45:56,076 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 01:45:56,091 p=10297 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
-2025-07-02 01:46:00,407 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 01:46:00,415 p=10297 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
-2025-07-02 01:46:00,689 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 01:46:00,697 p=10297 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
-2025-07-02 01:46:00,761 p=10297 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
-2025-07-02 01:46:00,764 p=10297 u=vagrant n=ansible | fatal: [192.168.60.10]: FAILED! => changed=false 
-  msg: |-
-    Could not find or access '/vagrant/src/consul01/consul_server.hcl' on the Ansible Controller.
-    If you are using a module and expect the file to exist on the remote, see the remote_src option
-2025-07-02 01:46:00,765 p=10297 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
-2025-07-02 01:46:00,766 p=10297 u=vagrant n=ansible | 192.168.60.10              : ok=7    changed=6    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-02 01:46:00,767 p=10297 u=vagrant n=ansible | 192.168.60.11              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 01:46:00,767 p=10297 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 01:46:00,768 p=10297 u=vagrant n=ansible | 192.168.60.13              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 01:47:28,162 p=10888 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
-2025-07-02 01:47:28,186 p=10888 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
-2025-07-02 01:47:29,604 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:47:30,292 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:47:30,300 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:47:30,460 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:47:30,468 p=10888 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
-2025-07-02 01:47:31,601 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:47:31,648 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:47:31,664 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:47:31,843 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:47:31,851 p=10888 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
-2025-07-02 01:47:32,137 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:47:32,143 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:47:32,144 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:47:32,175 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:47:32,184 p=10888 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
-2025-07-02 01:47:32,563 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:47:32,564 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:47:32,568 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:47:32,583 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:47:32,601 p=10888 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
-2025-07-02 01:47:32,620 p=10888 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
-2025-07-02 01:47:33,364 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:47:33,372 p=10888 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
-2025-07-02 01:47:36,351 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:47:36,359 p=10888 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
-2025-07-02 01:47:36,539 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:47:36,547 p=10888 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
-2025-07-02 01:47:37,028 p=10888 u=vagrant n=ansible | ERROR! The requested handler 'Restart Consul' was not found in either the main handlers list nor in the listening handlers list
-2025-07-02 01:49:02,170 p=11175 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
-2025-07-02 01:49:02,193 p=11175 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
-2025-07-02 01:49:03,578 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:49:04,092 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:49:04,122 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:49:04,234 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:04,257 p=11175 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
-2025-07-02 01:49:05,364 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:49:05,384 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:49:05,394 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:49:05,438 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:05,446 p=11175 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
-2025-07-02 01:49:05,732 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:49:05,733 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:05,736 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:49:05,769 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:49:05,778 p=11175 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
-2025-07-02 01:49:06,136 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:49:06,141 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:06,142 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:49:06,175 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:49:06,192 p=11175 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
-2025-07-02 01:49:06,208 p=11175 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
-2025-07-02 01:49:06,921 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:06,929 p=11175 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
-2025-07-02 01:49:09,451 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:09,458 p=11175 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
-2025-07-02 01:49:09,618 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:09,625 p=11175 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
-2025-07-02 01:49:09,991 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:49:10,018 p=11175 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
-2025-07-02 01:49:10,473 p=11175 u=vagrant n=ansible | ERROR! The requested handler 'Restart Consul' was not found in either the main handlers list nor in the listening handlers list
-2025-07-02 01:55:02,685 p=12018 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
-2025-07-02 01:55:02,708 p=12018 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
-2025-07-02 01:55:04,101 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:55:04,692 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:55:04,692 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:55:04,745 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:04,752 p=12018 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
-2025-07-02 01:55:05,846 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:55:05,868 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:55:05,868 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:55:05,921 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:05,928 p=12018 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
-2025-07-02 01:55:06,235 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:55:06,245 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:06,246 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:55:06,249 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:55:06,258 p=12018 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
-2025-07-02 01:55:06,639 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 01:55:06,652 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 01:55:06,652 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:06,668 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 01:55:06,686 p=12018 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
-2025-07-02 01:55:06,701 p=12018 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
-2025-07-02 01:55:07,395 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:07,403 p=12018 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
-2025-07-02 01:55:09,876 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:09,888 p=12018 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
-2025-07-02 01:55:10,053 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:10,060 p=12018 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
-2025-07-02 01:55:10,428 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:10,436 p=12018 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
-2025-07-02 01:55:10,797 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 01:55:10,805 p=12018 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
-2025-07-02 01:55:11,870 p=12018 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 01:55:11,885 p=12018 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
-2025-07-02 01:55:11,900 p=12018 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
-2025-07-02 01:55:14,098 p=12018 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 01:55:14,533 p=12018 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 01:55:14,540 p=12018 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
-2025-07-02 01:55:18,722 p=12018 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 01:55:18,761 p=12018 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 01:55:18,770 p=12018 u=vagrant n=ansible | TASK [Install Envoy] *********************************************************************************************
-2025-07-02 01:55:19,451 p=12018 u=vagrant n=ansible | fatal: [192.168.60.11]: FAILED! => changed=false 
-  msg: No package matching 'envoy' is available
-2025-07-02 01:55:19,471 p=12018 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
-  msg: No package matching 'envoy' is available
-2025-07-02 01:55:19,473 p=12018 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
-2025-07-02 01:55:19,474 p=12018 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 01:55:19,475 p=12018 u=vagrant n=ansible | 192.168.60.11              : ok=6    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-02 01:55:19,475 p=12018 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 01:55:19,476 p=12018 u=vagrant n=ansible | 192.168.60.13              : ok=6    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-02 02:11:22,441 p=14100 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
-JSON: Expecting value: line 1 column 1 (char 0)
-
-Syntax Error while loading YAML.
-  mapping values are not allowed in this context
-
-The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 11, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-
-    - name: Create config directory
-          ^ here
-
-2025-07-02 02:13:24,192 p=14204 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
-JSON: Expecting value: line 1 column 1 (char 0)
-
-Syntax Error while loading YAML.
-  mapping values are not allowed in this context
-
-The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 13, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-
-      - name: Create config directory
-            ^ here
-
-2025-07-02 02:13:46,668 p=14226 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
-JSON: Expecting value: line 1 column 1 (char 0)
-
-Syntax Error while loading YAML.
-  did not find expected key
-
-The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 3, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-
-  - name: Create config directory
+---
+- name: Flush handlers early
   ^ here
 
-2025-07-02 02:14:01,584 p=14242 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
-JSON: Expecting value: line 1 column 1 (char 0)
-
-Syntax Error while loading YAML.
-  mapping values are not allowed in this context
-
-The error appears to be in '/home/vagrant/ansible/main.yml': line 143, column 11, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-
-    - name: Configure Consul client for API nodes
-          ^ here
-
-2025-07-02 02:14:18,261 p=14258 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
-JSON: Expecting value: line 1 column 1 (char 0)
-
-Syntax Error while loading YAML.
-  mapping values are not allowed in this context
-
-The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 11, but may
-be elsewhere in the file depending on the exact syntax problem.
-
-The offending line appears to be:
-
-
-    - name: Create config directory
-          ^ here
-
-2025-07-02 02:56:35,914 p=42819 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] ********************************************************************************************
-2025-07-02 02:56:35,992 p=42819 u=vagrant n=ansible | TASK [ping] ******************************************************************************************************
-2025-07-02 02:56:36,396 p=42819 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 02:56:37,088 p=42819 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 02:56:37,276 p=42819 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 02:56:37,282 p=42819 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 02:56:37,298 p=42819 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
-2025-07-02 02:56:37,299 p=42819 u=vagrant n=ansible | 192.168.60.10              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 02:56:37,299 p=42819 u=vagrant n=ansible | 192.168.60.11              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 02:56:37,300 p=42819 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 02:56:37,300 p=42819 u=vagrant n=ansible | 192.168.60.13              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 02:56:48,460 p=42880 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+2025-07-02 03:28:57,590 p=45827 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:35:02,564 p=46129 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:39:17,335 p=46338 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:39:35,407 p=46356 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:41:17,856 p=46458 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:41:27,338 p=46468 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:41:51,105 p=46490 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] ********************************************************************************************
+2025-07-02 03:41:51,156 p=46490 u=vagrant n=ansible | TASK [ping] ******************************************************************************************************
+2025-07-02 03:41:51,559 p=46490 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:41:52,225 p=46490 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:41:52,250 p=46490 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:41:52,337 p=46490 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:41:52,352 p=46490 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 03:41:52,353 p=46490 u=vagrant n=ansible | 192.168.60.10              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:41:52,354 p=46490 u=vagrant n=ansible | 192.168.60.11              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:41:52,354 p=46490 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:41:52,356 p=46490 u=vagrant n=ansible | 192.168.60.13              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:42:02,106 p=46553 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] ********************************************************************************************
+2025-07-02 03:42:02,154 p=46553 u=vagrant n=ansible | TASK [ping] ******************************************************************************************************
+2025-07-02 03:42:02,424 p=46553 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:42:02,440 p=46553 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 03:42:02,441 p=46553 u=vagrant n=ansible | 192.168.60.10              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:42:08,848 p=46568 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] ********************************************************************************************
+2025-07-02 03:42:08,896 p=46568 u=vagrant n=ansible | TASK [ping] ******************************************************************************************************
+2025-07-02 03:42:09,161 p=46568 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:42:09,178 p=46568 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 03:42:09,179 p=46568 u=vagrant n=ansible | 192.168.60.11              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:43:35,585 p=46843 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:50:23,504 p=47199 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:51:03,011 p=47233 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
 JSON: Expecting value: line 1 column 1 (char 0)
 
 Syntax Error while loading YAML.
@@ -266,44 +53,940 @@ The offending line appears to be:
 handlers:
 ^ here
 
-2025-07-02 02:57:06,314 p=42900 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
-2025-07-02 03:03:58,501 p=43259 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
-2025-07-02 03:05:00,725 p=43312 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
-2025-07-02 03:05:00,769 p=43312 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
-2025-07-02 03:05:07,925 p=43312 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-02 03:05:08,194 p=43312 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 03:05:08,406 p=43312 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 03:05:09,067 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 03:05:09,079 p=43312 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
-2025-07-02 03:05:10,855 p=43312 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-02 03:05:10,906 p=43312 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-02 03:05:10,913 p=43312 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-02 03:05:10,937 p=43312 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-02 03:05:10,946 p=43312 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
-2025-07-02 03:05:11,308 p=43312 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 03:05:11,315 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 03:05:11,315 p=43312 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 03:05:11,330 p=43312 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-02 03:05:11,339 p=43312 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
-2025-07-02 03:05:11,760 p=43312 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-02 03:05:11,766 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 03:05:11,767 p=43312 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-02 03:05:11,781 p=43312 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-02 03:05:11,800 p=43312 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
-2025-07-02 03:05:11,819 p=43312 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
-2025-07-02 03:05:13,857 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 03:05:13,866 p=43312 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
-2025-07-02 03:05:17,811 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 03:05:17,819 p=43312 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
-2025-07-02 03:05:18,113 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-02 03:05:18,122 p=43312 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
-2025-07-02 03:05:18,189 p=43312 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
-2025-07-02 03:05:18,191 p=43312 u=vagrant n=ansible | fatal: [192.168.60.10]: FAILED! => changed=false 
+2025-07-02 03:51:46,718 p=47272 u=vagrant n=ansible | playbook: main.yml
+2025-07-02 03:51:59,075 p=47286 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 03:51:59,107 p=47286 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 03:52:01,351 p=47286 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:52:06,710 p=47286 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:52:07,020 p=47286 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:52:07,899 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:07,908 p=47286 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 03:52:09,162 p=47286 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:52:09,164 p=47286 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:52:09,220 p=47286 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:52:09,475 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:09,483 p=47286 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 03:52:09,804 p=47286 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:52:09,805 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:09,811 p=47286 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:52:09,823 p=47286 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:52:09,832 p=47286 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 03:52:10,226 p=47286 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:52:10,226 p=47286 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:52:10,235 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:10,242 p=47286 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:52:10,260 p=47286 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 03:52:10,276 p=47286 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 03:52:11,167 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:11,176 p=47286 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 03:52:14,581 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:14,590 p=47286 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 03:52:14,758 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:14,766 p=47286 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 03:52:15,142 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:15,150 p=47286 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 03:52:15,529 p=47286 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:52:15,536 p=47286 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 03:52:16,729 p=47286 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:52:16,749 p=47286 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 03:52:16,767 p=47286 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 03:52:19,301 p=47286 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:52:19,558 p=47286 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:52:19,566 p=47286 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 03:52:24,042 p=47286 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:52:24,085 p=47286 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:52:24,094 p=47286 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 03:52:27,647 p=47286 u=vagrant n=ansible | [WARNING]: Module remote_tmp /root/.ansible/tmp did not exist and was created with a mode of 0700, this may cause
+issues when running as another user. To avoid this, create the remote_tmp dir with the correct permissions
+manually
+
+2025-07-02 03:52:27,648 p=47286 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:52:29,708 p=47286 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:52:29,717 p=47286 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 03:52:29,937 p=47286 u=vagrant n=ansible | fatal: [192.168.60.11]: FAILED! => changed=false 
+  msg: Group envoy does not exist
+2025-07-02 03:52:29,961 p=47286 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
+  msg: Group envoy does not exist
+2025-07-02 03:52:29,963 p=47286 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 03:52:29,964 p=47286 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:52:29,964 p=47286 u=vagrant n=ansible | 192.168.60.11              : ok=7    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:52:29,965 p=47286 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:52:29,965 p=47286 u=vagrant n=ansible | 192.168.60.13              : ok=7    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:56:46,670 p=47779 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 03:56:46,703 p=47779 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 03:56:46,704 p=47779 u=vagrant n=ansible | skipping: no hosts matched
+2025-07-02 03:56:46,705 p=47779 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 03:56:46,728 p=47779 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
+2025-07-02 03:56:46,751 p=47779 u=vagrant n=ansible | PLAY [Setup hotels service] **************************************************************************************
+2025-07-02 03:56:46,775 p=47779 u=vagrant n=ansible | PLAY [Start Envoy services] **************************************************************************************
+2025-07-02 03:56:46,797 p=47779 u=vagrant n=ansible | PLAY [Health checks] *********************************************************************************************
+2025-07-02 03:56:46,838 p=47779 u=vagrant n=ansible | PLAY [Test CRUD operations] **************************************************************************************
+2025-07-02 03:56:46,859 p=47779 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 03:57:06,710 p=47807 u=vagrant n=ansible | playbook: main.yml
+2025-07-02 03:57:25,350 p=47827 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] ********************************************************************************************
+2025-07-02 03:57:25,398 p=47827 u=vagrant n=ansible | TASK [ping] ******************************************************************************************************
+2025-07-02 03:57:25,785 p=47827 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:57:26,494 p=47827 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:57:26,495 p=47827 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:57:26,552 p=47827 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:57:26,568 p=47827 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 03:57:26,569 p=47827 u=vagrant n=ansible | 192.168.60.10              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:57:26,569 p=47827 u=vagrant n=ansible | 192.168.60.11              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:57:26,570 p=47827 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:57:26,570 p=47827 u=vagrant n=ansible | 192.168.60.13              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:57:55,396 p=47905 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 03:57:55,426 p=47905 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 03:57:56,771 p=47905 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:57:56,808 p=47905 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:57:56,849 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:57:59,913 p=47905 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:57:59,923 p=47905 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 03:58:01,881 p=47905 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:58:01,932 p=47905 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:58:02,111 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:02,116 p=47905 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:58:02,124 p=47905 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 03:58:02,465 p=47905 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:58:02,472 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:02,473 p=47905 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:58:02,491 p=47905 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:58:02,503 p=47905 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 03:58:02,892 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:02,901 p=47905 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:58:02,905 p=47905 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:58:02,914 p=47905 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:58:02,933 p=47905 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 03:58:02,948 p=47905 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 03:58:03,720 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:03,728 p=47905 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 03:58:06,140 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:06,154 p=47905 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 03:58:06,323 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:06,331 p=47905 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 03:58:06,697 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:06,706 p=47905 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 03:58:07,068 p=47905 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:58:07,076 p=47905 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 03:58:07,882 p=47905 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:58:07,899 p=47905 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 03:58:07,914 p=47905 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 03:58:08,512 p=47905 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:58:08,523 p=47905 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:58:08,531 p=47905 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 03:58:10,951 p=47905 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:58:10,955 p=47905 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:58:10,962 p=47905 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 03:58:12,026 p=47905 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:58:12,286 p=47905 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:58:12,293 p=47905 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 03:58:12,501 p=47905 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:58:12,517 p=47905 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:58:12,527 p=47905 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 03:58:12,764 p=47905 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:58:12,779 p=47905 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:58:12,789 p=47905 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 03:58:12,967 p=47905 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:58:12,988 p=47905 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:58:12,997 p=47905 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 03:58:13,029 p=47905 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 03:58:13,518 p=47905 u=vagrant n=ansible | ERROR! The requested handler 'Reload Consul' was not found in either the main handlers list nor in the listening handlers list
+2025-07-02 03:59:57,404 p=48695 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 03:59:57,433 p=48695 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 03:59:58,880 p=48695 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:59:59,429 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:59:59,463 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:59:59,499 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:59:59,528 p=48695 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:00:01,079 p=48695 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:00:01,124 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:01,167 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:01,206 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:01,225 p=48695 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:00:01,657 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:01,670 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:01,726 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:01,753 p=48695 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:00:01,762 p=48695 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:00:02,213 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:02,228 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:02,241 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:02,247 p=48695 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:00:02,267 p=48695 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:00:02,285 p=48695 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:00:03,078 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:03,087 p=48695 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:00:05,462 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:05,474 p=48695 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:00:05,644 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:05,651 p=48695 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:00:06,020 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:06,027 p=48695 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:00:06,391 p=48695 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:06,402 p=48695 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:00:07,183 p=48695 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:00:07,200 p=48695 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:00:07,218 p=48695 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:00:07,859 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:07,878 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:07,888 p=48695 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:00:10,216 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:10,243 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:10,254 p=48695 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:00:11,227 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:11,502 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:11,510 p=48695 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:00:11,699 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:11,713 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:11,722 p=48695 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:00:11,941 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:11,958 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:11,967 p=48695 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:00:12,151 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:12,167 p=48695 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:12,176 p=48695 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:00:12,209 p=48695 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:00:12,595 p=48695 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:12,603 p=48695 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:00:12,619 p=48695 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:00:13,136 p=48695 u=vagrant n=ansible | ERROR! The requested handler 'Reload Consul' was not found in either the main handlers list nor in the listening handlers list
+2025-07-02 04:00:52,069 p=49030 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:00:52,102 p=49030 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:00:53,378 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:53,388 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:53,433 p=49030 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:00:53,445 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:53,461 p=49030 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:00:54,616 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:54,632 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:54,633 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:54,664 p=49030 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:00:54,672 p=49030 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:00:54,984 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:54,990 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:54,995 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:55,016 p=49030 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:00:55,026 p=49030 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:00:55,406 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:00:55,418 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:55,418 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:00:55,425 p=49030 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:00:55,448 p=49030 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:00:55,464 p=49030 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:00:56,202 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:56,210 p=49030 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:00:58,691 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:58,703 p=49030 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:00:58,878 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:58,885 p=49030 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:00:59,254 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:59,263 p=49030 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:00:59,635 p=49030 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:00:59,644 p=49030 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:01:00,795 p=49030 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:01:00,817 p=49030 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:01:00,834 p=49030 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:01:01,810 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:01:01,906 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:01:01,917 p=49030 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:01:04,437 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:01:04,440 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:01:04,451 p=49030 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:01:05,793 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:01:05,793 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:01:05,801 p=49030 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:01:05,994 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:01:06,014 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:01:06,022 p=49030 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:01:06,254 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:01:06,267 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:01:06,295 p=49030 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:01:06,490 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:01:06,504 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:01:06,512 p=49030 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:01:06,548 p=49030 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:01:06,906 p=49030 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:01:06,913 p=49030 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:01:06,943 p=49030 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:01:07,383 p=49030 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:01:07,393 p=49030 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:01:08,056 p=49030 u=vagrant n=ansible | ERROR! The requested handler 'Restart Consul' was not found in either the main handlers list nor in the listening handlers list
+2025-07-02 04:03:39,729 p=49479 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:03:39,760 p=49479 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:03:42,418 p=49479 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:03:43,083 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:43,102 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:43,337 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:43,349 p=49479 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:03:44,518 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:44,532 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:44,534 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:44,582 p=49479 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:03:44,591 p=49479 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:03:44,911 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:44,912 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:44,918 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:44,933 p=49479 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:03:44,943 p=49479 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:03:45,348 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:45,349 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:45,350 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:45,361 p=49479 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:03:45,379 p=49479 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:03:45,394 p=49479 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:03:46,125 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:46,135 p=49479 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:03:48,585 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:48,598 p=49479 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:03:48,769 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:48,777 p=49479 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:03:49,151 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:49,160 p=49479 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:03:49,531 p=49479 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:03:49,539 p=49479 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:03:50,350 p=49479 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:03:50,366 p=49479 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:03:50,381 p=49479 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:03:50,973 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:50,984 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:50,991 p=49479 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:03:53,374 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:53,406 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:53,415 p=49479 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:03:54,815 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:54,829 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:54,838 p=49479 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:03:55,022 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:55,040 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:55,047 p=49479 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:03:55,291 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:55,313 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:55,324 p=49479 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:03:55,510 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:55,526 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:55,535 p=49479 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:03:55,569 p=49479 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:03:55,922 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:55,930 p=49479 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:03:55,947 p=49479 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:03:56,329 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:56,338 p=49479 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:03:56,753 p=49479 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:03:56,774 p=49479 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:03:56,781 p=49479 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:03:57,604 p=49479 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:03:57,667 p=49479 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:03:57,676 p=49479 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:03:57,716 p=49479 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:03:58,237 p=49479 u=vagrant n=ansible | ERROR! The requested handler 'Restart Envoy Hotels' was not found in either the main handlers list nor in the listening handlers list
+2025-07-02 04:07:36,938 p=49991 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:07:36,967 p=49991 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:07:38,384 p=49991 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:07:38,941 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:38,962 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:39,058 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:39,070 p=49991 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:07:40,248 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:40,260 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:40,271 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:40,406 p=49991 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:07:40,442 p=49991 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:07:41,165 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:41,200 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:41,287 p=49991 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:07:41,383 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:41,392 p=49991 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:07:41,935 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:41,962 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:41,988 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:42,016 p=49991 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:07:42,034 p=49991 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:07:42,051 p=49991 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:07:42,859 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:42,868 p=49991 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:07:45,314 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:45,324 p=49991 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:07:45,506 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:45,515 p=49991 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:07:45,891 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:45,899 p=49991 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:07:46,272 p=49991 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:07:46,280 p=49991 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:07:47,068 p=49991 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:07:47,087 p=49991 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:07:47,101 p=49991 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:07:47,696 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:47,710 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:47,720 p=49991 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:07:50,027 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:50,053 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:50,062 p=49991 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:07:51,272 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:51,568 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:51,576 p=49991 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:07:51,784 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:51,804 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:51,831 p=49991 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:07:52,048 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:52,068 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:52,076 p=49991 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:07:52,258 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:52,272 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:52,280 p=49991 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:07:52,311 p=49991 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:07:52,674 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:52,682 p=49991 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:07:52,700 p=49991 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:07:53,078 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:53,088 p=49991 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:07:53,503 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:53,517 p=49991 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:07:53,526 p=49991 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:07:54,151 p=49991 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:07:54,181 p=49991 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:07:54,190 p=49991 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:07:54,229 p=49991 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:07:54,594 p=49991 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:07:54,602 p=49991 u=vagrant n=ansible | TASK [Create Envoy service for postgres] *************************************************************************
+2025-07-02 04:07:54,621 p=49991 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:07:55,156 p=49991 u=vagrant n=ansible | ERROR! The requested handler 'Restart Envoy Postgres' was not found in either the main handlers list nor in the listening handlers list
+2025-07-02 04:10:51,788 p=50475 u=vagrant n=ansible | playbook: main.yml
+2025-07-02 04:10:58,396 p=50485 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:10:58,431 p=50485 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:10:59,904 p=50485 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:11:01,037 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:01,134 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:01,353 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:01,368 p=50485 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:11:02,712 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:02,768 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:02,870 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:02,885 p=50485 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:11:02,894 p=50485 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:11:03,219 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:03,221 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:03,233 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:03,239 p=50485 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:11:03,248 p=50485 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:11:03,649 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:03,660 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:03,660 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:03,676 p=50485 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:11:03,695 p=50485 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:11:03,711 p=50485 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:11:04,444 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:04,452 p=50485 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:11:06,864 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:06,879 p=50485 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:11:07,070 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:07,078 p=50485 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:11:07,479 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:07,489 p=50485 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:11:07,863 p=50485 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:11:07,871 p=50485 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:11:08,656 p=50485 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:11:08,672 p=50485 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:11:08,687 p=50485 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:11:09,311 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:09,324 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:09,332 p=50485 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:11:11,636 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:11,660 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:11,669 p=50485 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:11:12,828 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:13,104 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:13,111 p=50485 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:11:13,297 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:13,313 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:13,322 p=50485 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:11:13,546 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:13,566 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:13,574 p=50485 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:11:13,759 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:13,776 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:13,784 p=50485 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:11:13,822 p=50485 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:11:14,166 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:14,173 p=50485 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:11:14,190 p=50485 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:11:14,580 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:14,591 p=50485 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:11:15,013 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:15,026 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:15,036 p=50485 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:11:15,576 p=50485 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:11:15,639 p=50485 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:11:15,647 p=50485 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:11:15,683 p=50485 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:11:16,049 p=50485 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:11:16,057 p=50485 u=vagrant n=ansible | TASK [Create Envoy service for postgres] *************************************************************************
+2025-07-02 04:11:16,073 p=50485 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:11:16,474 p=50485 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:11:16,492 p=50485 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
+2025-07-02 04:11:16,508 p=50485 u=vagrant n=ansible | TASK [Install PostgreSQL] ****************************************************************************************
+2025-07-02 04:11:41,946 p=50485 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:11:41,954 p=50485 u=vagrant n=ansible | TASK [Create database] *******************************************************************************************
+2025-07-02 04:11:42,425 p=50485 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
+  msg: Failed to import the required Python library (psycopg2) on db's Python /usr/bin/python3. Please read the module documentation and install it in the appropriate location. If the required library is installed, but Ansible is using the wrong Python interpreter, please consult the documentation on ansible_python_interpreter
+2025-07-02 04:11:42,428 p=50485 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 04:11:42,428 p=50485 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:11:42,428 p=50485 u=vagrant n=ansible | 192.168.60.11              : ok=14   changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:11:42,429 p=50485 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:11:42,429 p=50485 u=vagrant n=ansible | 192.168.60.13              : ok=15   changed=2    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:15:52,096 p=51231 u=vagrant n=ansible | playbook: main.yml
+2025-07-02 04:15:57,357 p=51240 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:15:57,391 p=51240 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:15:58,910 p=51240 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:15:59,467 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:15:59,639 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:15:59,727 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:15:59,734 p=51240 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:16:01,797 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:01,834 p=51240 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:16:01,939 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:01,989 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:01,998 p=51240 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:16:02,400 p=51240 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:16:02,422 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:02,427 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:02,428 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:02,439 p=51240 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:16:02,876 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:02,884 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:02,904 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:02,939 p=51240 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:16:02,957 p=51240 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:16:02,973 p=51240 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:16:03,729 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:03,739 p=51240 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:16:06,299 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:06,316 p=51240 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:16:06,500 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:06,509 p=51240 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:16:06,905 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:06,933 p=51240 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:16:07,319 p=51240 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:16:07,327 p=51240 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:16:08,129 p=51240 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:16:08,144 p=51240 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:16:08,160 p=51240 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:16:08,774 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:08,832 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:08,840 p=51240 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:16:11,203 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:11,255 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:11,265 p=51240 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:16:12,653 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:12,679 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:12,687 p=51240 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:16:12,883 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:12,918 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:12,928 p=51240 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:16:13,154 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:13,175 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:13,184 p=51240 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:16:13,378 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:13,392 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:13,400 p=51240 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:16:13,438 p=51240 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:16:13,815 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:13,824 p=51240 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:16:13,842 p=51240 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:16:14,253 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:14,263 p=51240 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:16:14,725 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:14,742 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:14,752 p=51240 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:16:15,452 p=51240 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:16:15,468 p=51240 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:16:15,476 p=51240 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:16:15,521 p=51240 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:16:15,918 p=51240 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:16:15,927 p=51240 u=vagrant n=ansible | TASK [Create Envoy service for postgres] *************************************************************************
+2025-07-02 04:16:15,949 p=51240 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:16:16,364 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:16,384 p=51240 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
+2025-07-02 04:16:16,400 p=51240 u=vagrant n=ansible | TASK [Install PostgreSQL] ****************************************************************************************
+2025-07-02 04:16:18,950 p=51240 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:16:18,958 p=51240 u=vagrant n=ansible | TASK [Install PostgreSQL Python library] *************************************************************************
+2025-07-02 04:16:23,309 p=51240 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:16:23,317 p=51240 u=vagrant n=ansible | TASK [Create database] *******************************************************************************************
+2025-07-02 04:16:23,682 p=51240 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: psycopg2.OperationalError: FATAL:  Peer authentication failed for user "postgres"
+2025-07-02 04:16:23,684 p=51240 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
   msg: |-
-    Could not find or access '/vagrant/src/consul01/consul_server.hcl' on the Ansible Controller.
+    unable to connect to database: FATAL:  Peer authentication failed for user "postgres"
+2025-07-02 04:16:23,685 p=51240 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 04:16:23,686 p=51240 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:16:23,686 p=51240 u=vagrant n=ansible | 192.168.60.11              : ok=14   changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:16:23,687 p=51240 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:16:23,687 p=51240 u=vagrant n=ansible | 192.168.60.13              : ok=16   changed=2    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:22:37,452 p=51900 u=vagrant n=ansible | playbook: main.yml
+2025-07-02 04:22:42,373 p=51908 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:22:42,402 p=51908 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:22:43,845 p=51908 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:22:44,345 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:44,448 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:44,539 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:44,546 p=51908 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:22:45,680 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:45,714 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:45,735 p=51908 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:22:45,848 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:45,856 p=51908 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:22:46,153 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:46,154 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:46,160 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:46,189 p=51908 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:22:46,196 p=51908 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:22:46,587 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:46,592 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:46,596 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:46,625 p=51908 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:22:46,643 p=51908 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:22:46,657 p=51908 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:22:47,420 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:47,428 p=51908 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:22:49,895 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:49,908 p=51908 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:22:50,073 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:50,081 p=51908 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:22:50,465 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:50,473 p=51908 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:22:50,840 p=51908 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:22:50,848 p=51908 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:22:51,608 p=51908 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:22:51,625 p=51908 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:22:51,640 p=51908 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:22:52,225 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:52,239 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:52,246 p=51908 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:22:54,566 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:54,614 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:54,622 p=51908 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:22:55,790 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:56,097 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:56,105 p=51908 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:22:56,289 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:56,308 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:56,337 p=51908 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:22:56,552 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:56,569 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:56,577 p=51908 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:22:56,760 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:56,777 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:56,785 p=51908 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:22:56,821 p=51908 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:22:57,159 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:57,166 p=51908 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:22:57,183 p=51908 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:22:57,567 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:57,575 p=51908 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:22:58,023 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:58,038 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:58,046 p=51908 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:22:58,625 p=51908 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:22:58,647 p=51908 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:22:58,659 p=51908 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:22:58,696 p=51908 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:22:59,044 p=51908 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:22:59,052 p=51908 u=vagrant n=ansible | TASK [Create Envoy service for postgres] *************************************************************************
+2025-07-02 04:22:59,068 p=51908 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:22:59,465 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:22:59,480 p=51908 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
+2025-07-02 04:22:59,496 p=51908 u=vagrant n=ansible | TASK [Install PostgreSQL] ****************************************************************************************
+2025-07-02 04:23:02,972 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:02,980 p=51908 u=vagrant n=ansible | TASK [Install PostgreSQL Python library] *************************************************************************
+2025-07-02 04:23:03,882 p=51908 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:03,891 p=51908 u=vagrant n=ansible | TASK [Configure PostgreSQL authentication] ***********************************************************************
+2025-07-02 04:23:03,958 p=51908 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 04:23:03,961 p=51908 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
+  msg: |-
+    Could not find or access 'pg_hba.conf.j2'
+    Searched in:
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2 on the Ansible Controller.
     If you are using a module and expect the file to exist on the remote, see the remote_src option
-2025-07-02 03:05:18,192 p=43312 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
-2025-07-02 03:05:18,192 p=43312 u=vagrant n=ansible | 192.168.60.10              : ok=7    changed=6    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-02 03:05:18,193 p=43312 u=vagrant n=ansible | 192.168.60.11              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 03:05:18,193 p=43312 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-02 03:05:18,193 p=43312 u=vagrant n=ansible | 192.168.60.13              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:23:03,963 p=51908 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 04:23:03,964 p=51908 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:23:03,964 p=51908 u=vagrant n=ansible | 192.168.60.11              : ok=14   changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:23:03,965 p=51908 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:23:03,965 p=51908 u=vagrant n=ansible | 192.168.60.13              : ok=16   changed=1    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:23:41,838 p=52292 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:23:41,868 p=52292 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:23:43,281 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:43,290 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:43,297 p=52292 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:23:43,319 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:43,335 p=52292 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:23:44,584 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:44,595 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:44,596 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:44,603 p=52292 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:23:44,612 p=52292 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:23:45,002 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:45,007 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:45,007 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:45,035 p=52292 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:23:45,043 p=52292 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:23:45,487 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:45,501 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:45,506 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:45,529 p=52292 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:23:45,548 p=52292 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:23:45,564 p=52292 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:23:46,321 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:46,329 p=52292 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:23:48,777 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:48,794 p=52292 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:23:48,968 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:48,975 p=52292 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:23:49,348 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:49,356 p=52292 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:23:49,722 p=52292 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:23:49,732 p=52292 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:23:50,488 p=52292 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:23:50,505 p=52292 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:23:50,523 p=52292 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:23:51,103 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:51,125 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:51,134 p=52292 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:23:53,477 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:53,505 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:53,513 p=52292 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:23:54,676 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:54,777 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:54,786 p=52292 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:23:54,970 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:54,993 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:55,003 p=52292 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:23:55,224 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:55,241 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:55,250 p=52292 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:23:55,434 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:55,451 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:55,459 p=52292 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:23:55,489 p=52292 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:23:55,844 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:55,852 p=52292 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:23:55,871 p=52292 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:23:56,245 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:56,253 p=52292 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:23:56,673 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:56,688 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:56,697 p=52292 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:23:57,294 p=52292 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:23:57,357 p=52292 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:23:57,366 p=52292 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:23:57,397 p=52292 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:23:57,788 p=52292 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:23:57,797 p=52292 u=vagrant n=ansible | TASK [Create Envoy service for postgres] *************************************************************************
+2025-07-02 04:23:57,814 p=52292 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:23:58,204 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:23:58,224 p=52292 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
+2025-07-02 04:23:58,239 p=52292 u=vagrant n=ansible | TASK [Install PostgreSQL] ****************************************************************************************
+2025-07-02 04:24:00,372 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:24:00,382 p=52292 u=vagrant n=ansible | TASK [Install PostgreSQL Python library] *************************************************************************
+2025-07-02 04:24:01,762 p=52292 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:24:01,771 p=52292 u=vagrant n=ansible | TASK [Configure PostgreSQL authentication] ***********************************************************************
+2025-07-02 04:24:01,843 p=52292 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 04:24:01,845 p=52292 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
+  msg: |-
+    Could not find or access 'pg_hba.conf.j2'
+    Searched in:
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2 on the Ansible Controller.
+    If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 04:24:01,847 p=52292 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 04:24:01,847 p=52292 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:24:01,848 p=52292 u=vagrant n=ansible | 192.168.60.11              : ok=14   changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:24:01,848 p=52292 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:24:01,849 p=52292 u=vagrant n=ansible | 192.168.60.13              : ok=16   changed=1    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:27:22,803 p=52810 u=vagrant n=ansible | playbook: main.yml
+2025-07-02 04:27:29,495 p=52820 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:27:29,523 p=52820 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:27:31,027 p=52820 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:27:31,616 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:31,617 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:31,701 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:31,710 p=52820 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:27:32,914 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:32,921 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:32,932 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:32,964 p=52820 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:27:32,973 p=52820 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:27:33,267 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:33,286 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:33,287 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:33,312 p=52820 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:27:33,323 p=52820 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:27:33,727 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:33,737 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:33,745 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:33,769 p=52820 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:27:33,788 p=52820 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:27:33,804 p=52820 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:27:34,574 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:34,581 p=52820 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:27:37,048 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:37,058 p=52820 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:27:37,227 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:37,235 p=52820 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:27:37,635 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:37,642 p=52820 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:27:38,042 p=52820 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:27:38,052 p=52820 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:27:38,859 p=52820 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:27:38,875 p=52820 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:27:38,896 p=52820 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:27:39,513 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:39,517 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:39,526 p=52820 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:27:42,752 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:42,767 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:42,776 p=52820 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:27:44,167 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:44,189 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:44,197 p=52820 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:27:44,384 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:44,397 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:44,406 p=52820 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:27:44,630 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:44,644 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:44,653 p=52820 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:27:44,845 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:44,863 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:44,871 p=52820 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:27:44,910 p=52820 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:27:45,251 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:45,260 p=52820 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:27:45,276 p=52820 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:27:45,659 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:45,669 p=52820 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:27:46,098 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:46,113 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:46,123 p=52820 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:27:46,705 p=52820 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:27:46,738 p=52820 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:27:46,748 p=52820 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:27:46,780 p=52820 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:27:47,149 p=52820 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:27:47,158 p=52820 u=vagrant n=ansible | TASK [Create Envoy service for postgres] *************************************************************************
+2025-07-02 04:27:47,176 p=52820 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:27:47,574 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:47,591 p=52820 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
+2025-07-02 04:27:47,608 p=52820 u=vagrant n=ansible | TASK [Install PostgreSQL] ****************************************************************************************
+2025-07-02 04:27:49,725 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:49,734 p=52820 u=vagrant n=ansible | TASK [Install PostgreSQL Python library] *************************************************************************
+2025-07-02 04:27:50,647 p=52820 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:27:50,655 p=52820 u=vagrant n=ansible | TASK [Configure PostgreSQL authentication] ***********************************************************************
+2025-07-02 04:27:50,720 p=52820 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 04:27:50,722 p=52820 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
+  msg: |-
+    Could not find or access 'pg_hba.conf.j2'
+    Searched in:
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2 on the Ansible Controller.
+    If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 04:27:50,723 p=52820 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 04:27:50,724 p=52820 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:27:50,724 p=52820 u=vagrant n=ansible | 192.168.60.11              : ok=14   changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:27:50,725 p=52820 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:27:50,725 p=52820 u=vagrant n=ansible | 192.168.60.13              : ok=16   changed=1    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:29:36,372 p=54632 u=vagrant n=ansible | playbook: main.yml
+2025-07-02 04:29:41,142 p=54640 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 04:29:41,177 p=54640 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 04:29:43,020 p=54640 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:29:43,552 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:43,563 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:43,724 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:43,735 p=54640 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 04:29:44,930 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:44,942 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:44,969 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:44,977 p=54640 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:29:44,986 p=54640 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 04:29:45,298 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:45,309 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:45,310 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:45,320 p=54640 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:29:45,328 p=54640 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 04:29:45,746 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:45,750 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:45,756 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:45,760 p=54640 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 04:29:45,778 p=54640 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 04:29:45,793 p=54640 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:29:46,570 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:46,578 p=54640 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:29:49,040 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:49,051 p=54640 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:29:49,217 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:49,224 p=54640 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 04:29:49,600 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:49,625 p=54640 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:29:49,991 p=54640 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 04:29:50,002 p=54640 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:29:50,784 p=54640 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 04:29:50,800 p=54640 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 04:29:50,815 p=54640 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 04:29:51,408 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:51,414 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:51,423 p=54640 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 04:29:53,772 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:53,776 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:53,786 p=54640 u=vagrant n=ansible | TASK [Download Envoy] ********************************************************************************************
+2025-07-02 04:29:55,208 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:55,208 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:55,216 p=54640 u=vagrant n=ansible | TASK [Create envoy group] ****************************************************************************************
+2025-07-02 04:29:55,400 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:55,418 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:55,426 p=54640 u=vagrant n=ansible | TASK [Create envoy user] *****************************************************************************************
+2025-07-02 04:29:55,652 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:55,663 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:55,672 p=54640 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 04:29:55,853 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:55,869 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:55,878 p=54640 u=vagrant n=ansible | TASK [Configure Consul client for API nodes] *********************************************************************
+2025-07-02 04:29:55,911 p=54640 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:29:56,268 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:56,276 p=54640 u=vagrant n=ansible | TASK [Configure Consul client for DB nodes] **********************************************************************
+2025-07-02 04:29:56,302 p=54640 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:29:56,670 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:56,678 p=54640 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 04:29:57,135 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:57,140 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:57,149 p=54640 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 04:29:57,708 p=54640 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 04:29:57,743 p=54640 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 04:29:57,752 p=54640 u=vagrant n=ansible | TASK [Create Envoy service for hotels] ***************************************************************************
+2025-07-02 04:29:57,781 p=54640 u=vagrant n=ansible | skipping: [192.168.60.13]
+2025-07-02 04:29:58,146 p=54640 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 04:29:58,154 p=54640 u=vagrant n=ansible | TASK [Create Envoy service for postgres] *************************************************************************
+2025-07-02 04:29:58,173 p=54640 u=vagrant n=ansible | skipping: [192.168.60.11]
+2025-07-02 04:29:58,588 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:29:58,605 p=54640 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
+2025-07-02 04:29:58,620 p=54640 u=vagrant n=ansible | TASK [Install PostgreSQL] ****************************************************************************************
+2025-07-02 04:30:01,055 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:30:01,064 p=54640 u=vagrant n=ansible | TASK [Install PostgreSQL Python library] *************************************************************************
+2025-07-02 04:30:02,167 p=54640 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 04:30:02,175 p=54640 u=vagrant n=ansible | TASK [Configure PostgreSQL authentication] ***********************************************************************
+2025-07-02 04:30:02,248 p=54640 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 04:30:02,249 p=54640 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
+  msg: |-
+    Could not find or access 'pg_hba.conf.j2'
+    Searched in:
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2
+            /home/vagrant/ansible/templates/pg_hba.conf.j2
+            /home/vagrant/ansible/pg_hba.conf.j2 on the Ansible Controller.
+    If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 04:30:02,251 p=54640 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 04:30:02,251 p=54640 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:30:02,252 p=54640 u=vagrant n=ansible | 192.168.60.11              : ok=14   changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+2025-07-02 04:30:02,252 p=54640 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 04:30:02,253 p=54640 u=vagrant n=ansible | 192.168.60.13              : ok=16   changed=1    unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   

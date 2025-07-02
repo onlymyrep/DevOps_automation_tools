@@ -131,14 +131,8 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
 
 ### 4. Проверка работоспособности
 
-исправить
-**Задание:** Проверить CRUD-операции над сервисом отелей.
+- Проверить CRUD-операции над сервисом отелей.
 
-**Выполнение:**
-```bash
-newman run ./tests/application_tests.postman_collection.json
-```
-исправить
 ---
 - Consul Server (192.168.60.10): 
    - Установлен и настроен Consul в режиме сервера
