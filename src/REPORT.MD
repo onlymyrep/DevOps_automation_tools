@@ -97,8 +97,6 @@
 - Плейбук для ролей
 ![playbook_for_roles](misc/images/playbook_for_roles.png)
 
-- Проверка доступности сервисов:
-
 - Apache доступен на порту 8090:   
 http://localhost:8090
 ![apache](misc/images/apache.png)
@@ -133,29 +131,32 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
 
 ### 4. Проверка работоспособности
 
+исправить
 **Задание:** Проверить CRUD-операции над сервисом отелей.
 
 **Выполнение:**
 ```bash
 newman run ./tests/application_tests.postman_collection.json
 ```
-
-- **Consul Server** (192.168.60.10): 
+исправить
+---
+- Consul Server (192.168.60.10): 
    - Установлен и настроен Consul в режиме сервера
    - Запущен сервис Consul
-
-- **API** (192.168.60.11):
+---   
+- API (192.168.60.11):
    - Установлен Consul в режиме клиента
    - Зарегистрирован сервис hotels-service
    - Установлен Java и сервис отелей
    - Сервис доступен на http://localhost:8082
-
-- **DB** (192.168.60.13):
+---
+- DB (192.168.60.13):
    - Установлен Consul в режиме клиента
    - Зарегистрирован сервис postgres
    - Установлена PostgreSQL с тестовой базой
    - Создана таблица hotels с тестовыми данными
-
-- **Manager** (192.168.60.12):
+---
+- Manager (192.168.60.12):
    - UI Consul доступен на http://localhost:8500
    - Ansible управляет всей инфраструктурой
+---

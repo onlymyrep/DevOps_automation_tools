@@ -1,531 +1,309 @@
-2025-07-01 19:02:39,223 p=9799 u=vagrant n=ansible | PLAY [Precache setup] ********************************************************************************************
-2025-07-01 19:02:39,233 p=9799 u=vagrant n=ansible | TASK [Gathering Facts] *******************************************************************************************
-2025-07-01 19:02:39,597 p=9806 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.10: Failed to connect to the host
-via ssh: Warning: Permanently added '192.168.60.10' (ECDSA) to the list of known hosts.  no such identity:
-/home/vagrant/.ssh/id_rsa: No such file or directory  vagrant@192.168.60.10: Permission denied (publickey).
+2025-07-02 01:45:10,644 p=10252 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
 
-2025-07-01 19:02:39,613 p=9807 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.11: Failed to connect to the host
-via ssh: Warning: Permanently added '192.168.60.11' (ECDSA) to the list of known hosts.  no such identity:
-/home/vagrant/.ssh/id_rsa: No such file or directory  vagrant@192.168.60.11: Permission denied (publickey).
+Syntax Error while loading YAML.
+  did not find expected '-' indicator
 
-2025-07-01 19:02:39,633 p=9808 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.13: Failed to connect to the host
-via ssh: Warning: Permanently added '192.168.60.13' (ECDSA) to the list of known hosts.  no such identity:
-/home/vagrant/.ssh/id_rsa: No such file or directory  vagrant@192.168.60.13: Permission denied (publickey).
+The error appears to be in '/home/vagrant/ansible/main.yml': line 419, column 1, but may
+be elsewhere in the file depending on the exact syntax problem.
 
-2025-07-01 19:02:39,693 p=9799 u=vagrant n=ansible | fatal: [192.168.60.11]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:02:39,709 p=9799 u=vagrant n=ansible | fatal: [192.168.60.13]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:02:39,751 p=9799 u=vagrant n=ansible | fatal: [192.168.60.10]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:02:40,445 p=9799 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:02:40,456 p=9799 u=vagrant n=ansible | TASK [Cache facts] ***********************************************************************************************
-2025-07-01 19:02:41,166 p=9799 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:02:41,178 p=9799 u=vagrant n=ansible | PLAY [Configure common setup] ************************************************************************************
-2025-07-01 19:02:41,504 p=9799 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
-2025-07-01 19:02:41,504 p=9799 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:02:41,865 p=9799 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
-2025-07-01 19:02:41,866 p=9799 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:02:48,891 p=9799 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
-2025-07-01 19:02:48,891 p=9799 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:02:48,912 p=9799 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
-2025-07-01 19:02:48,916 p=9799 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
-2025-07-01 19:02:48,920 p=9799 u=vagrant n=ansible | NO MORE HOSTS LEFT ***********************************************************************************************
-2025-07-01 19:02:48,922 p=9799 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
-2025-07-01 19:02:48,927 p=9799 u=vagrant n=ansible | PLAY [Setup hotels service] **************************************************************************************
-2025-07-01 19:02:48,932 p=9799 u=vagrant n=ansible | PLAY [Start Envoy sidecars] **************************************************************************************
-2025-07-01 19:02:48,933 p=9799 u=vagrant n=ansible | NO MORE HOSTS LEFT ***********************************************************************************************
-2025-07-01 19:02:48,935 p=9799 u=vagrant n=ansible | PLAY [Health checks] *********************************************************************************************
-2025-07-01 19:02:48,948 p=9799 u=vagrant n=ansible | TASK [Check Consul status] ***************************************************************************************
-2025-07-01 19:02:49,239 p=9799 u=vagrant n=ansible | fatal: [192.168.60.12]: FAILED! => changed=false 
-  cmd: consul members
-  msg: '[Errno 2] No such file or directory: b''consul'''
-  rc: 2
-  stderr: ''
-  stderr_lines: <omitted>
-  stdout: ''
-  stdout_lines: <omitted>
-2025-07-01 19:02:49,241 p=9799 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
-2025-07-01 19:02:49,241 p=9799 u=vagrant n=ansible | 192.168.60.10              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:02:49,241 p=9799 u=vagrant n=ansible | 192.168.60.11              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:02:49,242 p=9799 u=vagrant n=ansible | 192.168.60.12              : ok=5    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:02:49,242 p=9799 u=vagrant n=ansible | 192.168.60.13              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:34:04,353 p=9750 u=vagrant n=ansible | PLAY [Setup SSH access] ******************************************************************************************
-2025-07-01 19:34:04,365 p=9750 u=vagrant n=ansible | TASK [Gathering Facts] *******************************************************************************************
-2025-07-01 19:34:04,645 p=9774 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.10: Failed to connect to the host
-via ssh: Warning: Permanently added '192.168.60.10' (ECDSA) to the list of known hosts.  no such identity:
-/home/vagrant/.ssh/id_rsa: No such file or directory  vagrant@192.168.60.10: Permission denied (publickey).
+The offending line appears to be:
 
-2025-07-01 19:34:04,649 p=9775 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.11: Failed to connect to the host
-via ssh: Warning: Permanently added '192.168.60.11' (ECDSA) to the list of known hosts.  no such identity:
-/home/vagrant/.ssh/id_rsa: No such file or directory  vagrant@192.168.60.11: Permission denied (publickey).
+# Обработчики должны быть в конце
+handlers:
+^ here
 
-2025-07-01 19:34:04,656 p=9776 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.13: Failed to connect to the host
-via ssh: Warning: Permanently added '192.168.60.13' (ECDSA) to the list of known hosts.  no such identity:
-/home/vagrant/.ssh/id_rsa: No such file or directory  vagrant@192.168.60.13: Permission denied (publickey).
+2025-07-02 01:45:39,844 p=10297 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 01:45:39,871 p=10297 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 01:45:50,087 p=10297 u=vagrant n=ansible | changed: [192.168.60.12]
+2025-07-02 01:45:50,527 p=10297 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 01:45:50,808 p=10297 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 01:45:51,507 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 01:45:51,515 p=10297 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 01:45:53,120 p=10297 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:45:53,159 p=10297 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:45:53,215 p=10297 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:45:53,261 p=10297 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:45:53,269 p=10297 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 01:45:53,607 p=10297 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 01:45:53,615 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 01:45:53,616 p=10297 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 01:45:53,624 p=10297 u=vagrant n=ansible | changed: [192.168.60.12]
+2025-07-02 01:45:53,655 p=10297 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 01:45:54,023 p=10297 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 01:45:54,034 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 01:45:54,035 p=10297 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 01:45:54,046 p=10297 u=vagrant n=ansible | changed: [192.168.60.12]
+2025-07-02 01:45:54,066 p=10297 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 01:45:54,082 p=10297 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 01:45:56,076 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 01:45:56,091 p=10297 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 01:46:00,407 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 01:46:00,415 p=10297 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 01:46:00,689 p=10297 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 01:46:00,697 p=10297 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 01:46:00,761 p=10297 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 01:46:00,764 p=10297 u=vagrant n=ansible | fatal: [192.168.60.10]: FAILED! => changed=false 
+  msg: |-
+    Could not find or access '/vagrant/src/consul01/consul_server.hcl' on the Ansible Controller.
+    If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 01:46:00,765 p=10297 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 01:46:00,766 p=10297 u=vagrant n=ansible | 192.168.60.10              : ok=7    changed=6    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-02 01:46:00,767 p=10297 u=vagrant n=ansible | 192.168.60.11              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 01:46:00,767 p=10297 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 01:46:00,768 p=10297 u=vagrant n=ansible | 192.168.60.13              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 01:47:28,162 p=10888 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 01:47:28,186 p=10888 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 01:47:29,604 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:47:30,292 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:47:30,300 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:47:30,460 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:47:30,468 p=10888 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 01:47:31,601 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:47:31,648 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:47:31,664 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:47:31,843 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:47:31,851 p=10888 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 01:47:32,137 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:47:32,143 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:47:32,144 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:47:32,175 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:47:32,184 p=10888 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 01:47:32,563 p=10888 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:47:32,564 p=10888 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:47:32,568 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:47:32,583 p=10888 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:47:32,601 p=10888 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 01:47:32,620 p=10888 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 01:47:33,364 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:47:33,372 p=10888 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 01:47:36,351 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:47:36,359 p=10888 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 01:47:36,539 p=10888 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:47:36,547 p=10888 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 01:47:37,028 p=10888 u=vagrant n=ansible | ERROR! The requested handler 'Restart Consul' was not found in either the main handlers list nor in the listening handlers list
+2025-07-02 01:49:02,170 p=11175 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 01:49:02,193 p=11175 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 01:49:03,578 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:49:04,092 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:49:04,122 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:49:04,234 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:04,257 p=11175 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 01:49:05,364 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:49:05,384 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:49:05,394 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:49:05,438 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:05,446 p=11175 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 01:49:05,732 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:49:05,733 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:05,736 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:49:05,769 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:49:05,778 p=11175 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 01:49:06,136 p=11175 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:49:06,141 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:06,142 p=11175 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:49:06,175 p=11175 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:49:06,192 p=11175 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 01:49:06,208 p=11175 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 01:49:06,921 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:06,929 p=11175 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 01:49:09,451 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:09,458 p=11175 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 01:49:09,618 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:09,625 p=11175 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 01:49:09,991 p=11175 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:49:10,018 p=11175 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 01:49:10,473 p=11175 u=vagrant n=ansible | ERROR! The requested handler 'Restart Consul' was not found in either the main handlers list nor in the listening handlers list
+2025-07-02 01:55:02,685 p=12018 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 01:55:02,708 p=12018 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 01:55:04,101 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:55:04,692 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:55:04,692 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:55:04,745 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:04,752 p=12018 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 01:55:05,846 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:55:05,868 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:55:05,868 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:55:05,921 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:05,928 p=12018 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 01:55:06,235 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:55:06,245 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:06,246 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:55:06,249 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:55:06,258 p=12018 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 01:55:06,639 p=12018 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 01:55:06,652 p=12018 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 01:55:06,652 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:06,668 p=12018 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 01:55:06,686 p=12018 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 01:55:06,701 p=12018 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 01:55:07,395 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:07,403 p=12018 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 01:55:09,876 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:09,888 p=12018 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 01:55:10,053 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:10,060 p=12018 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 01:55:10,428 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:10,436 p=12018 u=vagrant n=ansible | TASK [Create systemd service] ************************************************************************************
+2025-07-02 01:55:10,797 p=12018 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 01:55:10,805 p=12018 u=vagrant n=ansible | TASK [Start Consul service] **************************************************************************************
+2025-07-02 01:55:11,870 p=12018 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 01:55:11,885 p=12018 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
+2025-07-02 01:55:11,900 p=12018 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 01:55:14,098 p=12018 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 01:55:14,533 p=12018 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 01:55:14,540 p=12018 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 01:55:18,722 p=12018 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 01:55:18,761 p=12018 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 01:55:18,770 p=12018 u=vagrant n=ansible | TASK [Install Envoy] *********************************************************************************************
+2025-07-02 01:55:19,451 p=12018 u=vagrant n=ansible | fatal: [192.168.60.11]: FAILED! => changed=false 
+  msg: No package matching 'envoy' is available
+2025-07-02 01:55:19,471 p=12018 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
+  msg: No package matching 'envoy' is available
+2025-07-02 01:55:19,473 p=12018 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 01:55:19,474 p=12018 u=vagrant n=ansible | 192.168.60.10              : ok=10   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 01:55:19,475 p=12018 u=vagrant n=ansible | 192.168.60.11              : ok=6    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-02 01:55:19,475 p=12018 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 01:55:19,476 p=12018 u=vagrant n=ansible | 192.168.60.13              : ok=6    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-02 02:11:22,441 p=14100 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
 
-2025-07-01 19:34:04,704 p=9750 u=vagrant n=ansible | fatal: [192.168.60.10]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:34:04,706 p=9750 u=vagrant n=ansible | fatal: [192.168.60.11]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:34:04,710 p=9750 u=vagrant n=ansible | fatal: [192.168.60.13]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:34:04,729 p=9750 u=vagrant n=ansible | TASK [Generate SSH key on manager] *******************************************************************************
-2025-07-01 19:34:05,219 p=9750 u=vagrant n=ansible | changed: [192.168.60.12 -> localhost]
-2025-07-01 19:34:05,228 p=9750 u=vagrant n=ansible | TASK [Set key permissions] ***************************************************************************************
-2025-07-01 19:34:05,498 p=9750 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:34:05,505 p=9750 u=vagrant n=ansible | TASK [Copy public key to all nodes] ******************************************************************************
-2025-07-01 19:34:05,910 p=9750 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:34:05,925 p=9750 u=vagrant n=ansible | PLAY [Precache setup] ********************************************************************************************
-2025-07-01 19:34:05,941 p=9750 u=vagrant n=ansible | TASK [Cache facts] ***********************************************************************************************
-2025-07-01 19:34:06,693 p=9750 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:34:06,706 p=9750 u=vagrant n=ansible | PLAY [Configure common setup] ************************************************************************************
-2025-07-01 19:34:06,717 p=9750 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
-2025-07-01 19:34:07,004 p=9750 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:34:07,011 p=9750 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
-2025-07-01 19:34:07,371 p=9750 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:34:07,377 p=9750 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
-2025-07-01 19:34:14,486 p=9750 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:34:14,497 p=9750 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
-2025-07-01 19:34:14,501 p=9750 u=vagrant n=ansible | PLAY [Setup Consul clients] **************************************************************************************
-2025-07-01 19:34:14,503 p=9750 u=vagrant n=ansible | PLAY [Setup database] ********************************************************************************************
-2025-07-01 19:34:14,506 p=9750 u=vagrant n=ansible | PLAY [Setup hotels service] **************************************************************************************
-2025-07-01 19:34:14,512 p=9750 u=vagrant n=ansible | PLAY [Start Envoy sidecars] **************************************************************************************
-2025-07-01 19:34:14,521 p=9750 u=vagrant n=ansible | PLAY [Health checks] *********************************************************************************************
-2025-07-01 19:34:14,544 p=9750 u=vagrant n=ansible | TASK [Check Consul status] ***************************************************************************************
-2025-07-01 19:34:14,821 p=9750 u=vagrant n=ansible | fatal: [192.168.60.12]: FAILED! => changed=false 
-  cmd: /usr/local/bin/consul members
-  msg: '[Errno 2] No such file or directory: b''/usr/local/bin/consul'''
-  rc: 2
-  stderr: ''
-  stderr_lines: <omitted>
-  stdout: ''
-  stdout_lines: <omitted>
-2025-07-01 19:34:14,824 p=9750 u=vagrant n=ansible | PLAY [Test CRUD operations] **************************************************************************************
-2025-07-01 19:34:14,829 p=9750 u=vagrant n=ansible | TASK [Gathering Facts] *******************************************************************************************
-2025-07-01 19:34:15,551 p=9750 u=vagrant n=ansible | ok: [localhost]
-2025-07-01 19:34:15,567 p=9750 u=vagrant n=ansible | TASK [Create hotel] **********************************************************************************************
-2025-07-01 19:34:15,938 p=9750 u=vagrant n=ansible | fatal: [localhost]: FAILED! => changed=false 
-  msg: 'Unsupported parameters for (ansible.legacy.uri) module: register. Supported parameters include: creates, body_format, body, url_username (user), unix_socket, url_password (password), owner, force_basic_auth, timeout, force, use_gssapi, group, client_cert, dest, url, http_agent, validate_certs, unredirected_headers, ca_path, serole, setype, unsafe_writes, method, attributes (attr), mode, return_content, follow_redirects, remote_src, headers, removes, status_code, seuser, selevel, use_proxy, src, client_key.'
-2025-07-01 19:34:15,940 p=9750 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
-2025-07-01 19:34:15,940 p=9750 u=vagrant n=ansible | 192.168.60.10              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:34:15,941 p=9750 u=vagrant n=ansible | 192.168.60.11              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:34:15,941 p=9750 u=vagrant n=ansible | 192.168.60.12              : ok=7    changed=5    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:34:15,942 p=9750 u=vagrant n=ansible | 192.168.60.13              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:34:15,942 p=9750 u=vagrant n=ansible | localhost                  : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:42:15,380 p=11911 u=vagrant n=ansible | PLAY [Setup SSH access] ************************************************************************************************************
-2025-07-01 19:42:15,391 p=11911 u=vagrant n=ansible | TASK [Gathering Facts] *************************************************************************************************************
-2025-07-01 19:42:15,669 p=11921 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.13: Failed to connect to the host via ssh:
-vagrant@192.168.60.13: Permission denied (publickey).
+Syntax Error while loading YAML.
+  mapping values are not allowed in this context
 
-2025-07-01 19:42:15,671 p=11919 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.10: Failed to connect to the host via ssh:
-vagrant@192.168.60.10: Permission denied (publickey).
+The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 11, but may
+be elsewhere in the file depending on the exact syntax problem.
 
-2025-07-01 19:42:15,678 p=11920 u=vagrant n=ansible | [WARNING]: Unhandled error in Python interpreter discovery for host 192.168.60.11: Failed to connect to the host via ssh:
-vagrant@192.168.60.11: Permission denied (publickey).
+The offending line appears to be:
 
-2025-07-01 19:42:15,737 p=11911 u=vagrant n=ansible | fatal: [192.168.60.13]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:42:15,748 p=11911 u=vagrant n=ansible | fatal: [192.168.60.11]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:42:15,769 p=11911 u=vagrant n=ansible | fatal: [192.168.60.10]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 19:42:15,793 p=11911 u=vagrant n=ansible | TASK [Generate SSH key on manager] *************************************************************************************************
-2025-07-01 19:42:16,182 p=11911 u=vagrant n=ansible | ok: [192.168.60.12 -> localhost]
-2025-07-01 19:42:16,190 p=11911 u=vagrant n=ansible | TASK [Set key permissions] *********************************************************************************************************
-2025-07-01 19:42:16,467 p=11911 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:42:16,475 p=11911 u=vagrant n=ansible | TASK [Copy public key to all nodes] ************************************************************************************************
-2025-07-01 19:42:16,860 p=11911 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:42:16,876 p=11911 u=vagrant n=ansible | PLAY [Precache setup] **************************************************************************************************************
-2025-07-01 19:42:16,908 p=11911 u=vagrant n=ansible | TASK [Cache facts] *****************************************************************************************************************
-2025-07-01 19:42:18,680 p=11911 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:42:18,697 p=11911 u=vagrant n=ansible | PLAY [Configure common setup] ******************************************************************************************************
-2025-07-01 19:42:18,711 p=11911 u=vagrant n=ansible | TASK [Create consul group and user] ************************************************************************************************
-2025-07-01 19:42:19,041 p=11911 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:42:19,048 p=11911 u=vagrant n=ansible | TASK [Create consul user] **********************************************************************************************************
-2025-07-01 19:42:19,441 p=11911 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:42:19,448 p=11911 u=vagrant n=ansible | TASK [Install common dependencies] *************************************************************************************************
-2025-07-01 19:42:20,592 p=11911 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:42:20,606 p=11911 u=vagrant n=ansible | PLAY [Setup Consul server] *********************************************************************************************************
-2025-07-01 19:42:20,609 p=11911 u=vagrant n=ansible | PLAY [Setup Consul clients] ********************************************************************************************************
-2025-07-01 19:42:20,612 p=11911 u=vagrant n=ansible | PLAY [Setup database] **************************************************************************************************************
-2025-07-01 19:42:20,615 p=11911 u=vagrant n=ansible | PLAY [Setup hotels service] ********************************************************************************************************
-2025-07-01 19:42:20,618 p=11911 u=vagrant n=ansible | PLAY [Start Envoy sidecars] ********************************************************************************************************
-2025-07-01 19:42:20,620 p=11911 u=vagrant n=ansible | PLAY [Health checks] ***************************************************************************************************************
-2025-07-01 19:42:20,632 p=11911 u=vagrant n=ansible | TASK [Check Consul status] *********************************************************************************************************
-2025-07-01 19:42:20,923 p=11911 u=vagrant n=ansible | fatal: [192.168.60.12]: FAILED! => changed=false 
-  cmd: /usr/local/bin/consul members
-  msg: '[Errno 2] No such file or directory: b''/usr/local/bin/consul'''
-  rc: 2
-  stderr: ''
-  stderr_lines: <omitted>
-  stdout: ''
-  stdout_lines: <omitted>
-2025-07-01 19:42:20,924 p=11911 u=vagrant n=ansible | ...ignoring
-2025-07-01 19:42:20,931 p=11911 u=vagrant n=ansible | TASK [Show Consul status] **********************************************************************************************************
-2025-07-01 19:42:20,950 p=11911 u=vagrant n=ansible | ok: [192.168.60.12] => 
-  consul_status.stdout_lines: []
-2025-07-01 19:42:20,958 p=11911 u=vagrant n=ansible | TASK [Check system resources] ******************************************************************************************************
-2025-07-01 19:42:21,151 p=11911 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:42:21,158 p=11911 u=vagrant n=ansible | TASK [Show system info] ************************************************************************************************************
-2025-07-01 19:42:21,175 p=11911 u=vagrant n=ansible | ok: [192.168.60.12] => 
-  sys_info.stdout_lines:
-  - 'CPU: 5.54715%'
-  - 'Memory: 10.69%'
-  - 'Disk: 7%'
-2025-07-01 19:42:21,192 p=11911 u=vagrant n=ansible | PLAY [Test CRUD operations] ********************************************************************************************************
-2025-07-01 19:42:21,205 p=11911 u=vagrant n=ansible | TASK [Create hotel] ****************************************************************************************************************
-2025-07-01 19:42:21,589 p=11911 u=vagrant n=ansible | fatal: [192.168.60.12]: FAILED! => changed=false 
-  elapsed: 0
-  msg: 'Status code was -1 and not [201]: Request failed: <urlopen error [Errno 111] Connection refused>'
-  redirected: false
-  status: -1
-  url: http://localhost:8082/hotels
-2025-07-01 19:42:21,590 p=11911 u=vagrant n=ansible | ...ignoring
-2025-07-01 19:42:21,596 p=11911 u=vagrant n=ansible | TASK [Show creation result] ********************************************************************************************************
-2025-07-01 19:42:21,615 p=11911 u=vagrant n=ansible | ok: [192.168.60.12] => 
-  create_result:
-    changed: false
-    elapsed: 0
-    failed: true
-    msg: 'Status code was -1 and not [201]: Request failed: <urlopen error [Errno 111] Connection refused>'
-    redirected: false
-    status: -1
-    url: http://localhost:8082/hotels
-2025-07-01 19:42:21,627 p=11911 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 19:42:21,628 p=11911 u=vagrant n=ansible | 192.168.60.10              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:42:21,628 p=11911 u=vagrant n=ansible | 192.168.60.11              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:42:21,628 p=11911 u=vagrant n=ansible | 192.168.60.12              : ok=13   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
-2025-07-01 19:42:21,629 p=11911 u=vagrant n=ansible | 192.168.60.13              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:47:03,822 p=13231 u=vagrant n=ansible | PLAY [Setup SSH access] ************************************************************************************************************
-2025-07-01 19:47:03,833 p=13231 u=vagrant n=ansible | TASK [Gathering Facts] *************************************************************************************************************
-2025-07-01 19:47:05,633 p=13231 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-01 19:47:05,720 p=13231 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-01 19:47:06,637 p=13231 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-01 19:47:06,655 p=13231 u=vagrant n=ansible | TASK [Generate SSH key on manager] *************************************************************************************************
-2025-07-01 19:47:07,150 p=13231 u=vagrant n=ansible | changed: [192.168.60.10 -> localhost]
-2025-07-01 19:47:07,155 p=13231 u=vagrant n=ansible | TASK [Set key permissions] *********************************************************************************************************
-2025-07-01 19:47:07,454 p=13231 u=vagrant n=ansible | fatal: [192.168.60.11]: FAILED! => changed=false 
-  msg: file (/home/vagrant/.ssh/id_rsa) is absent, cannot continue
-  path: /home/vagrant/.ssh/id_rsa
-  state: absent
-2025-07-01 19:47:07,457 p=13231 u=vagrant n=ansible | fatal: [192.168.60.13]: FAILED! => changed=false 
-  msg: file (/home/vagrant/.ssh/id_rsa) is absent, cannot continue
-  path: /home/vagrant/.ssh/id_rsa
-  state: absent
-2025-07-01 19:47:07,467 p=13231 u=vagrant n=ansible | fatal: [192.168.60.10]: FAILED! => changed=false 
-  msg: file (/home/vagrant/.ssh/id_rsa) is absent, cannot continue
-  path: /home/vagrant/.ssh/id_rsa
-  state: absent
-2025-07-01 19:47:07,469 p=13231 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:47:07,482 p=13231 u=vagrant n=ansible | TASK [Copy public key to all nodes] ************************************************************************************************
-2025-07-01 19:47:07,913 p=13231 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 19:47:07,929 p=13231 u=vagrant n=ansible | PLAY [Precache setup] **************************************************************************************************************
-2025-07-01 19:47:07,943 p=13231 u=vagrant n=ansible | TASK [Cache facts] *****************************************************************************************************************
-2025-07-01 19:47:08,663 p=13231 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:47:08,676 p=13231 u=vagrant n=ansible | PLAY [Configure common setup] ******************************************************************************************************
-2025-07-01 19:47:08,689 p=13231 u=vagrant n=ansible | TASK [Create consul group and user] ************************************************************************************************
-2025-07-01 19:47:08,981 p=13231 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:47:08,987 p=13231 u=vagrant n=ansible | TASK [Create consul user] **********************************************************************************************************
-2025-07-01 19:47:09,330 p=13231 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:47:09,336 p=13231 u=vagrant n=ansible | TASK [Install common dependencies] *************************************************************************************************
-2025-07-01 19:47:10,424 p=13231 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:47:10,439 p=13231 u=vagrant n=ansible | PLAY [Setup Consul server] *********************************************************************************************************
-2025-07-01 19:47:10,442 p=13231 u=vagrant n=ansible | PLAY [Setup Consul clients] ********************************************************************************************************
-2025-07-01 19:47:10,445 p=13231 u=vagrant n=ansible | PLAY [Setup database] **************************************************************************************************************
-2025-07-01 19:47:10,449 p=13231 u=vagrant n=ansible | PLAY [Setup hotels service] ********************************************************************************************************
-2025-07-01 19:47:10,452 p=13231 u=vagrant n=ansible | PLAY [Start Envoy sidecars] ********************************************************************************************************
-2025-07-01 19:47:10,454 p=13231 u=vagrant n=ansible | PLAY [Health checks] ***************************************************************************************************************
-2025-07-01 19:47:10,466 p=13231 u=vagrant n=ansible | TASK [Check Consul status] *********************************************************************************************************
-2025-07-01 19:47:10,767 p=13231 u=vagrant n=ansible | fatal: [192.168.60.12]: FAILED! => changed=false 
-  cmd: /usr/local/bin/consul members
-  msg: '[Errno 2] No such file or directory: b''/usr/local/bin/consul'''
-  rc: 2
-  stderr: ''
-  stderr_lines: <omitted>
-  stdout: ''
-  stdout_lines: <omitted>
-2025-07-01 19:47:10,768 p=13231 u=vagrant n=ansible | ...ignoring
-2025-07-01 19:47:10,774 p=13231 u=vagrant n=ansible | TASK [Show Consul status] **********************************************************************************************************
-2025-07-01 19:47:10,791 p=13231 u=vagrant n=ansible | ok: [192.168.60.12] => 
-  consul_status.stdout_lines: []
-2025-07-01 19:47:10,798 p=13231 u=vagrant n=ansible | TASK [Check system resources] ******************************************************************************************************
-2025-07-01 19:47:10,986 p=13231 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 19:47:10,992 p=13231 u=vagrant n=ansible | TASK [Show system info] ************************************************************************************************************
-2025-07-01 19:47:11,010 p=13231 u=vagrant n=ansible | ok: [192.168.60.12] => 
-  sys_info.stdout_lines:
-  - 'CPU: 4.41981%'
-  - 'Memory: 10.89%'
-  - 'Disk: 7%'
-2025-07-01 19:47:11,026 p=13231 u=vagrant n=ansible | PLAY [Test CRUD operations] ********************************************************************************************************
-2025-07-01 19:47:11,040 p=13231 u=vagrant n=ansible | TASK [Create hotel] ****************************************************************************************************************
-2025-07-01 19:47:11,422 p=13231 u=vagrant n=ansible | fatal: [192.168.60.12]: FAILED! => changed=false 
-  elapsed: 0
-  msg: 'Status code was -1 and not [201]: Request failed: <urlopen error [Errno 111] Connection refused>'
-  redirected: false
-  status: -1
-  url: http://localhost:8082/hotels
-2025-07-01 19:47:11,423 p=13231 u=vagrant n=ansible | ...ignoring
-2025-07-01 19:47:11,431 p=13231 u=vagrant n=ansible | TASK [Show creation result] ********************************************************************************************************
-2025-07-01 19:47:11,448 p=13231 u=vagrant n=ansible | ok: [192.168.60.12] => 
-  create_result:
-    changed: false
-    elapsed: 0
-    failed: true
-    msg: 'Status code was -1 and not [201]: Request failed: <urlopen error [Errno 111] Connection refused>'
-    redirected: false
-    status: -1
-    url: http://localhost:8082/hotels
-2025-07-01 19:47:11,460 p=13231 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 19:47:11,461 p=13231 u=vagrant n=ansible | 192.168.60.10              : ok=2    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:47:11,462 p=13231 u=vagrant n=ansible | 192.168.60.11              : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-01 19:47:11,463 p=13231 u=vagrant n=ansible | 192.168.60.12              : ok=12   changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
-2025-07-01 19:47:11,463 p=13231 u=vagrant n=ansible | 192.168.60.13              : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:04:05,398 p=9732 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] **************************************************************************************************************
-2025-07-01 20:04:05,444 p=9732 u=vagrant n=ansible | TASK [ping] ************************************************************************************************************************
-2025-07-01 20:04:05,651 p=9732 u=vagrant n=ansible | fatal: [192.168.60.11]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.11' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:04:05,658 p=9732 u=vagrant n=ansible | fatal: [192.168.60.10]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.10' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:04:05,659 p=9732 u=vagrant n=ansible | fatal: [192.168.60.13]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.13' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:04:05,796 p=9732 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 20:04:05,810 p=9732 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 20:04:05,811 p=9732 u=vagrant n=ansible | 192.168.60.10              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:04:05,811 p=9732 u=vagrant n=ansible | 192.168.60.11              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:04:05,811 p=9732 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:04:05,812 p=9732 u=vagrant n=ansible | 192.168.60.13              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:08:22,289 p=10187 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] **************************************************************************************************************
-2025-07-01 20:08:22,337 p=10187 u=vagrant n=ansible | TASK [ping] ************************************************************************************************************************
-2025-07-01 20:08:22,538 p=10187 u=vagrant n=ansible | fatal: [192.168.60.10]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.10' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:08:22,568 p=10187 u=vagrant n=ansible | fatal: [192.168.60.13]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.13' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:08:22,585 p=10187 u=vagrant n=ansible | fatal: [192.168.60.11]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.11' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:08:22,688 p=10187 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 20:08:22,701 p=10187 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 20:08:22,702 p=10187 u=vagrant n=ansible | 192.168.60.10              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:08:22,702 p=10187 u=vagrant n=ansible | 192.168.60.11              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:08:22,703 p=10187 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:08:22,703 p=10187 u=vagrant n=ansible | 192.168.60.13              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:20:44,236 p=9840 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] **************************************************************************************************************
-2025-07-01 20:20:44,280 p=9840 u=vagrant n=ansible | TASK [ping] ************************************************************************************************************************
-2025-07-01 20:20:44,506 p=9840 u=vagrant n=ansible | fatal: [192.168.60.11]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.11' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:20:44,507 p=9840 u=vagrant n=ansible | fatal: [192.168.60.13]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.13' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:20:44,512 p=9840 u=vagrant n=ansible | fatal: [192.168.60.10]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: Warning: Permanently added '192.168.60.10' (ECDSA) to the list of known hosts.
-    no such identity: /home/vagrant/.ssh/id_rsa: No such file or directory
-    vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:20:44,619 p=9840 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 20:20:44,634 p=9840 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 20:20:44,634 p=9840 u=vagrant n=ansible | 192.168.60.10              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:20:44,635 p=9840 u=vagrant n=ansible | 192.168.60.11              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:20:44,635 p=9840 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:20:44,636 p=9840 u=vagrant n=ansible | 192.168.60.13              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:26:48,236 p=10443 u=vagrant n=ansible | PLAY [Fix SSH access] **************************************************************************************************************
-2025-07-01 20:26:48,264 p=10443 u=vagrant n=ansible | TASK [Ensure .ssh directory exists] ************************************************************************************************
-2025-07-01 20:26:48,452 p=10443 u=vagrant n=ansible | fatal: [192.168.60.11]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:26:48,458 p=10443 u=vagrant n=ansible | fatal: [192.168.60.13]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:26:48,458 p=10443 u=vagrant n=ansible | fatal: [192.168.60.10]: UNREACHABLE! => changed=false 
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:26:48,568 p=10443 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 20:26:48,603 p=10443 u=vagrant n=ansible | TASK [Add manager public key] ******************************************************************************************************
-2025-07-01 20:26:48,797 p=10443 u=vagrant n=ansible | failed: [192.168.60.12 -> 192.168.60.10] (item=192.168.60.10) => 
-  ansible_loop_var: item
-  item: 192.168.60.10
-  msg: |-
-    Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: vagrant@192.168.60.10: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:26:48,848 p=10443 u=vagrant n=ansible | failed: [192.168.60.12 -> 192.168.60.11] (item=192.168.60.11) => 
-  ansible_loop_var: item
-  item: 192.168.60.11
-  msg: |-
-    Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: vagrant@192.168.60.11: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:26:48,899 p=10443 u=vagrant n=ansible | failed: [192.168.60.12 -> 192.168.60.13] (item=192.168.60.13) => 
-  ansible_loop_var: item
-  item: 192.168.60.13
-  msg: |-
-    Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: vagrant@192.168.60.13: Permission denied (publickey).
-  unreachable: true
-2025-07-01 20:26:49,176 p=10443 u=vagrant n=ansible | changed: [192.168.60.12] => (item=192.168.60.12)
-2025-07-01 20:26:49,181 p=10443 u=vagrant n=ansible | fatal: [192.168.60.12 -> {{ item }}]: UNREACHABLE! => changed=true 
-  msg: All items completed
-  results:
-  - ansible_loop_var: item
-    item: 192.168.60.10
-    msg: |-
-      Data could not be sent to remote host "192.168.60.10". Make sure this host can be reached over ssh: vagrant@192.168.60.10: Permission denied (publickey).
-    unreachable: true
-  - ansible_loop_var: item
-    item: 192.168.60.11
-    msg: |-
-      Data could not be sent to remote host "192.168.60.11". Make sure this host can be reached over ssh: vagrant@192.168.60.11: Permission denied (publickey).
-    unreachable: true
-  - ansible_loop_var: item
-    item: 192.168.60.13
-    msg: |-
-      Data could not be sent to remote host "192.168.60.13". Make sure this host can be reached over ssh: vagrant@192.168.60.13: Permission denied (publickey).
-    unreachable: true
-  - ansible_loop_var: item
-    changed: true
-    comment: null
-    exclusive: false
-    failed: false
-    follow: false
-    invocation:
-      module_args:
-        changed: true
-        comment: null
-        exclusive: false
-        follow: false
-        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDpX2+v9792PuBswwKcXCNcmzbHeulj+le39PfvEKJiQQ1BpGR4V7pcK+Zj35GDjF7VSQNIxYscMxPaX5zeayPIT2SkUjYSmp41QVSdbM5imJv9R8cFHIVIpzyHf77sGrJwx05lzaNWpQuo/rZOE1836zu0X6kDFr8oRVKb6DOaH5sbT/JN/uvXrHoVVQnHSsZrxfSiRK9LTqhfAb1+MuQ3a06f/ozVyrLXBeo47eUcx/YKBxaQ4uk1wEBoNZVUn93XVc6rq2qRkMUhI1qyZNpdk05JTKJ4TX2LSlL0y7uTsD6uqcgILneGVsJHuKB8iu90X3/JK43FB3QN/NwVQSXXhTrZpRtF9AbjIq2zlOdTSE6muKMrJM8VEY2kvsxU7JTylQ4LmzMcWnW9Xu/RaNnowL+CljeW2HSt59kR4Hg3yFdp6h/ERkaFQtibm1bHB5gompt++/z7eFTtbPJpaVzwkh8AmdUqt+/rnvbxBUC05jjVbmNQpUTOljArgRDRDyc= vagrant@manager
-        key_options: null
-        keyfile: /home/vagrant/.ssh/authorized_keys
-        manage_dir: true
-        path: null
-        state: present
-        user: vagrant
-        validate_certs: true
-    item: 192.168.60.12
-    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDpX2+v9792PuBswwKcXCNcmzbHeulj+le39PfvEKJiQQ1BpGR4V7pcK+Zj35GDjF7VSQNIxYscMxPaX5zeayPIT2SkUjYSmp41QVSdbM5imJv9R8cFHIVIpzyHf77sGrJwx05lzaNWpQuo/rZOE1836zu0X6kDFr8oRVKb6DOaH5sbT/JN/uvXrHoVVQnHSsZrxfSiRK9LTqhfAb1+MuQ3a06f/ozVyrLXBeo47eUcx/YKBxaQ4uk1wEBoNZVUn93XVc6rq2qRkMUhI1qyZNpdk05JTKJ4TX2LSlL0y7uTsD6uqcgILneGVsJHuKB8iu90X3/JK43FB3QN/NwVQSXXhTrZpRtF9AbjIq2zlOdTSE6muKMrJM8VEY2kvsxU7JTylQ4LmzMcWnW9Xu/RaNnowL+CljeW2HSt59kR4Hg3yFdp6h/ERkaFQtibm1bHB5gompt++/z7eFTtbPJpaVzwkh8AmdUqt+/rnvbxBUC05jjVbmNQpUTOljArgRDRDyc= vagrant@manager
-    key_options: null
-    keyfile: /home/vagrant/.ssh/authorized_keys
-    manage_dir: true
-    path: null
-    state: present
-    user: vagrant
-    validate_certs: true
-2025-07-01 20:26:49,183 p=10443 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 20:26:49,184 p=10443 u=vagrant n=ansible | 192.168.60.10              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:26:49,184 p=10443 u=vagrant n=ansible | 192.168.60.11              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:26:49,185 p=10443 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:26:49,185 p=10443 u=vagrant n=ansible | 192.168.60.13              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:38:46,805 p=11480 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] **************************************************************************************************************
-2025-07-01 20:38:46,849 p=11480 u=vagrant n=ansible | TASK [ping] ************************************************************************************************************************
-2025-07-01 20:38:47,206 p=11480 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 20:38:47,847 p=11480 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-01 20:38:47,856 p=11480 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-01 20:38:47,890 p=11480 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-01 20:38:47,906 p=11480 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 20:38:47,907 p=11480 u=vagrant n=ansible | 192.168.60.10              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:38:47,907 p=11480 u=vagrant n=ansible | 192.168.60.11              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:38:47,908 p=11480 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:38:47,909 p=11480 u=vagrant n=ansible | 192.168.60.13              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:39:15,247 p=11564 u=vagrant n=ansible | PLAY [Setup SSH access] ************************************************************************************************************
-2025-07-01 20:39:15,277 p=11564 u=vagrant n=ansible | TASK [Generate SSH key on manager] *************************************************************************************************
-2025-07-01 20:39:15,743 p=11564 u=vagrant n=ansible | changed: [192.168.60.12 -> localhost]
-2025-07-01 20:39:15,751 p=11564 u=vagrant n=ansible | TASK [Set key permissions] *********************************************************************************************************
-2025-07-01 20:39:16,023 p=11564 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 20:39:16,074 p=11564 u=vagrant n=ansible | TASK [Copy public key to all nodes] ************************************************************************************************
-2025-07-01 20:39:16,477 p=11564 u=vagrant n=ansible | changed: [192.168.60.12 -> 192.168.60.10] => (item=192.168.60.10)
-2025-07-01 20:39:16,777 p=11564 u=vagrant n=ansible | changed: [192.168.60.12 -> 192.168.60.11] => (item=192.168.60.11)
-2025-07-01 20:39:17,031 p=11564 u=vagrant n=ansible | changed: [192.168.60.12 -> 192.168.60.13] => (item=192.168.60.13)
-2025-07-01 20:39:17,047 p=11564 u=vagrant n=ansible | PLAY [Precache setup] **************************************************************************************************************
-2025-07-01 20:39:17,060 p=11564 u=vagrant n=ansible | TASK [Cache facts] *****************************************************************************************************************
-2025-07-01 20:39:18,161 p=11564 u=vagrant n=ansible | ok: [192.168.60.11]
-2025-07-01 20:39:18,168 p=11564 u=vagrant n=ansible | ok: [192.168.60.10]
-2025-07-01 20:39:19,145 p=11564 u=vagrant n=ansible | ok: [192.168.60.12]
-2025-07-01 20:39:20,163 p=11564 u=vagrant n=ansible | ok: [192.168.60.13]
-2025-07-01 20:39:20,181 p=11564 u=vagrant n=ansible | PLAY [Configure common setup] ******************************************************************************************************
-2025-07-01 20:39:20,196 p=11564 u=vagrant n=ansible | TASK [Create consul group and user] ************************************************************************************************
-2025-07-01 20:39:20,980 p=11564 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-01 20:39:20,995 p=11564 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-01 20:39:21,017 p=11564 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-01 20:39:21,076 p=11564 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 20:39:21,084 p=11564 u=vagrant n=ansible | TASK [Create consul user] **********************************************************************************************************
-2025-07-01 20:39:21,531 p=11564 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-01 20:39:21,553 p=11564 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-01 20:39:21,572 p=11564 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 20:39:21,650 p=11564 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-01 20:39:21,662 p=11564 u=vagrant n=ansible | TASK [Install common dependencies] *************************************************************************************************
-2025-07-01 20:39:30,912 p=11564 u=vagrant n=ansible | changed: [192.168.60.12]
-2025-07-01 20:39:31,093 p=11564 u=vagrant n=ansible | changed: [192.168.60.13]
-2025-07-01 20:39:31,332 p=11564 u=vagrant n=ansible | changed: [192.168.60.11]
-2025-07-01 20:39:31,600 p=11564 u=vagrant n=ansible | changed: [192.168.60.10]
-2025-07-01 20:39:31,616 p=11564 u=vagrant n=ansible | PLAY [Setup Consul server] *********************************************************************************************************
-2025-07-01 20:39:31,630 p=11564 u=vagrant n=ansible | TASK [Download Consul] *************************************************************************************************************
-2025-07-01 20:39:32,209 p=11564 u=vagrant n=ansible | [WARNING]: Module remote_tmp /root/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues when
-running as another user. To avoid this, create the remote_tmp dir with the correct permissions manually
 
-2025-07-01 20:39:32,211 p=11564 u=vagrant n=ansible | fatal: [192.168.60.10]: FAILED! => changed=false 
-  dest: /tmp/consul.zip
-  elapsed: 0
-  msg: Request failed
-  response: 'HTTP Error 404: Not Found'
-  status_code: 404
-  url: https://releases.hashicorp.com/consul/1.18.0/consul_1.18.0_linux_amd64.zip
-2025-07-01 20:39:32,213 p=11564 u=vagrant n=ansible | PLAY RECAP *************************************************************************************************************************
-2025-07-01 20:39:32,213 p=11564 u=vagrant n=ansible | 192.168.60.10              : ok=4    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:39:32,214 p=11564 u=vagrant n=ansible | 192.168.60.11              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:39:32,214 p=11564 u=vagrant n=ansible | 192.168.60.12              : ok=7    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-2025-07-01 20:39:32,215 p=11564 u=vagrant n=ansible | 192.168.60.13              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+    - name: Create config directory
+          ^ here
+
+2025-07-02 02:13:24,192 p=14204 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  mapping values are not allowed in this context
+
+The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 13, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+      - name: Create config directory
+            ^ here
+
+2025-07-02 02:13:46,668 p=14226 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  did not find expected key
+
+The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+  - name: Create config directory
+  ^ here
+
+2025-07-02 02:14:01,584 p=14242 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  mapping values are not allowed in this context
+
+The error appears to be in '/home/vagrant/ansible/main.yml': line 143, column 11, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+    - name: Configure Consul client for API nodes
+          ^ here
+
+2025-07-02 02:14:18,261 p=14258 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  mapping values are not allowed in this context
+
+The error appears to be in '/home/vagrant/ansible/main.yml': line 141, column 11, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+    - name: Create config directory
+          ^ here
+
+2025-07-02 02:56:35,914 p=42819 u=vagrant n=ansible | PLAY [Ansible Ad-Hoc] ********************************************************************************************
+2025-07-02 02:56:35,992 p=42819 u=vagrant n=ansible | TASK [ping] ******************************************************************************************************
+2025-07-02 02:56:36,396 p=42819 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 02:56:37,088 p=42819 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 02:56:37,276 p=42819 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 02:56:37,282 p=42819 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 02:56:37,298 p=42819 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 02:56:37,299 p=42819 u=vagrant n=ansible | 192.168.60.10              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 02:56:37,299 p=42819 u=vagrant n=ansible | 192.168.60.11              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 02:56:37,300 p=42819 u=vagrant n=ansible | 192.168.60.12              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 02:56:37,300 p=42819 u=vagrant n=ansible | 192.168.60.13              : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 02:56:48,460 p=42880 u=vagrant n=ansible | ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: Expecting value: line 1 column 1 (char 0)
+
+Syntax Error while loading YAML.
+  did not find expected '-' indicator
+
+The error appears to be in '/home/vagrant/ansible/main.yml': line 430, column 1, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+handlers:
+^ here
+
+2025-07-02 02:57:06,314 p=42900 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:03:58,501 p=43259 u=vagrant n=ansible | ERROR! the field 'hosts' is required but was not set
+2025-07-02 03:05:00,725 p=43312 u=vagrant n=ansible | PLAY [Precache setup and common configuration] *******************************************************************
+2025-07-02 03:05:00,769 p=43312 u=vagrant n=ansible | TASK [Install common dependencies] *******************************************************************************
+2025-07-02 03:05:07,925 p=43312 u=vagrant n=ansible | changed: [192.168.60.12]
+2025-07-02 03:05:08,194 p=43312 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:05:08,406 p=43312 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:05:09,067 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:05:09,079 p=43312 u=vagrant n=ansible | TASK [Upgrade pip safely] ****************************************************************************************
+2025-07-02 03:05:10,855 p=43312 u=vagrant n=ansible | ok: [192.168.60.12]
+2025-07-02 03:05:10,906 p=43312 u=vagrant n=ansible | ok: [192.168.60.11]
+2025-07-02 03:05:10,913 p=43312 u=vagrant n=ansible | ok: [192.168.60.13]
+2025-07-02 03:05:10,937 p=43312 u=vagrant n=ansible | ok: [192.168.60.10]
+2025-07-02 03:05:10,946 p=43312 u=vagrant n=ansible | TASK [Create consul group and user] ******************************************************************************
+2025-07-02 03:05:11,308 p=43312 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:05:11,315 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:05:11,315 p=43312 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:05:11,330 p=43312 u=vagrant n=ansible | changed: [192.168.60.12]
+2025-07-02 03:05:11,339 p=43312 u=vagrant n=ansible | TASK [Create consul user] ****************************************************************************************
+2025-07-02 03:05:11,760 p=43312 u=vagrant n=ansible | changed: [192.168.60.11]
+2025-07-02 03:05:11,766 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:05:11,767 p=43312 u=vagrant n=ansible | changed: [192.168.60.13]
+2025-07-02 03:05:11,781 p=43312 u=vagrant n=ansible | changed: [192.168.60.12]
+2025-07-02 03:05:11,800 p=43312 u=vagrant n=ansible | PLAY [Setup Consul server] ***************************************************************************************
+2025-07-02 03:05:11,819 p=43312 u=vagrant n=ansible | TASK [Copy Consul binary] ****************************************************************************************
+2025-07-02 03:05:13,857 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:05:13,866 p=43312 u=vagrant n=ansible | TASK [Install Consul] ********************************************************************************************
+2025-07-02 03:05:17,811 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:05:17,819 p=43312 u=vagrant n=ansible | TASK [Create config directory] ***********************************************************************************
+2025-07-02 03:05:18,113 p=43312 u=vagrant n=ansible | changed: [192.168.60.10]
+2025-07-02 03:05:18,122 p=43312 u=vagrant n=ansible | TASK [Configure Consul server] ***********************************************************************************
+2025-07-02 03:05:18,189 p=43312 u=vagrant n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 03:05:18,191 p=43312 u=vagrant n=ansible | fatal: [192.168.60.10]: FAILED! => changed=false 
+  msg: |-
+    Could not find or access '/vagrant/src/consul01/consul_server.hcl' on the Ansible Controller.
+    If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-07-02 03:05:18,192 p=43312 u=vagrant n=ansible | PLAY RECAP *******************************************************************************************************
+2025-07-02 03:05:18,192 p=43312 u=vagrant n=ansible | 192.168.60.10              : ok=7    changed=6    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:05:18,193 p=43312 u=vagrant n=ansible | 192.168.60.11              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:05:18,193 p=43312 u=vagrant n=ansible | 192.168.60.12              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-07-02 03:05:18,193 p=43312 u=vagrant n=ansible | 192.168.60.13              : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -5,9 +5,10 @@
     state: present
     update_cache: yes
 
+# Исправление для Ubuntu 20.04 (PostgreSQL 12)
 - name: Configure PostgreSQL
   lineinfile:
-    path: /etc/postgresql/14/main/postgresql.conf
+    path: /etc/postgresql/12/main/postgresql.conf
     regexp: '^{{ item.regexp }}'
     line: "{{ item.line }}"
     backup: yes
@@ -18,7 +19,7 @@
 
 - name: Configure client authentication
   lineinfile:
-    path: /etc/postgresql/14/main/pg_hba.conf
+    path: /etc/postgresql/12/main/pg_hba.conf
     line: "host    all             all             192.168.60.0/24           md5"
     backup: yes
   notify: restart postgresql
@@ -54,7 +55,8 @@
       CREATE TABLE IF NOT EXISTS hotels (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
-        location VARCHAR(100) NOT NULL,
+        address VARCHAR(255) NOT NULL,
+        rating INTEGER NOT NULL,
         created_at TIMESTAMP DEFAULT NOW()
       );
 
@@ -63,11 +65,11 @@
   postgresql_query:
     db: hotels_db
     query: |
-      INSERT INTO hotels (name, location) 
+      INSERT INTO hotels (name, address, rating) 
       VALUES 
-        ('Hotel California', 'California'), 
-        ('Grand Budapest Hotel', 'Budapest'), 
-        ('The Plaza', 'New York')
+        ('Hotel California', 'California', 4), 
+        ('Grand Budapest Hotel', 'Budapest', 5), 
+        ('The Plaza', 'New York', 5)
       ON CONFLICT (name) DO NOTHING;
 
 handlers:

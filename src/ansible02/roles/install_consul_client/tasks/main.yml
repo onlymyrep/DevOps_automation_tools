@@ -28,9 +28,10 @@
     - /opt/consul
     - /var/log/consul
 
+# Исправленные пути
 - name: Copy Consul config for API nodes
   template:
-    src: "{{ playbook_dir }}/../consul01/consul_client_api.hcl"
+    src: "/vagrant/src/consul01/consul_client_api.hcl"
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
@@ -39,7 +40,7 @@
 
 - name: Copy Consul config for DB nodes
   template:
-    src: "{{ playbook_dir }}/../consul01/consul_client_db.hcl"
+    src: "/vagrant/src/consul01/consul_client_db.hcl"
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
@@ -57,7 +58,7 @@
       [Service]
       User=consul
       Group=consul
-      ExecStart=/usr/bin/consul agent -config-dir=/etc/consul.d/
+      ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
       Restart=always
       RestartSec=5
       LimitNOFILE=65536
@@ -99,3 +100,11 @@
     - { type: 'hard', item: 'nofile', value: 65536 }
     - { type: 'soft', item: 'memlock', value: 'unlimited' }
     - { type: 'hard', item: 'memlock', value: 'unlimited' }
+
+# Добавляем обработчики
+handlers:
+  - name: restart consul
+    systemd:
+      name: consul
+      state: restarted
+      daemon_reload: yes

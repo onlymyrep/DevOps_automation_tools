@@ -12,6 +12,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder "../services", "/home/vagrant/services", type: "rsync", rsync__exclude: [".git", "target/*"]
   config.vm.synced_folder "../consul01", "/home/vagrant/consul", type: "rsync"
+  config.vm.synced_folder "../", "/vagrant"
 
   config.vm.define "consul_server" do |server|
     server.vm.hostname = "consul-server"

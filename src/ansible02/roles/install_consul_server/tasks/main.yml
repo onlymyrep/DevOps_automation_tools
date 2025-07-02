@@ -27,9 +27,10 @@
     - /opt/consul
     - /var/log/consul
 
+# Исправленный путь
 - name: Copy Consul config
   template:
-    src: "{{ playbook_dir }}/../consul01/consul_server.hcl"
+    src: "/vagrant/src/consul01/consul_server.hcl"
     dest: /etc/consul.d/consul.hcl
     owner: consul
     group: consul
@@ -46,7 +47,7 @@
       [Service]
       User=consul
       Group=consul
-      ExecStart=/usr/bin/consul agent -config-dir=/etc/consul.d/
+      ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul.d/
       Restart=always
       RestartSec=5
       LimitNOFILE=65536
@@ -63,3 +64,11 @@
     state: started
     enabled: yes
     daemon_reload: yes
+
+# Добавляем обработчики
+handlers:
+  - name: restart consul
+    systemd:
+      name: consul
+      state: restarted
+      daemon_reload: yes

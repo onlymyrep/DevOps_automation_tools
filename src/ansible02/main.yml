@@ -66,10 +66,11 @@
 
     - name: Configure Consul server
       template:
-        src: "{{ playbook_dir }}/../consul01/consul_server.hcl"
+        src: "/vagrant/src/consul01/consul_server.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
+      register: consul_config
       notify: Restart Consul
 
     - name: Create systemd service
@@ -119,10 +120,23 @@
         mode: 0755
         creates: /usr/local/bin/consul
 
-    - name: Install Envoy
-      apt:
-        name: envoy
-        state: present
+    - name: Install Envoy via binary
+      block:
+        - name: Download Envoy
+          get_url:
+            url: https://github.com/envoyproxy/envoy/releases/download/v1.25.10/envoy-1.25.10-linux-x86_64
+            dest: /usr/local/bin/envoy
+            mode: '0755'
+            timeout: 60
+            
+        - name: Create envoy user
+          user:
+            name: envoy
+            system: yes
+            group: envoy
+            shell: /bin/false
+            home: /nonexistent
+      when: ansible_os_family == 'Debian'
 
     - name: Create config directory
       file:
@@ -133,7 +147,7 @@
 
     - name: Configure Consul client for API nodes
       template:
-        src: "{{ playbook_dir }}/../consul01/consul_client_api.hcl"
+        src: "/vagrant/src/consul01/consul_client_api.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
@@ -142,7 +156,7 @@
 
     - name: Configure Consul client for DB nodes
       template:
-        src: "{{ playbook_dir }}/../consul01/consul_client_db.hcl"
+        src: "/vagrant/src/consul01/consul_client_db.hcl"
         dest: /etc/consul.d/consul.hcl
         owner: consul
         group: consul
@@ -177,6 +191,44 @@
         state: started
         enabled: yes
         daemon_reload: yes
+
+    - name: Create Envoy service for hotels
+      copy:
+        dest: /etc/systemd/system/envoy-hotels.service
+        content: |
+          [Unit]
+          Description=Envoy Proxy for Hotels Service
+          After=consul.service
+          
+          [Service]
+          ExecStart=/usr/local/bin/consul connect envoy -sidecar-for hotels-service -admin-bind 127.0.0.1:19001
+          Restart=always
+          User=envoy
+          Group=envoy
+          
+          [Install]
+          WantedBy=multi-user.target
+      when: "'api' in group_names"
+      notify: Restart Envoy Hotels
+
+    - name: Create Envoy service for postgres
+      copy:
+        dest: /etc/systemd/system/envoy-postgres.service
+        content: |
+          [Unit]
+          Description=Envoy Proxy for PostgreSQL
+          After=consul.service
+          
+          [Service]
+          ExecStart=/usr/local/bin/consul connect envoy -sidecar-for postgres -admin-bind 127.0.0.1:19002
+          Restart=always
+          User=envoy
+          Group=envoy
+          
+          [Install]
+          WantedBy=multi-user.target
+      when: "'db' in group_names"
+      notify: Restart Envoy Postgres
 
 - name: Setup database
   hosts: db
@@ -218,6 +270,13 @@
     postgres_password: "securepassword"
     
   tasks:
+    - name: Create service user
+      user:
+        name: hotels
+        system: yes
+        shell: /bin/false
+        home: /nonexistent
+
     - name: Install Java
       apt:
         name: openjdk-8-jdk
@@ -232,7 +291,7 @@
 
     - name: Copy application JAR
       copy:
-        src: "hotel-service.jar"
+        src: "/vagrant/src/ansible02/files/hotel-service.jar"
         dest: /opt/hotels-service/hotel-service.jar
         owner: hotels
         group: hotels
@@ -240,7 +299,7 @@
 
     - name: Configure environment
       template:
-        src: "{{ playbook_dir }}/roles/install_hotels_service/templates/hotels-service.env.j2"
+        src: "/vagrant/src/ansible02/roles/install_hotels_service/templates/hotels-service.env.j2"
         dest: /etc/default/hotels-service
         owner: hotels
         group: hotels
@@ -252,6 +311,7 @@
           [Unit]
           Description=Hotels Service
           After=network.target
+          Requires=envoy-hotels.service
           
           [Service]
           EnvironmentFile=/etc/default/hotels-service
@@ -259,16 +319,11 @@
           User=hotels
           Group=hotels
           Restart=always
+          RestartSec=10
           
           [Install]
           WantedBy=multi-user.target
       notify: Restart Hotels Service
-
-    - name: Create service user
-      user:
-        name: hotels
-        system: yes
-        shell: /bin/false
 
     - name: Create service definition
       copy:
@@ -301,21 +356,25 @@
         enabled: yes
         daemon_reload: yes
 
-- name: Start Envoy sidecars
+- name: Start Envoy services
   hosts: api, db
   become: yes
   tasks:
-    - name: Start Envoy for hotels-service
-      command: /usr/local/bin/consul connect envoy -sidecar-for hotels-service -admin-bind 127.0.0.1:19001
+    - name: Start and enable Envoy for hotels
+      systemd:
+        name: envoy-hotels.service
+        state: started
+        enabled: yes
+        daemon_reload: yes
       when: "'api' in group_names"
-      async: 600
-      poll: 0
 
-    - name: Start Envoy for postgres
-      command: /usr/local/bin/consul connect envoy -sidecar-for postgres -admin-bind 127.0.0.1:19002
+    - name: Start and enable Envoy for postgres
+      systemd:
+        name: envoy-postgres.service
+        state: started
+        enabled: yes
+        daemon_reload: yes
       when: "'db' in group_names"
-      async: 600
-      poll: 0
 
 - name: Health checks
   hosts: all
@@ -361,12 +420,14 @@
       ignore_errors: yes
       retries: 3
       delay: 10
+      until: create_result.status == 201
+      changed_when: false
 
     - name: Show creation result
       debug:
         var: create_result
 
-handlers:
+- handlers:
   - name: Restart Consul
     systemd:
       name: consul
@@ -381,5 +442,17 @@ handlers:
   - name: Restart Hotels Service
     systemd:
       name: hotels-service
+      state: restarted
+      daemon_reload: yes
+
+  - name: Restart Envoy Hotels
+    systemd:
+      name: envoy-hotels.service
+      state: restarted
+      daemon_reload: yes
+      
+  - name: Restart Envoy Postgres
+    systemd:
+      name: envoy-postgres.service
       state: restarted
       daemon_reload: yes

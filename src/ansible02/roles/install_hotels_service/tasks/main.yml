@@ -12,17 +12,19 @@
     group: hotels
     home: /opt/hotels-service
 
+# Исправленный путь к JAR-файлу
 - name: Copy application
   copy:
-    src: "hotel-service.jar"
+    src: "/vagrant/src/ansible02/files/hotel-service.jar"
     dest: "/opt/hotels-service/hotel-service.jar"
     owner: hotels
     group: hotels
     mode: '0644'
 
+# Исправленный путь к шаблону
 - name: Configure environment
   template:
-    src: "hotels-service.env.j2"
+    src: "/vagrant/src/ansible02/roles/install_hotels_service/templates/hotels-service.env.j2"
     dest: /etc/default/hotels-service
     owner: hotels
     group: hotels
@@ -33,6 +35,7 @@
       [Unit]
       Description=Hotels Service
       After=network.target consul.service
+      Requires=envoy-hotels.service
       
       [Service]
       EnvironmentFile=/etc/default/hotels-service
