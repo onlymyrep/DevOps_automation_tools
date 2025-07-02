@@ -15,11 +15,7 @@ for node in "${nodes[@]}"; do
     vagrant ssh "$node" --command "mkdir -p /home/vagrant/.ssh && chmod 700 /home/vagrant/.ssh && cat >> /home/vagrant/.ssh/authorized_keys && chmod 600 /home/vagrant/.ssh/authorized_keys" < manager.pub
 done
 
-# Обновление пакетов на всех нодах
-for node in "${nodes[@]}"; do
-    echo "Upgrading system on $node..."
-    vagrant ssh "$node" --command "sudo apt-get update && sudo apt-get full-upgrade -y"
-done
+
 
 # Очистка временных файлов
 rm -f manager.pub

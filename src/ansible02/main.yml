@@ -254,8 +254,10 @@
     - name: Configure PostgreSQL authentication
       template:
         src: pg_hba.conf.j2
-        dest: /etc/postgresql/*/main/pg_hba.conf
+        dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
       notify: Reload PostgreSQL
+      vars:
+        postgresql_version: "14"
       
     - name: Set postgres password
       become_user: postgres
@@ -449,33 +451,3 @@
     - name: Show creation result
       debug:
         var: create_result
-
-  handlers:
-    - name: Restart Consul
-      systemd:
-        name: consul
-        state: restarted
-        daemon_reload: true
-
-    - name: Reload Consul
-      systemd:
-        name: consul
-        state: reloaded
-
-    - name: Restart Hotels Service
-      systemd:
-        name: hotels-service
-        state: restarted
-        daemon_reload: true
-
-    - name: Restart Envoy Hotels
-      systemd:
-        name: envoy-hotels.service
-        state: restarted
-        daemon_reload: true
-
-    - name: Restart Envoy Postgres
-      systemd:
-        name: envoy-postgres.service
-        state: restarted
-        daemon_reload: true
