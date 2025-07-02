@@ -1,14 +1,12 @@
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 {% if ansible_os_family == 'Debian' %}
-# Разрешить парольную аутентификацию для всех пользователей, включая postgres
-local   all             postgres                                md5
+# Разрешить подключение без пароля для локального пользователя postgres
+local   all             postgres                                peer
+
+# Для всех остальных пользователей использовать md5
 local   all             all                                     md5
 host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
 {% else %}
-# Конфигурация для других ОС
-local   all             postgres                                peer
-local   all             all                                     peer
-host    all             all             127.0.0.1/32            trust
-host    all             all             ::1/128                 trust
+...
 {% endif %}

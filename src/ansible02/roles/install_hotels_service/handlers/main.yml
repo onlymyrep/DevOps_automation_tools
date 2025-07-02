@@ -1,7 +1,0 @@
----
-- name: Restart Envoy Hotels
-  become: true
-  systemd:
-    name: envoy-hotels.service
-    state: restarted
-    daemon_reload: true

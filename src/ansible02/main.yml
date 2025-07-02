@@ -71,7 +71,7 @@
         owner: consul
         group: consul
       register: consul_config
-      notify: Restart Consul
+      notify: restart consul
 
     - name: Create systemd service
       copy:
@@ -93,7 +93,7 @@
 
           [Install]
           WantedBy=multi-user.target
-      notify: Restart Consul
+      notify: restart consul
 
     - name: Start Consul service
       systemd:
@@ -157,7 +157,7 @@
         owner: consul
         group: consul
       when: "'api' in group_names"
-      notify: Reload Consul
+      notify: reload consul
 
     - name: Configure Consul client for DB nodes
       template:
@@ -166,7 +166,7 @@
         owner: consul
         group: consul
       when: "'db' in group_names"
-      notify: Reload Consul
+      notify: reload consul
 
     - name: Create systemd service
       copy:
@@ -188,7 +188,7 @@
 
           [Install]
           WantedBy=multi-user.target
-      notify: Restart Consul
+      notify: restart consul
 
     - name: Start Consul service
       systemd:
@@ -214,7 +214,7 @@
           [Install]
           WantedBy=multi-user.target
       when: "'api' in group_names"
-      notify: Restart Envoy Hotels
+      notify: restart envoy hotels
 
     - name: Create Envoy service for postgres
       copy:
@@ -233,7 +233,7 @@
           [Install]
           WantedBy=multi-user.target
       when: "'db' in group_names"
-      notify: Restart Envoy Postgres
+      notify: restart envoy postgres
 
 - name: Setup database
   hosts: db
@@ -245,47 +245,57 @@
         state: present
         update_cache: true
 
-
     - name: Install PostgreSQL Python library
       apt:
         name: python3-psycopg2
         state: present
 
+    - name: Get PostgreSQL version
+      shell: "pg_config --version | awk '{print $2}' | cut -d'.' -f1"
+      register: pg_version
+      changed_when: false
+
+    - name: Ensure PostgreSQL config directory exists
+      file:
+        path: "/etc/postgresql/{{ pg_version.stdout }}/main"
+        state: directory
+        owner: postgres
+        group: postgres
+        mode: 0755
+
     - name: Configure PostgreSQL authentication
       template:
-        src: pg_hba.conf.j2
-        dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+        src: "roles/install_db/templates/pg_hba.conf.j2"
+        dest: "/etc/postgresql/{{ pg_version.stdout }}/main/pg_hba.conf"
       notify: Reload PostgreSQL
-      vars:
-        postgresql_version: "14"
-      
+
     - name: Set postgres password
+      become: true
       become_user: postgres
-      postgresql_user:
-        name: postgres
-        password: "secure_password"
+      command: >
+        psql -c "ALTER USER postgres PASSWORD 'secure_password'"
+
+    - name: Check if database exists
+      become: true
+      become_user: postgres
+      command: psql -tAc "SELECT 1 FROM pg_database WHERE datname='hotels_db'"
+      register: db_exists
+      changed_when: false
+      ignore_errors: true
 
     - name: Create database
-      postgresql_db:
-        name: hotels_db
-        encoding: UTF-8
-        lc_collate: en_US.UTF-8
-        lc_ctype: en_US.UTF-8
+      become: true
+      become_user: postgres
+      command: >
+        createdb hotels_db
+        --encoding=UTF8
+        --lc-collate=C.UTF-8
+        --lc-ctype=C.UTF-8
+      when: db_exists.stdout != "1"
 
-    - name: Create service definition
-      copy:
-        dest: /etc/consul.d/postgres.json
-        content: |
-          {
-            "service": {
-              "name": "postgres",
-              "port": 5432,
-              "connect": {
-                "sidecar_service": {}
-              }
-            }
-          }
-      notify: Reload Consul
+    - name: Show database creation result
+      debug:
+        var: db_exists.stdout
 
 - name: Setup hotels service
   hosts: api
@@ -316,7 +326,7 @@
 
     - name: Copy application JAR
       copy:
-        src: "/vagrant/src/ansible02/files/hotel-service.jar"
+        src: "{{ playbook_dir }}/files/hotel-service.jar"
         dest: /opt/hotels-service/hotel-service.jar
         owner: hotels
         group: hotels
@@ -324,7 +334,7 @@
 
     - name: Configure environment
       template:
-        src: "/vagrant/src/ansible02/roles/install_hotels_service/templates/hotels-service.env.j2"
+        src: "{{ playbook_dir }}/roles/install_hotels_service/templates/hotels-service.env.j2"
         dest: /etc/default/hotels-service
         owner: hotels
         group: hotels
@@ -348,7 +358,7 @@
 
           [Install]
           WantedBy=multi-user.target
-      notify: Restart Hotels Service
+      notify: restart hotels service
 
     - name: Create service definition
       copy:
@@ -372,7 +382,7 @@
               }
             }
           }
-      notify: Reload Consul
+      notify: reload consul
 
     - name: Start hotels service
       systemd:
@@ -451,3 +461,36 @@
     - name: Show creation result
       debug:
         var: create_result
+
+  handlers:
+    - name: reload consul
+      systemd:
+        name: consul
+        state: reloaded
+
+    - name: restart consul
+      systemd:
+        name: consul
+        state: restarted
+        daemon_reload: true
+
+    - name: restart envoy hotels
+      systemd:
+        name: envoy-hotels.service
+        state: restarted
+
+    - name: restart envoy postgres
+      systemd:
+        name: envoy-postgres.service
+        state: restarted
+
+    - name: reload postgresql
+      systemd:
+        name: postgresql
+        state: reloaded
+
+    - name: restart hotels service
+      systemd:
+        name: hotels-service
+        state: restarted
+        daemon_reload: yes

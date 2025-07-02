@@ -131,7 +131,8 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
 
 ### 4. Проверка работоспособности
 
-- Проверить CRUD-операции над сервисом отелей.
+- CRUD-операции над сервисом отелей
+![crud](misc/images/crud.png)
 
 ---
 - Consul Server (192.168.60.10): 
@@ -149,6 +150,8 @@ vagrant@manager:~/ansible$ `ansible node02 -i inventory -m shell -a "sudo -u pos
    - Зарегистрирован сервис postgres
    - Установлена PostgreSQL с тестовой базой
    - Создана таблица hotels с тестовыми данными
+   vagrant@db:~$ `sudo -u postgres psql -c "\l"`
+   ![hotels_db](misc/images/hotels_db.png)
 ---
 - Manager (192.168.60.12):
    - UI Consul доступен на http://localhost:8500

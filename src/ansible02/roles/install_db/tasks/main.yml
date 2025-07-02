@@ -72,8 +72,8 @@
         ('The Plaza', 'New York', 5)
       ON CONFLICT (name) DO NOTHING;
 
-handlers:
-  - name: restart postgresql
-    service:
-      name: postgresql
-      state: restarted
+  handlers:
+    - name: restart postgresql
+      service:
+        name: postgresql
+        state: restarted

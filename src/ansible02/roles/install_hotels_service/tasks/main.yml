@@ -58,9 +58,9 @@
     enabled: yes
     daemon_reload: yes
 
-handlers:
-  - name: restart hotel-service
-    systemd:
-      name: hotels-service
-      state: restarted
-      daemon_reload: yes
+  handlers:
+    - name: restart hotel-service
+      systemd:
+        name: hotels-service
+        state: restarted
+        daemon_reload: yes

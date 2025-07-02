@@ -1,7 +1,0 @@
----
-- name: Restart Envoy Postgres
-  become: true
-  systemd:
-    name: envoy-postgres.service
-    state: restarted
-    daemon_reload: true
